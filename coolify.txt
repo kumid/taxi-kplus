@@ -1,0 +1,162 @@
+root@server-ngts-ms:~# curl -fsSL https://cdn.coollabs.io/coolify/install.sh | sudo bash
+Welcome to Coolify Installer!
+This script will install everything for you. Sit back and relax.
+Source code: https://github.com/coollabsio/coolify/blob/main/scripts/install.sh
+
+---------------------------------------------
+| Operating System  | ubuntu 24.04
+| Docker            | 27.0
+| Coolify           | 4.0.0-beta.385
+| Helper            | 1.0.4
+| Realtime          | 1.0.5
+---------------------------------------------
+
+1. Installing required packages (curl, wget, git, jq, openssl). 
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+2. Check OpenSSH server configuration. 
+ - OpenSSH server is installed.
+ - SSH PermitRootLogin is enabled.
+3. Check Docker Installation. 
+ - Docker is not installed. Installing Docker. It may take a while.
+ - Until then, here's a joke for you:
+
+"Honey, go to the store and buy some eggs."
+"OK."
+"Oh and while you're there, get some milk."
+He never returned.
+
+# Executing docker install script, commit: 0d6f72e671ba87f7aa4c6991646a1a5b9f9dae84
++ sh -c apt-get update -qq >/dev/null
++ sh -c DEBIAN_FRONTEND=noninteractive apt-get install -y -qq ca-certificates curl >/dev/null
++ sh -c install -m 0755 -d /etc/apt/keyrings
++ sh -c curl -fsSL "https://download.docker.com/linux/ubuntu/gpg" -o /etc/apt/keyrings/docker.asc
++ sh -c chmod a+r /etc/apt/keyrings/docker.asc
++ sh -c echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu noble stable" > /etc/apt/sources.list.d/docker.list
++ sh -c apt-get update -qq >/dev/null
+INFO: Searching repository for VERSION '27.0.3'
+INFO: apt-cache madison docker-ce | grep '27.0.3' | head -1 | awk '{$1=$1};1' | cut -d' ' -f 3
+INFO: apt-cache madison docker-ce-cli | grep '27.0.3' | head -1 | awk '{$1=$1};1' | cut -d' ' -f 3
++ sh -c DEBIAN_FRONTEND=noninteractive apt-get install -y -qq docker-ce=5:27.0.3-1~ubuntu.24.04~noble docker-ce-cli=5:27.0.3-1~ubuntu.24.04~noble containerd.io docker-compose-plugin docker-ce-rootless-extras=5:27.0.3-1~ubuntu.24.04~noble docker-buildx-plugin >/dev/null
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
++ start_docker
++ [ ! -z ]
++ [ -d /run/systemd/system ]
++ sh -c systemctl start docker
++ sh -c docker version
+Client: Docker Engine - Community
+ Version:           27.0.3
+ API version:       1.46
+ Go version:        go1.21.11
+ Git commit:        7d4bcd8
+ Built:             Sat Jun 29 00:02:23 2024
+ OS/Arch:           linux/amd64
+ Context:           default
+
+Server: Docker Engine - Community
+ Engine:
+  Version:          27.0.3
+  API version:      1.46 (minimum version 1.24)
+  Go version:       go1.21.11
+  Git commit:       662f78c
+  Built:            Sat Jun 29 00:02:23 2024
+  OS/Arch:          linux/amd64
+  Experimental:     false
+ containerd:
+  Version:          1.7.25
+  GitCommit:        bcc810d6b9066471b0b6fa75f557a15a1cbf31bb
+ runc:
+  Version:          1.2.4
+  GitCommit:        v1.2.4-0-g6c52b3f
+ docker-init:
+  Version:          0.19.0
+  GitCommit:        de40ad0
+
+================================================================================
+
+To run Docker as a non-privileged user, consider setting up the
+Docker daemon in rootless mode for your user:
+
+    dockerd-rootless-setuptool.sh install
+
+Visit https://docs.docker.com/go/rootless/ to learn about rootless mode.
+
+
+To run the Docker daemon as a fully privileged service, but granting non-root
+users access, refer to https://docs.docker.com/go/daemon-access/
+
+WARNING: Access to the remote API on a privileged Docker daemon is equivalent
+         to root access on the host. Refer to the 'Docker daemon attack surface'
+         documentation for details: https://docs.docker.com/go/attack-surface/
+
+================================================================================
+
+ - Docker installed successfully.
+4. Check Docker Configuration. 
+ - Docker configuration updated, restart docker daemon...
+ - Using systemctl to restart Docker.
+ - Docker restarted successfully using systemctl.
+5. Download required files from CDN. 
+6. Make backup of .env to .env-20250121-193645
+ - File does not exist: /data/coolify/source/.env
+ - Copying .env.production to .env-20250121-193645
+7. Propagating .env with new values - if necessary.
+8. Checking for SSH key for localhost access.
+ - Generating SSH key.
+9. Installing Coolify (4.0.0-beta.385)
+ - It could take a while based on your server's performance, network speed, stars, etc.
+ - Please wait.
+ - Until then, here's a joke for you:
+
+Debugging is like being the detective in a crime movie where you're also the murderer at the same time.
+
+9f7187f27dc2e851b8b525e1585fc9b4db49ef55230c8a89c4e1fff415a93ae7
+If you encounter any issues, please check the log file: /data/coolify/source/upgrade-2025-01-21-19-37-19.log
+ - Coolify installed successfully.
+ - Waiting for 20 seconds for Coolify (database migrations) to be ready.
+ - Until then, here's a joke for you:
+
+The generation of random numbers is too important to be left to chance.
+
+
+   ____                            _         _       _   _                 _
+  / ___|___  _ __   __ _ _ __ __ _| |_ _   _| | __ _| |_(_) ___  _ __  ___| |
+ | |   / _ \| '_ \ / _` | '__/ _` | __| | | | |/ _` | __| |/ _ \| '_ \/ __| |
+ | |__| (_) | | | | (_| | | | (_| | |_| |_| | | (_| | |_| | (_) | | | \__ \_|
+  \____\___/|_| |_|\__, |_|  \__,_|\__|\__,_|_|\__,_|\__|_|\___/|_| |_|___(_)
+                   |___/
+
+
+Your instance is ready to use!
+
+You can access Coolify through your Public IP: http://178.156.145.224:8000
+
+If your Public IP is not accessible, you can use the following Private IPs:
+
+http://10.0.0.5:8000
+http://10.0.1.1:8000
+http://10.0.2.1:8000
+http://2a01:4ff:f0:9ff7::1:8000
+
+WARNING: It is highly recommended to backup your Environment variables file (/data/coolify/source/.env) to a safe location, outside of this server (e.g. into a Password Manager).
+
+root@server-ngts-ms:~# 
+
+

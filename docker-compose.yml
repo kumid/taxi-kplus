@@ -1,0 +1,68 @@
+version: '3.8'
+services:
+  # NestJS service
+  nestjs-app:
+    build: .
+    image: shoh2025/nestjs-app:1.0.0
+    container_name: nestjs-app
+    ports:
+      - "3000:3000"  # Expose the app on port 3000
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5434/findb 
+      - FRONTEND_URL=http://192.168.0.24:8081
+    depends_on:
+      - postgres
+    networks:
+      - app-network
+
+  # PostgreSQL service
+  postgres:
+    build:
+      context: .
+      dockerfile: Dockerfile.pg
+    image: shoh2025/postgres:1.0.0
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: findb
+    volumes:
+      - pg_data:/var/lib/postgresql/data  # Persist data across container restarts
+    networks:
+      - app-network
+    ports:
+      - "5434:5434"  # Expose the DB on port 5434
+    command: ["postgres", "-p", "5434"]
+ 
+  expo-web-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    image: shoh2025/expo-web-app:1.0.0
+    container_name: expo-web-app
+    ports:
+      - "8081:8081"
+      - "19000:19000"
+      - "19001:19001"
+      - "19002:19002"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - EXPO_DEVTOOLS_LISTEN_ADDRESS=0.0.0.0
+      - API_URL=http://192.168.0.24:3000/api/v1  
+    depends_on:
+      - nestjs-app
+    networks:
+      - app-network
+    command: npm start
+    
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  pg_data:
+    driver: local

@@ -1,0 +1,16 @@
+# Use the official PostgreSQL image
+FROM postgres:13
+
+# Set environment variables for database initialization
+ENV POSTGRES_USER=postgres
+ENV POSTGRES_PASSWORD=postgres
+ENV POSTGRES_DB=findb
+
+# Copy only .sql files from the drizzle folder into the Docker container
+COPY server/drizzle/*.sql /docker-entrypoint-initdb.d/
+
+# Ensure the SQL files are executable (optional, just in case)
+RUN chmod -R 755 /docker-entrypoint-initdb.d/
+
+# Expose the PostgreSQL default port
+EXPOSE 5434
