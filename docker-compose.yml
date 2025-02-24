@@ -1,32 +1,32 @@
 version: '3.8'
 services:
   # NestJS service
-  nestjs-app:
+  taxi-backend:
     build: .
-    image: shoh2025/nestjs-app:1.0.0
-    container_name: nestjs-app
+    image: shoh2025/taxi-backend:1.0.0
+    container_name: taxi-backend
     ports:
       - "3000:3000"  # Expose the app on port 3000
     environment:
       - NODE_ENV=production
-      - DATABASE_URL=postgresql://postgres:postgres@postgres:5434/findb 
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5434/taxi
       - FRONTEND_URL=http://192.168.0.24:8081
     depends_on:
-      - postgres
+      - taxi-pg
     networks:
       - app-network
 
   # PostgreSQL service
-  postgres:
+  taxi-pg:
     build:
       context: .
       dockerfile: Dockerfile.pg
-    image: shoh2025/postgres:1.0.0
-    container_name: postgres
+    image: shoh2025/taxi-pg:1.0.0
+    container_name: taxi-pg
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: findb
+      POSTGRES_DB: taxi
     volumes:
       - pg_data:/var/lib/postgresql/data  # Persist data across container restarts
     networks:
@@ -35,12 +35,12 @@ services:
       - "5434:5434"  # Expose the DB on port 5434
     command: ["postgres", "-p", "5434"]
  
-  expo-web-app:
+  taxi-web-app:
     build:
       context: .
       dockerfile: Dockerfile.web
-    image: shoh2025/expo-web-app:1.0.0
-    container_name: expo-web-app
+    image: shoh2025/taxi-web-app:1.0.0
+    container_name: taxi-web-app
     ports:
       - "8081:8081"
       - "19000:19000"
@@ -54,7 +54,7 @@ services:
       - EXPO_DEVTOOLS_LISTEN_ADDRESS=0.0.0.0
       - API_URL=http://192.168.0.24:3000/api/v1  
     depends_on:
-      - nestjs-app
+      - taxi-backend
     networks:
       - app-network
     command: npm start
