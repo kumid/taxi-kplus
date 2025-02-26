@@ -24,7 +24,26 @@ CREATE TABLE "cards" (
 	"offer_detail" text DEFAULT '' NOT NULL,
 	"image" text DEFAULT '' NOT NULL,
 	"active" text DEFAULT '' NOT NULL,
-	"site" text DEFAULT '' NOT NULL
+	"site" text DEFAULT '' NOT NULL,
+	"lang" text DEFAULT 'ru' NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE "cars" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"model" text DEFAULT '' NOT NULL,
+	"ctc" text DEFAULT '' NOT NULL,
+	"year" integer DEFAULT 2025 NOT NULL,
+	"organization" text DEFAULT '' NOT NULL,
+	"summa_buy" double precision DEFAULT 0 NOT NULL,
+	"summa_sell" double precision DEFAULT 0 NOT NULL,
+	"status" text DEFAULT 'bought' NOT NULL,
+	"buy_price" double precision DEFAULT 0 NOT NULL,
+	"buy_terms" double precision DEFAULT 0 NOT NULL,
+	"payment_day" integer DEFAULT 1 NOT NULL,
+	"customerName" text DEFAULT '' NOT NULL,
+	"customerPhone" text DEFAULT '' NOT NULL,
+	"customerAddress" text DEFAULT '' NOT NULL,
+	"customerPassport" text DEFAULT '' NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "loans" (
@@ -53,5 +72,25 @@ CREATE TABLE "loans" (
 	"offer_detail" text DEFAULT '' NOT NULL,
 	"image" text DEFAULT '' NOT NULL,
 	"active" text DEFAULT '' NOT NULL,
-	"site" text DEFAULT '' NOT NULL
+	"site" text DEFAULT '' NOT NULL,
+	"lang" text DEFAULT 'ru' NOT NULL
 );
+--> statement-breakpoint
+CREATE TABLE "numbers" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"date" date DEFAULT '' NOT NULL,
+	"gov_number" text DEFAULT '' NOT NULL,
+	"comment" text,
+	"carId" integer
+);
+--> statement-breakpoint
+CREATE TABLE "payments" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"type" text DEFAULT '' NOT NULL,
+	"date" date DEFAULT '' NOT NULL,
+	"sum" double precision DEFAULT 0 NOT NULL,
+	"carId" integer
+);
+--> statement-breakpoint
+ALTER TABLE "numbers" ADD CONSTRAINT "numbers_carId_cars_id_fk" FOREIGN KEY ("carId") REFERENCES "public"."cars"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "payments" ADD CONSTRAINT "payments_carId_cars_id_fk" FOREIGN KEY ("carId") REFERENCES "public"."cars"("id") ON DELETE no action ON UPDATE no action;

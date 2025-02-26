@@ -8,6 +8,6 @@ export default defineConfig({
   schema: './src/drizzle/schema/**.schema.ts',
   dialect: 'postgresql',
   dbCredentials: {
-    url: process.env.DATABASE_URL,  // '"postgresql://postgres:postgres@postgres:5434/taxi"' // 
+    url: process.env.DATABASE_URL,  //  'postgresql://postgres:postgres@localhost:5434/taxi' // 
   },
 });

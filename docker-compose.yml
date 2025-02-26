@@ -1,21 +1,5 @@
 version: '3.8'
 services:
-  # NestJS service
-  taxi-backend:
-    build: .
-    image: shoh2025/taxi-backend:1.0.0
-    container_name: taxi-backend
-    ports:
-      - "3000:3000"  # Expose the app on port 3000
-    environment:
-      - NODE_ENV=production
-      - DATABASE_URL=postgresql://postgres:postgres@postgres:5434/taxi
-      - FRONTEND_URL=http://192.168.0.24:8081
-    depends_on:
-      - taxi-pg
-    networks:
-      - app-network
-
   # PostgreSQL service
   taxi-pg:
     build:
@@ -35,6 +19,23 @@ services:
       - "5434:5434"  # Expose the DB on port 5434
     command: ["postgres", "-p", "5434"]
  
+  # NestJS service
+  taxi-backend:
+    build: .
+    image: shoh2025/taxi-backend:1.0.0
+    container_name: taxi-backend
+    ports:
+      - "3000:3000"  # Expose the app on port 3000
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://postgres:postgres@taxi-pg:5434/taxi
+      - FRONTEND_URL=http://192.168.0.17:8081
+    depends_on:
+      - taxi-pg
+    networks:
+      - app-network
+    command: sh -c "npx drizzle-kit migrate && npx drizzle-kit push && npm run start:prod"
+
   taxi-web-app:
     build:
       context: .
@@ -52,7 +53,7 @@ services:
     environment:
       - NODE_ENV=development
       - EXPO_DEVTOOLS_LISTEN_ADDRESS=0.0.0.0
-      - API_URL=http://192.168.0.24:3000/api/v1  
+      - API_URL=http://192.168.0.17:3000/api/v1  
     depends_on:
       - taxi-backend
     networks:

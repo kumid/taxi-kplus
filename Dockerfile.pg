@@ -7,10 +7,10 @@ ENV POSTGRES_PASSWORD=postgres
 ENV POSTGRES_DB=taxi
 
 # Copy only .sql files from the drizzle folder into the Docker container
-COPY server/drizzle/*.sql /docker-entrypoint-initdb.d/
+# COPY server/drizzle/*.sql /docker-entrypoint-initdb.d/
 
 # Ensure the SQL files are executable (optional, just in case)
-RUN chmod -R 755 /docker-entrypoint-initdb.d/
+# RUN chmod -R 755 /docker-entrypoint-initdb.d/
 
 # Expose the PostgreSQL default port
 EXPOSE 5434

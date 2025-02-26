@@ -30,6 +30,6 @@ export const cards = pgTable(
     image: text('image').default('').notNull(), // "https://firebasestorage.googleapis.com/v0/b/my-poster-b3932.appspot.com/o/credit7.png?alt=media&token=f6967b32-19d8-4252-b46f-05a1df5cd3c0"
     active: text('active').default('').notNull(), // true
     site: text('site').default('').notNull(), // "U2FsdGVkX1+PaTxss5b+2+c2InkUcgml18Le2FLtV6nl56O7scUDqg==",
-    lang: text('lang').default('ru').notNull(),
+    lang: text('lang').default('ru').notNull(), 
   },
 );
