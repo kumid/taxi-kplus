@@ -2,16 +2,14 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DrizzleModule } from './drizzle/drizzle.module'; 
-import { ConfigModule } from '@nestjs/config';
-import { CardModule } from './card/card.module';
-import { LoanModule } from './loan/loan.module';
+import { ConfigModule } from '@nestjs/config';  
+import { CarModule } from './cars/cars.module';
 
 
 @Module({
   imports: [
     DrizzleModule,
-    CardModule, 
-    LoanModule, 
+    CarModule,  
     ConfigModule.forRoot({ isGlobal: true }),
   ],
   controllers: [AppController],
