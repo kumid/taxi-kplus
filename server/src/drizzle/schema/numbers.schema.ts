@@ -6,7 +6,7 @@ export const numbers = pgTable(
   'numbers',
   {
     id: serial('id').primaryKey(), 
-    date: date('date').default('').notNull(),
+    date: date('date'),
     gov_number: text('gov_number').default('').notNull(),
     comment: text('comment'),
     carId: integer().references(() => cars.id)

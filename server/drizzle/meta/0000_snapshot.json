@@ -1,5 +1,5 @@
 {
-  "id": "348f5e4c-6a1c-409e-9252-1bc8ee1b8bca",
+  "id": "b4a388c7-cf7f-4b0e-8061-f2a792c4cd40",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -537,8 +537,7 @@
           "name": "date",
           "type": "date",
           "primaryKey": false,
-          "notNull": true,
-          "default": "''"
+          "notNull": false
         },
         "gov_number": {
           "name": "gov_number",
@@ -596,15 +595,13 @@
           "name": "type",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
-          "default": "''"
+          "notNull": false
         },
         "date": {
           "name": "date",
           "type": "date",
           "primaryKey": false,
-          "notNull": true,
-          "default": "''"
+          "notNull": false
         },
         "sum": {
           "name": "sum",

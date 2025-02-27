@@ -6,8 +6,8 @@ export const payments = pgTable(
   'payments',
   {
     id: serial('id').primaryKey(),
-    type: text('type').default('').notNull(), 
-    date: date('date').default('').notNull(),
+    type: text('type'), 
+    date: date('date'),
     sum: doublePrecision('sum').default(0.0).notNull(),
     carId: integer().references(() => cars.id)
   },

@@ -78,7 +78,7 @@ CREATE TABLE "loans" (
 --> statement-breakpoint
 CREATE TABLE "numbers" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"date" date DEFAULT '' NOT NULL,
+	"date" date,
 	"gov_number" text DEFAULT '' NOT NULL,
 	"comment" text,
 	"carId" integer
@@ -86,8 +86,8 @@ CREATE TABLE "numbers" (
 --> statement-breakpoint
 CREATE TABLE "payments" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"type" text DEFAULT '' NOT NULL,
-	"date" date DEFAULT '' NOT NULL,
+	"type" text,
+	"date" date,
 	"sum" double precision DEFAULT 0 NOT NULL,
 	"carId" integer
 );
