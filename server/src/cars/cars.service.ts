@@ -1,10 +1,11 @@
 import { Inject } from "@nestjs/common";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { DRIZZLE } from "src/drizzle/drizzle.module";
 import { cars } from "src/drizzle/schema/cars.schema";
 import { DrizzleDB } from "src/drizzle/types/drizzle";
 import { CreateCarDto } from "./dto/create-car.dto";
 import { UpdateCarDto } from "./dto/update-car.dto";
+import { numbers } from "src/drizzle/schema/numbers.schema";
 
 export class CarService {
     constructor(@Inject(DRIZZLE) private db: DrizzleDB) { }
@@ -39,4 +40,33 @@ export class CarService {
     async remove(id: number) {
       return await this.db.delete(cars).where(eq(cars.id, id));
     }
-}
+  
+  async getCars(page: number, limit: number) {
+    const offset = (page - 1) * limit;
+
+    const data = await this.db
+      .select({
+        id: cars.id,
+        model: cars.model,
+        latestNumber: numbers.gov_number,
+      })
+      .from(cars)
+      .leftJoin(
+        numbers,
+        eq(numbers.carId, cars.id)
+      )
+      .where(
+        sql`${numbers.id} = (
+          SELECT id FROM ${numbers}
+          WHERE ${numbers.carId} = ${cars.id}
+          ORDER BY ${numbers.id} DESC
+          LIMIT 1
+        )`
+      )
+      .limit(limit)
+      .offset(offset);
+
+    return data;
+  }
+  
+} 

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common'; 
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common'; 
 import { CreateCarDto } from './dto/create-car.dto';
 import { UpdateCarDto } from './dto/update-car.dto';
 import { CarService } from './cars.service';
@@ -14,8 +14,8 @@ export class CarController {
 
 
   @Get()
-  findAll() {
-    return this.carService.findAll();
+  findAll(@Query('page') page = '1', @Query('limit') limit = '10') {
+    return this.carService.getCars(Number(page), Number(limit));
   }
 
 
