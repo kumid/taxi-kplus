@@ -30,8 +30,7 @@
     "docker:publish": "./docker-publish.sh"
   },
   "devDependencies": {
-    "concurrently": "^9.1.2"
-  },
-  "dependencies": { 
+    "concurrently": "^9.1.2",
+    "prettier": "3.5.2"
   }
 }
