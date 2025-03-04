@@ -35,13 +35,12 @@ export class CarService {
     return await this.db.delete(cars).where(eq(cars.id, id));
   }
 
-  async getCars(page: number, limit: number) {
+  async getCars(page: number, limit: number) { 
     const offset = (page - 1) * limit;
 
     const data = await this.db
       .select({
-        id: cars.id,
-        model: cars.model,
+        car: cars,
         latestNumber: numbers.gov_number,
       })
       .from(cars)
@@ -57,7 +56,7 @@ export class CarService {
       .limit(limit)
       .offset(offset);
 
-    // return data;
-    return [{ page, limit }];
+    return data;
+    // return [{ page, limit }];
   }
 }
