@@ -1,6 +1,16 @@
 import Checkbox from "expo-checkbox";
 import React, { useState } from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet, Platform, TextInput, Button, ViewStyle } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  Platform,
+  TextInput,
+  Button,
+  ViewStyle,
+} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
 export interface EditComponentProps {
@@ -11,7 +21,13 @@ export interface EditComponentProps {
   onChangeText: (text: string) => void;
 }
 
-export const EditComponent: React.FC<EditComponentProps> = ({ label, placeholder, value, onChangeText, style = {} }) => {
+export const EditComponent: React.FC<EditComponentProps> = ({
+  label,
+  placeholder,
+  value,
+  onChangeText,
+  style = {},
+}) => {
   return (
     <>
       <View style={{ ...styles.columnStyle, marginLeft: 4 }}>
@@ -26,7 +42,7 @@ export const EditComponent: React.FC<EditComponentProps> = ({ label, placeholder
       </View>
     </>
   );
-}
+};
 
 export interface CardProps {
   element: {
@@ -61,41 +77,41 @@ export interface CardProps {
   updateElement: (element: any) => void;
 }
 
-const UpdateLoanCardMobile: React.FC<CardProps> = ({ element, updateElement }) => {
-  const [title, setTitle] = useState<string>('Новый оффер');
+const UpdateCarCardMobile: React.FC<CardProps> = ({
+  element,
+  updateElement,
+}) => {
+  const [title, setTitle] = useState<string>("Новый оффер");
 
-  const [name, setName] = useState<string>('');
+  const [name, setName] = useState<string>("");
   const [id, setId] = useState<number>(0);
   const [rate, setRate] = useState<number | string>(0);
-  const [offerShort, setOfferShort] = useState<string>('');
-  const [offerShortSum, setOfferShortSum] = useState<string>('');
-  const [gracePeriod, setGracePeriod] = useState<string>('');
-  const [service, setService] = useState<string>('');
-  const [openingCard, setOpeningCard] = useState<string>('');
-  const [cashback, setCashback] = useState<string>('');
-  const [releaseDate, setReleaseDate] = useState<string>('');
-  const [credits, setCredits] = useState<string>('');
-  const [additionally, setAdditionally] = useState<string>('');
-  const [registration, setRegistration] = useState<string>('');
-  const [term, setTerm] = useState<string>('');
-  const [approval, setApproval] = useState<string>('');
+  const [offerShort, setOfferShort] = useState<string>("");
+  const [offerShortSum, setOfferShortSum] = useState<string>("");
+  const [gracePeriod, setGracePeriod] = useState<string>("");
+  const [service, setService] = useState<string>("");
+  const [openingCard, setOpeningCard] = useState<string>("");
+  const [cashback, setCashback] = useState<string>("");
+  const [releaseDate, setReleaseDate] = useState<string>("");
+  const [credits, setCredits] = useState<string>("");
+  const [additionally, setAdditionally] = useState<string>("");
+  const [registration, setRegistration] = useState<string>("");
+  const [term, setTerm] = useState<string>("");
+  const [approval, setApproval] = useState<string>("");
   const [views, setViews] = useState<number>(0);
-  const [advantage, setAdvantage] = useState<string>('');
-  const [loanSum, setLoanSum] = useState<string>('');
-  const [age, setAge] = useState<string>('');
-  const [docs, setDocs] = useState<string>('');
-  const [schedule, setSchedule] = useState<string>('');
-  const [license, setLicense] = useState<string>('');
-  const [offerDetail, setOfferDetail] = useState<string>('');
-  const [image, setImage] = useState<string>('');
-  const [lang, setLang] = useState<string>('ru');
+  const [advantage, setAdvantage] = useState<string>("");
+  const [loanSum, setLoanSum] = useState<string>("");
+  const [age, setAge] = useState<string>("");
+  const [docs, setDocs] = useState<string>("");
+  const [schedule, setSchedule] = useState<string>("");
+  const [license, setLicense] = useState<string>("");
+  const [offerDetail, setOfferDetail] = useState<string>("");
+  const [image, setImage] = useState<string>("");
+  const [lang, setLang] = useState<string>("ru");
   const [active, setActive] = useState<boolean>(false);
-  const [site, setSite] = useState<string>('');
-
-
+  const [site, setSite] = useState<string>("");
 
   React.useEffect(() => {
-
     setId(element.id);
     setName(element.name);
     setRate(element.rate);
@@ -124,17 +140,16 @@ const UpdateLoanCardMobile: React.FC<CardProps> = ({ element, updateElement }) =
     setActive(element.active);
     setSite(element.site);
 
-    if (element.id && element.id !== 0)
-      setTitle('Редактировать оффер');
-    else
-      setTitle('Новый оффер');
-
+    if (element.id && element.id !== 0) setTitle("Редактировать оффер");
+    else setTitle("Новый оффер");
   }, [element]);
 
-  const handleIntegerChange = (setter: React.Dispatch<React.SetStateAction<number>>) => (value: string) => {
-    const numericValue = value ? parseFloat(value) : 0;
-    setter(numericValue);
-  };
+  const handleIntegerChange =
+    (setter: React.Dispatch<React.SetStateAction<number>>) =>
+    (value: string) => {
+      const numericValue = value ? parseFloat(value) : 0;
+      setter(numericValue);
+    };
 
   const handleSave = () => {
     // TODO: validate rating
@@ -179,25 +194,75 @@ const UpdateLoanCardMobile: React.FC<CardProps> = ({ element, updateElement }) =
     updateElement(data);
   };
 
-
   return (
     <>
       <View style={styles.container}>
+        <Text style={{ marginBottom: 8, fontSize: 14, fontWeight: 500 }}>
+          {title}
+        </Text>
 
-        <Text style={{ marginBottom: 8, fontSize: 14, fontWeight: 500 }}>{title}</Text>
+        <EditComponent
+          label={"Название"}
+          placeholder={"Название"}
+          value={name}
+          onChangeText={setName}
+        />
+        <EditComponent
+          label={"Предложение"}
+          placeholder={"Предложение"}
+          value={offerShortSum}
+          onChangeText={setOfferShortSum}
+        />
+        <EditComponent
+          label={"Преимущества"}
+          placeholder={"Преимущества"}
+          value={advantage}
+          onChangeText={setAdvantage}
+        />
+        <EditComponent
+          label={"Сумма займа"}
+          placeholder={"Сумма займа"}
+          value={loanSum}
+          onChangeText={setLoanSum}
+        />
 
-        <EditComponent label={"Название"} placeholder={"Название"} value={name} onChangeText={setName} />
-        <EditComponent label={"Предложение"} placeholder={"Предложение"} value={offerShortSum} onChangeText={setOfferShortSum} />
-        <EditComponent label={"Преимущества"} placeholder={"Преимущества"} value={advantage} onChangeText={setAdvantage} />
-        <EditComponent label={"Сумма займа"} placeholder={"Сумма займа"} value={loanSum} onChangeText={setLoanSum} />
+        <EditComponent
+          label={"Возраст"}
+          placeholder={"Возраст"}
+          value={age}
+          onChangeText={setAge}
+        />
+        <EditComponent
+          label={"Документы"}
+          placeholder={"Документы"}
+          value={docs}
+          onChangeText={setDocs}
+        />
+        <EditComponent
+          label={"График работы"}
+          placeholder={"График работы"}
+          value={schedule}
+          onChangeText={setSchedule}
+        />
+        <EditComponent
+          label={"Лицензия"}
+          placeholder={"Лицензия"}
+          value={license}
+          onChangeText={setLicense}
+        />
 
-        <EditComponent label={"Возраст"} placeholder={"Возраст"} value={age} onChangeText={setAge} />
-        <EditComponent label={"Документы"} placeholder={"Документы"} value={docs} onChangeText={setDocs} />
-        <EditComponent label={"График работы"} placeholder={"График работы"} value={schedule} onChangeText={setSchedule} />
-        <EditComponent label={"Лицензия"} placeholder={"Лицензия"} value={license} onChangeText={setLicense} />
-
-        <EditComponent label={"Одобрение"} placeholder={"Одобрение"} value={approval} onChangeText={setApproval} />
-        <EditComponent label={"Рейтинг"} placeholder={"Рейтинг"} value={rate?.toString()} onChangeText={setRate} />
+        <EditComponent
+          label={"Одобрение"}
+          placeholder={"Одобрение"}
+          value={approval}
+          onChangeText={setApproval}
+        />
+        <EditComponent
+          label={"Рейтинг"}
+          placeholder={"Рейтинг"}
+          value={rate?.toString()}
+          onChangeText={setRate}
+        />
 
         <View style={{ ...styles.columnStyle }}>
           <Text style={styles.lineName}>Просмотры</Text>
@@ -205,7 +270,7 @@ const UpdateLoanCardMobile: React.FC<CardProps> = ({ element, updateElement }) =
             style={styles.input}
             placeholder="1000"
             placeholderTextColor="#A9A9A9"
-            keyboardType="numeric"  // Numeric keyboard for rate input
+            keyboardType="numeric" // Numeric keyboard for rate input
             value={views?.toString()}
             onChangeText={handleIntegerChange(setViews)}
           />
@@ -213,21 +278,34 @@ const UpdateLoanCardMobile: React.FC<CardProps> = ({ element, updateElement }) =
 
         <View style={{ ...styles.columnStyle }}>
           <Text style={styles.lineName}>Активный</Text>
-          <View
-            style={{ ...styles.input, borderWidth: 0 }}>
+          <View style={{ ...styles.input, borderWidth: 0 }}>
             <Checkbox
               style={{ marginTop: 8 }}
               value={active}
-              color={active ? '#4630EB' : undefined}
+              color={active ? "#4630EB" : undefined}
               onValueChange={setActive}
             />
           </View>
         </View>
 
-
-        <EditComponent label={"Детали предложения"} placeholder={"Детали предложения"} value={offerDetail} onChangeText={setOfferDetail} />
-        <EditComponent label={"Лого"} placeholder={"https://"} value={image} onChangeText={setImage} />
-        <EditComponent label={"Сайт"} placeholder={"Сайт"} value={site} onChangeText={setSite} />
+        <EditComponent
+          label={"Детали предложения"}
+          placeholder={"Детали предложения"}
+          value={offerDetail}
+          onChangeText={setOfferDetail}
+        />
+        <EditComponent
+          label={"Лого"}
+          placeholder={"https://"}
+          value={image}
+          onChangeText={setImage}
+        />
+        <EditComponent
+          label={"Сайт"}
+          placeholder={"Сайт"}
+          value={site}
+          onChangeText={setSite}
+        />
 
         <View style={{ ...styles.rowStyle, marginStart: "auto" }}>
           <Button title="Save" onPress={() => handleSave()} />
@@ -247,7 +325,7 @@ const styles = StyleSheet.create({
   input: {
     height: 40,
     width: 300,
-    borderColor: 'gray',
+    borderColor: "gray",
     borderWidth: 1,
     marginBottom: 15,
     paddingLeft: 10,
@@ -255,31 +333,31 @@ const styles = StyleSheet.create({
   inputNumber: {
     height: 40,
     width: 100,
-    borderColor: 'gray',
+    borderColor: "gray",
     borderWidth: 1,
     marginBottom: 15,
     paddingLeft: 10,
   },
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 10,
     padding: 20,
     margin: 5,
     elevation: 3,
   },
   rowStyle: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginBottom: 10,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
   },
   topSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 10,
   },
   columnStyle: {
-    flexDirection: 'column',
-    justifyContent: 'space-between',
+    flexDirection: "column",
+    justifyContent: "space-between",
   },
   logo: {
     width: 50,
@@ -288,35 +366,33 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: "bold",
+    color: "#333",
   },
   lineName: {
     fontSize: 14,
-    color: '#777',
+    color: "#777",
   },
   lineValue: {
     fontSize: 14,
-    fontWeight: '600',
-    color: '#333',
+    fontWeight: "600",
+    color: "#333",
   },
   lineValueUP: {
     fontSize: 16,
-    fontWeight: '700',
-    color: '#000',
+    fontWeight: "700",
+    color: "#000",
   },
   ratingText: {
     fontSize: 14,
-    color: '#f39c12',
+    color: "#f39c12",
   },
   offerDetails: {
     marginTop: 15,
     borderTopWidth: 1,
-    borderTopColor: '#ddd',
+    borderTopColor: "#ddd",
     paddingTop: 10,
   },
 });
 
-
-
-export default UpdateLoanCardMobile; 
+export default UpdateCarCardMobile;

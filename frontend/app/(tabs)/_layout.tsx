@@ -28,7 +28,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Карты',
+          title: 'Машины',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="banknote" color={color} />,
         }}
       />

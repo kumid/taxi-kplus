@@ -29,36 +29,36 @@ services:
     environment:
       - NODE_ENV=production
       - DATABASE_URL=postgresql://postgres:postgres@taxi-pg:5434/taxi
-      - FRONTEND_URL=http://192.168.0.17:8081
+      - FRONTEND_URL=http://192.168.0.20:8081
     depends_on:
       - taxi-pg
     networks:
       - app-network
     command: sh -c "npx drizzle-kit migrate && npx drizzle-kit push && npm run start:prod"
 
-  taxi-web-app:
-    build:
-      context: .
-      dockerfile: Dockerfile.web
-    image: shoh2025/taxi-web-app:1.0.0
-    container_name: taxi-web-app
-    ports:
-      - "8081:8081"
-      - "19000:19000"
-      - "19001:19001"
-      - "19002:19002"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    environment:
-      - NODE_ENV=development
-      - EXPO_DEVTOOLS_LISTEN_ADDRESS=0.0.0.0
-      - API_URL=http://192.168.0.17:3000/api/v1  
-    depends_on:
-      - taxi-backend
-    networks:
-      - app-network
-    command: npm start
+  # taxi-web-app:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.web
+  #   image: shoh2025/taxi-web-app:1.0.0
+  #   container_name: taxi-web-app
+  #   ports:
+  #     - "8081:8081"
+  #     - "19000:19000"
+  #     - "19001:19001"
+  #     - "19002:19002"
+  #   volumes:
+  #     - ./frontend:/app
+  #     - /app/node_modules
+  #   environment:
+  #     - NODE_ENV=development
+  #     - EXPO_DEVTOOLS_LISTEN_ADDRESS=0.0.0.0
+  #     - API_URL=http://192.168.0.17:3000/api/v1  
+  #   depends_on:
+  #     - taxi-backend
+  #   networks:
+  #     - app-network
+  #   command: npm start
     
 networks:
   app-network:

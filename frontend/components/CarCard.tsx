@@ -1,7 +1,14 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet, Platform } from "react-native";
-import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
-import Feather from '@expo/vector-icons/Feather';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  Platform,
+} from "react-native";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import Feather from "@expo/vector-icons/Feather";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "@expo/vector-icons/build/MaterialCommunityIcons";
 
@@ -38,7 +45,12 @@ export interface CardProps {
   elementDelete: () => void;
 }
 
-const LoanCardV2: React.FC<CardProps> = ({ element, elementEdit, elementCopy, elementDelete }) => {
+const CarCardV2: React.FC<CardProps> = ({
+  element,
+  elementEdit,
+  elementCopy,
+  elementDelete,
+}) => {
   return (
     <View>
       <View style={styles.card}>
@@ -53,16 +65,26 @@ const LoanCardV2: React.FC<CardProps> = ({ element, elementEdit, elementCopy, el
               <Text style={styles.lineName}>Название</Text>
               <Text style={styles.title}>{element.name}</Text>
             </View>
-            <View style={{ flexDirection: 'row', marginStart: 'auto', marginBottom: 'auto' }}>
-              <TouchableOpacity onPress={ elementEdit } style={{ padding: 4}}> 
+            <View
+              style={{
+                flexDirection: "row",
+                marginStart: "auto",
+                marginBottom: "auto",
+              }}
+            >
+              <TouchableOpacity onPress={elementEdit} style={{ padding: 4 }}>
                 <Feather name="edit" size={20} color="red" />
               </TouchableOpacity>
-              <TouchableOpacity onPress={ elementCopy } style={{ padding: 4}}>
+              <TouchableOpacity onPress={elementCopy} style={{ padding: 4 }}>
                 <FontAwesome6 name="copy" size={20} color="blue" />
               </TouchableOpacity>
-              <TouchableOpacity onPress={ elementDelete } style={{ padding: 4}}>
-                <MaterialCommunityIcons name="delete-sweep-outline" size={24} color="black" />
-              </TouchableOpacity>  
+              <TouchableOpacity onPress={elementDelete} style={{ padding: 4 }}>
+                <MaterialCommunityIcons
+                  name="delete-sweep-outline"
+                  size={24}
+                  color="black"
+                />
+              </TouchableOpacity>
             </View>
           </View>
 
@@ -70,7 +92,6 @@ const LoanCardV2: React.FC<CardProps> = ({ element, elementEdit, elementCopy, el
             <Text style={styles.lineName}>Рейтинг</Text>
             <Text style={styles.ratingText}>⭐ {element.rate}</Text>
           </View>
-
 
           <View style={styles.rowStyle}>
             <Text style={styles.lineName}>Предложение:</Text>
@@ -146,12 +167,10 @@ const LoanCardV2: React.FC<CardProps> = ({ element, elementEdit, elementCopy, el
           </View>
         </View>
 
-
         <View style={styles.offerDetails}>
           <Text style={styles.lineName}>Детали предложения:</Text>
           <Text style={styles.lineValue}>{element.offer_detail}</Text>
         </View>
-
       </View>
     </View>
   );
@@ -159,25 +178,25 @@ const LoanCardV2: React.FC<CardProps> = ({ element, elementEdit, elementCopy, el
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 10,
     padding: 20,
     margin: 5,
     elevation: 3,
   },
   rowStyle: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginBottom: 10,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
   },
   topSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 10,
   },
   columnStyle: {
-    flexDirection: 'column',
-    justifyContent: 'space-between',
+    flexDirection: "column",
+    justifyContent: "space-between",
   },
   logo: {
     width: 50,
@@ -186,33 +205,33 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: "bold",
+    color: "#333",
   },
   lineName: {
     fontSize: 14,
-    color: '#777',
+    color: "#777",
   },
   lineValue: {
     fontSize: 14,
-    fontWeight: '600',
-    color: '#333',
+    fontWeight: "600",
+    color: "#333",
   },
   lineValueUP: {
     fontSize: 16,
-    fontWeight: '700',
-    color: '#000',
+    fontWeight: "700",
+    color: "#000",
   },
   ratingText: {
     fontSize: 14,
-    color: '#f39c12',
+    color: "#f39c12",
   },
   offerDetails: {
     marginTop: 15,
     borderTopWidth: 1,
-    borderTopColor: '#ddd',
+    borderTopColor: "#ddd",
     paddingTop: 10,
   },
 });
 
-export default LoanCardV2; 
+export default CarCardV2;

@@ -35,17 +35,33 @@ export class CarService {
     return await this.db.delete(cars).where(eq(cars.id, id));
   }
 
-  async getCars(page: number, limit: number) { 
+  async getCars(page: number, limit: number) {
     const offset = (page - 1) * limit;
 
     const data = await this.db
       .select({
-        car: cars,
+        id: cars.id,
+        model: cars.model,
+        ctc: cars.ctc,
+        year: cars.year,
+        organization: cars.organization,
+        summa_buy: cars.summa_buy, // bought
+        summa_sell: cars.summa_sell, // price
+        status: cars.status, // статус машины (bought-куплена, installment - в рассрочке, sold - выплачена)
+
+        buy_price: cars.buy_price, // price in market
+        buy_terms: cars.buy_terms, // terms
+        payment_day: cars.payment_day,
+
+        customerName: cars.customerName, // имя покупателя
+        customerPhone: cars.customerPhone, // телефон покупателя
+        customerAddress: cars.customerAddress, // адрес покупателя
+        customerPassport: cars.customerPassport, // паспорт покупателя,
         latestNumber: numbers.gov_number,
       })
       .from(cars)
-      .leftJoin(numbers, eq(numbers.carId, cars.id))
-      .where(
+      .leftJoin(
+        numbers,
         sql`${numbers.id} = (
           SELECT id FROM ${numbers}
           WHERE ${numbers.carId} = ${cars.id}
@@ -53,10 +69,10 @@ export class CarService {
           LIMIT 1
         )`,
       )
+      .orderBy(cars.id) // Ensures consistent ordering
       .limit(limit)
       .offset(offset);
 
     return data;
-    // return [{ page, limit }];
   }
 }
