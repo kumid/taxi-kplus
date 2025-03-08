@@ -1,11 +1,12 @@
 import React, { createContext, useState, useContext, useEffect, useMemo } from "react";
 import axios from 'axios'; 
 import Constants from "expo-constants"; 
+import { CarElement } from "@/components/CarRowCard";
 
 interface DataContextType {
   cachedCars: any[]; 
   loadingCars: boolean; 
-  updateCars: (element: any) => void;
+  updateCars: (element: CarElement) => void;
   updateCarsResult: {success: boolean, error: string};
   deleteCar: (element: any) => void;  
 }

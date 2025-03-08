@@ -108,7 +108,7 @@ const LabeledTextInput: React.FC<LabeledTextInputProps> = ({
         label = "СТС";
         break;
       case TextInputType.year:
-        keyboardType = "default";
+        keyboardType = "numeric";
         placeholder = "Введите год выпуска";
         label = "Год выпуска";
         break;

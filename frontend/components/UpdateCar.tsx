@@ -18,7 +18,7 @@ import LabeledTextInput, { TextInputType } from "./LabeledTextInput";
 
 export interface CardProps {
   element: CarElement;
-  updateElement: (element: any) => void;
+  updateElement: (element: CarElement) => void;
 }
    
 const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
@@ -40,6 +40,8 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
   const [customerAddress, setCustomerAddress] = useState<string>("");
   const [customerPassport, setCustomerPassport] = useState<string>("");
   const [latestNumber, setLatestNumber] = useState<string>("0");
+
+
 
   React.useEffect(() => {
     setId(element.id);
@@ -63,54 +65,37 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
     else setTitle("Новая машина");
   }, [element]);
 
-  const handleIntegerChange =
-    (setter: React.Dispatch<React.SetStateAction<number>>) =>
-    (value: string) => {
+  const handleIntegerChange = (setter: (value: string) => void, value: string) => {
+    try {
       const numericValue = value ? parseFloat(value) : 0;
-      setter(numericValue);
+      setter(String(numericValue));
+    } catch (error) {
+      setter("0");
+    }
+  }
+  
+  const handleSave = () => {
+      
+    const data: CarElement = {
+      id: id,
+      model: model,
+      ctc: ctc,
+      year: Number(year),
+      organization: organization,
+      summa_buy: Number(summa_buy),
+      summa_sell: Number(summa_sell),
+      status: status,
+      buy_price: Number(buy_price),
+      buy_terms: Number(buy_terms),
+      payment_day: Number(payment_day),
+      customerName: customerName,
+      customerPhone: customerPhone,
+      customerAddress: customerAddress,
+      customerPassport: customerPassport,
+      latestNumber: latestNumber
     };
 
-  const handleSave = () => {
-    // // TODO: validate rating
-    // let numericValue = parseFloat(rate?.toString());
-    // if (!isNaN(numericValue)) {
-    //   numericValue = Math.min(Math.max(numericValue, 0), 5);
-    //   setRate(numericValue);
-    // } else {
-    //   setRate(4.8);
-    // }
-
-    // const data = {
-    //   id: id,
-    //   name,
-    //   rate,
-    //   offer_short: offerShort,
-    //   offer_short_sum: offerShortSum,
-    //   grace_period: gracePeriod,
-    //   service,
-    //   opening_card: openingCard,
-    //   cashback,
-    //   release_date: releaseDate,
-    //   credits,
-    //   additionally,
-    //   registration,
-    //   term,
-    //   approval,
-    //   views,
-    //   advantage,
-    //   loan_sum: loanSum,
-    //   age,
-    //   docs,
-    //   schedule,
-    //   license,
-    //   offer_detail: offerDetail,
-    //   lang,
-    //   image,
-    //   active,
-    //   site,
-    // };
-
-    // updateElement(data);
+    updateElement(data);
   }; 
     
 
@@ -125,17 +110,17 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
           <LabeledTextInput value={model} onChangeText={setModel} inputType={TextInputType.model} />
           <LabeledTextInput value={ctc} onChangeText={setCtc} inputType={TextInputType.ctc} />
           <LabeledTextInput value={organization} onChangeText={setYear} inputType={TextInputType.organization} />
-          <LabeledTextInput value={summa_buy} onChangeText={setSumma_buy} inputType={TextInputType.summa_buy} />
+          <LabeledTextInput value={summa_buy} onChangeText={(value) => handleIntegerChange(setSumma_buy, value)} inputType={TextInputType.summa_buy}/>
         </View>  
     
         <View style={{ ...styles.rowStyle, marginStart: 10, marginBottom: 16 }}>
-          <LabeledTextInput value={summa_sell} onChangeText={setSumma_sell} inputType={TextInputType.summa_sell} />
+          <LabeledTextInput value={summa_sell} onChangeText={(value) => handleIntegerChange(setSumma_sell, value)}  inputType={TextInputType.summa_sell} />
           <LabeledTextInput value={status} onChangeText={setStatus} inputType={TextInputType.status} />
-          <LabeledTextInput value={buy_price} onChangeText={setBuy_price} inputType={TextInputType.buy_price} />
-          <LabeledTextInput value={buy_terms} onChangeText={setBuy_terms} inputType={TextInputType.buy_terms} />
+          <LabeledTextInput value={buy_price} onChangeText={(value) => handleIntegerChange(setBuy_price, value)}  inputType={TextInputType.buy_price} />
+          <LabeledTextInput value={buy_terms} onChangeText={(value) => handleIntegerChange(setBuy_terms, value)} inputType={TextInputType.buy_terms} />
         </View> 
         <View style={{ ...styles.rowStyle, marginStart: 10, marginBottom: 16 }}>
-          <LabeledTextInput value={payment_day} onChangeText={setPayment_day} inputType={TextInputType.payment_day} />
+          <LabeledTextInput value={payment_day} onChangeText={(value) => handleIntegerChange(setPayment_day, value)}  inputType={TextInputType.payment_day} />
           <LabeledTextInput value={latestNumber} onChangeText={setLatestNumber} inputType={TextInputType.latestNumber} />
         </View>
  
@@ -147,7 +132,7 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
         </View>
 
         <View style={{ ...styles.rowStyle, marginStart: "auto" }}>
-          <Button title="Save" onPress={() => handleSave()} />
+          <Button title="Сохранить" onPress={() => handleSave()} />
         </View>
       </View>
     </>
