@@ -363,15 +363,13 @@ export default ScaledStyleSheet.create({
     // marginBottom: 10,
     fontWeight: 'bold', 
   },
-  input: {
-    
+  input: {    
     fontWeight:"bold",
-    borderWidth: 1,
+    borderWidth: 0.1,
     borderColor: '#ccc',
-    borderRadius: 8,
+    borderRadius: 2,
     marginHorizontal:"4%",
-    padding: 10,
-    marginBottom: 20,
+    padding: 4, 
   },
   titleAD: {
     fontSize: 16,

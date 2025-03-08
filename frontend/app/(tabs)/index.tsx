@@ -134,7 +134,9 @@ export default function CardsScreen() {
     ]);
 
   const Header = () => (
-    <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 6, backgroundColor: '#000' }}>
+    <View style={{ flexDirection: "row", justifyContent: "space-between", 
+      marginBottom: 6, borderBottomColor: "black", paddingBottom: 16, borderBottomWidth: 1
+     }}>
       <View style={{ width: "10%" }}>
         <Text style={{ fontWeight: 900 }}>Модель</Text>
       </View>
@@ -171,7 +173,7 @@ export default function CardsScreen() {
       <View style={{ flex: 1, padding: 15 }}>
         <View style={styles.header}>
           <View>
-            <Text style={styles.welcome}>Карты</Text>
+            <Text style={styles.welcome}>Автомобили</Text>
           </View>
           <TouchableOpacity
             style={styles.notificationIcon}
@@ -180,33 +182,9 @@ export default function CardsScreen() {
             <AntDesign name="pluscircle" size={24} color="black" />
           </TouchableOpacity>
         </View>
-
-        {/* <View style={styles.infoBox}>
-          <View style={styles.row}>
-            {["ru", "en", "es", "vi"].map((value) => (
-              <TouchableOpacity
-                key={value}
-                onPress={() => setSelectedLang(value)}
-                style={[
-                  styles.button,
-                  selectedLang === value && styles.selected,
-                ]}
-              >
-                <Text
-                  style={[
-                    styles.buttonLabel,
-                    selectedLang === value && styles.selectedLabel,
-                  ]}
-                >
-                  {value}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View> */}
-
+  
         <FlatList 
-          style={styles.freeHeight}
+          style={{...styles.freeHeight}}
           contentContainerStyle={styles.listContent}
           data={cachedCars}
           keyExtractor={(item) => item.id}
