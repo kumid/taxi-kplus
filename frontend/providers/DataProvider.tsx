@@ -9,6 +9,7 @@ interface DataContextType {
   updateCars: (element: CarElement) => void;
   updateCarsResult: {success: boolean, error: string};
   deleteCar: (element: any) => void;  
+  addPayment: (element: any) => Promise<boolean>;
 }
   
  
@@ -79,6 +80,24 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  const addPayment = async (element: any): Promise<boolean> => {
+    console.log("savePayment......2 -> ", element);
+    try {
+      setLoadingCars(true); 
+      const response = await axios.post(`${apiUrl}/payments`, element);
+      await getCars();
+      console.log("savePayment......3");    
+      setLoadingCars(false);
+      return true
+    } catch (error) {
+      setLoadingCars(false);
+      console.error('Error delete data:', error);
+      return false
+    }
+  };
+
+
+
    
 
   useEffect(() => {
@@ -92,7 +111,8 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
         loadingCars, 
         updateCars,
         updateCarsResult,
-        deleteCar, 
+        deleteCar,  
+        addPayment
       }}
     >
       {children}

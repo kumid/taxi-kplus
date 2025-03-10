@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { CreateCarDto } from './dto/create-car.dto';
 import { UpdateCarDto } from './dto/update-car.dto';
 import { CarService } from './cars.service';
+import { log } from 'console';
 
 @Controller('api/v1/cars')
 export class CarController {

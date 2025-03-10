@@ -22,31 +22,23 @@ import CarRowCard from "@/components/CarRowCard";
 const sampleCard: any = {
   element: {
     id: 0,
-    name: "",
-    rate: 5,
-    offer_short: "",
-    offer_short_sum: "",
-    grace_period: "",
-    service: "",
-    opening_card: "",
-    cashback: "",
-    release_date: "",
-    credits: "",
-    additionally: "",
-    registration: "",
-    term: "",
-    approval: "",
-    views: 1000,
-    advantage: "",
-    loan_sum: "",
-    age: "",
-    docs: "",
-    schedule: "",
-    license: "",
-    offer_detail: "",
-    image: "",
-    active: true,
-    site: "",
+    model: "",
+    ctc: "",
+    year: "2025",
+    organization: "",
+    summa_buy: "0",
+    summa_sell: "",
+    status: "куплена",
+
+    buy_price: "",
+    buy_terms: "",
+    payment_day: "14",
+
+    customerName: "",
+    customerPhone: "",
+    customerAddress: "",
+    customerPassport: "",
+    latestNumber: "",
   },
 };
 
@@ -73,16 +65,7 @@ export default function CardsScreen() {
       element.name = `${element.name} (копия)`;
     }
     setOfferToDialog(element);
-    setIsAddDialogVisible(!isAddDialogVisible);
-
-    // const decrypted = await decryptStringWithIV(element.site);
-    // router.push({
-    //   pathname: "/webview",
-    //   params: {
-    //     site: decrypted,
-    //     name: element.name
-    //   }
-    // })
+    setIsAddDialogVisible(!isAddDialogVisible); 
   };
   const handleItemDeletePress = async (element: any) => {
     setIsConfirmationDialogVisible(true);
@@ -109,8 +92,7 @@ export default function CardsScreen() {
   const toggleAddDialogModal = (): void => {
     setOfferToDialog({
       ...sampleCard,
-      id: 0,
-      lang: selectedLang,
+      id: 0, 
     });
     setIsAddDialogVisible(!isAddDialogVisible);
   };
@@ -134,35 +116,42 @@ export default function CardsScreen() {
     ]);
 
   const Header = () => (
-    <View style={{ flexDirection: "row", justifyContent: "space-between", 
-      marginBottom: 6, borderBottomColor: "black", paddingBottom: 16, borderBottomWidth: 1
-     }}>
+    <View
+      style={{
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginBottom: 6,
+        borderBottomColor: "black",
+        paddingBottom: 16,
+        borderBottomWidth: 1,
+      }}
+    >
       <View style={{ width: "10%" }}>
         <Text style={{ fontWeight: 900 }}>Модель</Text>
       </View>
       <View style={{ width: "10%" }}>
-        <Text style={{fontWeight: 900 }}>СТС</Text>
+        <Text style={{ fontWeight: 900 }}>СТС</Text>
       </View>
       <View style={{ width: "10%" }}>
-        <Text style={{fontWeight: 900 }}>Год</Text>
+        <Text style={{ fontWeight: 900 }}>Год</Text>
       </View>
       <View style={{ width: "10%" }}>
-        <Text style={{fontWeight: 900 }}>Организация</Text>
+        <Text style={{ fontWeight: 900 }}>Организация</Text>
       </View>
       <View style={{ width: "10%" }}>
-        <Text style={{fontWeight: 900 }}>Стоимость</Text>
+        <Text style={{ fontWeight: 900 }}>Стоимость</Text>
       </View>
       <View style={{ width: "10%" }}>
-        <Text style={{fontWeight: 900 }}>Срок</Text>
+        <Text style={{ fontWeight: 900 }}>Срок</Text>
       </View>
       <View style={{ width: "10%" }}>
-        <Text style={{fontWeight: 900 }}>День оплаты</Text>
+        <Text style={{ fontWeight: 900 }}>День оплаты</Text>
       </View>
       <View style={{ width: "10%" }}>
-        <Text style={{fontWeight: 900 }}>Покупатель</Text>
+        <Text style={{ fontWeight: 900 }}>Покупатель</Text>
       </View>
       <View style={{ width: "10%" }}>
-        <Text style={{fontWeight: 900 }}>Телефон</Text>
+        <Text style={{ fontWeight: 900 }}>Телефон</Text>
       </View>
       <View style={{ width: "10%" }}></View>
     </View>
@@ -182,9 +171,9 @@ export default function CardsScreen() {
             <AntDesign name="pluscircle" size={24} color="black" />
           </TouchableOpacity>
         </View>
-  
-        <FlatList 
-          style={{...styles.freeHeight}}
+
+        <FlatList
+          style={{ ...styles.freeHeight }}
           contentContainerStyle={styles.listContent}
           data={cachedCars}
           keyExtractor={(item) => item.id}

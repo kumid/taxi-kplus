@@ -15,6 +15,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { EditComponent } from "./UpdateCarMobile";
 import { CarElement } from "./CarRowCard";
 import LabeledTextInput, { TextInputType } from "./LabeledTextInput";
+import { handleIntegerChange } from "./handleIntegerChange";
 
 export interface CardProps {
   element: CarElement;
@@ -65,14 +66,7 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
     else setTitle("Новая машина");
   }, [element]);
 
-  const handleIntegerChange = (setter: (value: string) => void, value: string) => {
-    try {
-      const numericValue = value ? parseFloat(value) : 0;
-      setter(String(numericValue));
-    } catch (error) {
-      setter("0");
-    }
-  }
+  
   
   const handleSave = () => {
       
@@ -109,7 +103,7 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
         <View style={{ ...styles.rowStyle, marginStart: 10, marginBottom: 16 }}>
           <LabeledTextInput value={model} onChangeText={setModel} inputType={TextInputType.model} />
           <LabeledTextInput value={ctc} onChangeText={setCtc} inputType={TextInputType.ctc} />
-          <LabeledTextInput value={organization} onChangeText={setYear} inputType={TextInputType.organization} />
+          <LabeledTextInput value={organization} onChangeText={setOrganization} inputType={TextInputType.organization} />
           <LabeledTextInput value={summa_buy} onChangeText={(value) => handleIntegerChange(setSumma_buy, value)} inputType={TextInputType.summa_buy}/>
         </View>  
     

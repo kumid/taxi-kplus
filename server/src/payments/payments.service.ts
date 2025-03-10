@@ -1,26 +1,37 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
+import { DRIZZLE } from 'src/drizzle/drizzle.module'; 
+import { DrizzleDB } from 'src/drizzle/types/drizzle';
+import { payments } from 'src/drizzle/schema/payments.schema';
+import { eq } from 'drizzle-orm';
 
 @Injectable()
 export class PaymentsService {
-  create(createPaymentDto: CreatePaymentDto) {
-    return 'This action adds a new payment';
+  constructor(@Inject(DRIZZLE) private db: DrizzleDB) {}
+  
+  async create(createPaymentDto: CreatePaymentDto) {
+    return await this.db.insert(payments).values(createPaymentDto); 
   }
 
-  findAll() {
-    return `This action returns all payments`;
+  async findAll() {
+    return await this.db.query.payments.findMany({
+      orderBy: (payment, { asc }) => [asc(payment.id)],
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} payment`;
+  async findOne(id: number) {
+    const payment = await this.db.query.payments.findFirst({
+      where: (payment, { eq }) => eq(payment.id, id),
+    });
+    return payment;
   }
 
-  update(id: number, updatePaymentDto: UpdatePaymentDto) {
-    return `This action updates a #${id} payment`;
+  async update(id: number, updatePaymentDto: UpdatePaymentDto) {
+    return await this.db.update(payments).set(updatePaymentDto).where(eq(payments.id, id));
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} payment`;
+  async remove(id: number) {
+     return await this.db.delete(payments).where(eq(payments.id, id));
   }
 }

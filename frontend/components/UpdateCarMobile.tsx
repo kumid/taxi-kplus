@@ -12,6 +12,8 @@ import {
   ViewStyle,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { CarElement } from "./CarRowCard";
+import LabeledTextInput, { TextInputType } from "./LabeledTextInput";
 
 export interface EditComponentProps {
   label: string;
@@ -45,35 +47,7 @@ export const EditComponent: React.FC<EditComponentProps> = ({
 };
 
 export interface CardProps {
-  element: {
-    id: number;
-    name: string;
-    rate: number;
-    offer_short: string;
-    offer_short_sum: string;
-    grace_period: string;
-    service: string;
-    opening_card: string;
-    cashback: string;
-    release_date: string;
-    credits: string;
-    additionally: string;
-    registration: string;
-    term: string;
-    approval: string;
-    views: number;
-    advantage: string;
-    loan_sum: string;
-    age: string;
-    docs: string;
-    schedule: string;
-    license: string;
-    offer_detail: string;
-    image: string;
-    lang: string;
-    active: boolean;
-    site: string;
-  };
+  element: CarElement;
   updateElement: (element: any) => void;
 }
 
@@ -81,114 +55,65 @@ const UpdateCarCardMobile: React.FC<CardProps> = ({
   element,
   updateElement,
 }) => {
-  const [title, setTitle] = useState<string>("Новый оффер");
+  const [title, setTitle] = useState<string>("Новая машина");
 
-  const [name, setName] = useState<string>("");
   const [id, setId] = useState<number>(0);
-  const [rate, setRate] = useState<number | string>(0);
-  const [offerShort, setOfferShort] = useState<string>("");
-  const [offerShortSum, setOfferShortSum] = useState<string>("");
-  const [gracePeriod, setGracePeriod] = useState<string>("");
-  const [service, setService] = useState<string>("");
-  const [openingCard, setOpeningCard] = useState<string>("");
-  const [cashback, setCashback] = useState<string>("");
-  const [releaseDate, setReleaseDate] = useState<string>("");
-  const [credits, setCredits] = useState<string>("");
-  const [additionally, setAdditionally] = useState<string>("");
-  const [registration, setRegistration] = useState<string>("");
-  const [term, setTerm] = useState<string>("");
-  const [approval, setApproval] = useState<string>("");
-  const [views, setViews] = useState<number>(0);
-  const [advantage, setAdvantage] = useState<string>("");
-  const [loanSum, setLoanSum] = useState<string>("");
-  const [age, setAge] = useState<string>("");
-  const [docs, setDocs] = useState<string>("");
-  const [schedule, setSchedule] = useState<string>("");
-  const [license, setLicense] = useState<string>("");
-  const [offerDetail, setOfferDetail] = useState<string>("");
-  const [image, setImage] = useState<string>("");
-  const [lang, setLang] = useState<string>("ru");
-  const [active, setActive] = useState<boolean>(false);
-  const [site, setSite] = useState<string>("");
+  const [model, setModel] = useState<string>("");
+  const [ctc, setCtc] = useState<string>("");
+  const [year, setYear] = useState<string>("2025");
+  const [organization, setOrganization] = useState<string>("");
+  const [summa_buy, setSumma_buy] = useState<string>("0");
+  const [summa_sell, setSumma_sell] = useState<string>("0");
+  const [status, setStatus] = useState<string>("");
+  const [buy_price, setBuy_price] = useState<string>("0");
+  const [buy_terms, setBuy_terms] = useState<string>("0");
+  const [payment_day, setPayment_day] = useState<string>("0");
+  const [customerName, setCustomerName] = useState<string>("");
+  const [customerPhone, setCustomerPhone] = useState<string>("");
+  const [customerAddress, setCustomerAddress] = useState<string>("");
+  const [customerPassport, setCustomerPassport] = useState<string>("");
+  const [latestNumber, setLatestNumber] = useState<string>("0");
 
   React.useEffect(() => {
     setId(element.id);
-    setName(element.name);
-    setRate(element.rate);
-    setOfferShort(element.offer_short);
-    setOfferShortSum(element.offer_short_sum);
-    setGracePeriod(element.grace_period);
-    setService(element.service);
-    setOpeningCard(element.opening_card);
-    setCashback(element.cashback);
-    setReleaseDate(element.release_date);
-    setCredits(element.credits);
-    setAdditionally(element.additionally);
-    setRegistration(element.registration);
-    setTerm(element.term);
-    setApproval(element.approval);
-    setViews(element.views);
-    setAdvantage(element.advantage);
-    setLoanSum(element.loan_sum);
-    setAge(element.age);
-    setDocs(element.docs);
-    setSchedule(element.schedule);
-    setLicense(element.license);
-    setOfferDetail(element.offer_detail);
-    setImage(element.image);
-    setLang(element.lang);
-    setActive(element.active);
-    setSite(element.site);
+    setModel(element.model);
+    setCtc(element.ctc);
+    setYear(String(element.year));
+    setOrganization(element.organization);
+    setSumma_buy(String(element.summa_buy));
+    setSumma_sell(String(element.summa_sell));
+    setStatus(element.status);
+    setBuy_price(String(element.buy_price));
+    setBuy_terms(String(element.buy_terms));
+    setPayment_day(String(element.payment_day));
+    setCustomerName(element.customerName);
+    setCustomerPhone(element.customerPhone);
+    setCustomerAddress(element.customerAddress);
+    setCustomerPassport(element.customerPassport);
+    setLatestNumber(element.latestNumber);
 
-    if (element.id && element.id !== 0) setTitle("Редактировать оффер");
-    else setTitle("Новый оффер");
+    if (element.id && element.id !== 0) setTitle("Редактировать машину");
+    else setTitle("Новая машина");
   }, [element]);
 
-  const handleIntegerChange =
-    (setter: React.Dispatch<React.SetStateAction<number>>) =>
-    (value: string) => {
-      const numericValue = value ? parseFloat(value) : 0;
-      setter(numericValue);
-    };
-
   const handleSave = () => {
-    // TODO: validate rating
-    let numericValue = parseFloat(rate?.toString());
-    if (!isNaN(numericValue)) {
-      numericValue = Math.min(Math.max(numericValue, 0), 5);
-      setRate(numericValue);
-    } else {
-      setRate(4.8);
-    }
-
-    const data = {
+    const data: CarElement = {
       id: id,
-      name,
-      rate,
-      offer_short: offerShort,
-      offer_short_sum: offerShortSum,
-      grace_period: gracePeriod,
-      service,
-      opening_card: openingCard,
-      cashback,
-      release_date: releaseDate,
-      credits,
-      additionally,
-      registration,
-      term,
-      approval,
-      views,
-      advantage,
-      loan_sum: loanSum,
-      age,
-      docs,
-      schedule,
-      license,
-      offer_detail: offerDetail,
-      lang,
-      image,
-      active,
-      site,
+      model: model,
+      ctc: ctc,
+      year: Number(year),
+      organization: organization,
+      summa_buy: Number(summa_buy),
+      summa_sell: Number(summa_sell),
+      status: status,
+      buy_price: Number(buy_price),
+      buy_terms: Number(buy_terms),
+      payment_day: Number(payment_day),
+      customerName: customerName,
+      customerPhone: customerPhone,
+      customerAddress: customerAddress,
+      customerPassport: customerPassport,
+      latestNumber: latestNumber,
     };
 
     updateElement(data);
@@ -201,110 +126,78 @@ const UpdateCarCardMobile: React.FC<CardProps> = ({
           {title}
         </Text>
 
-        <EditComponent
-          label={"Название"}
-          placeholder={"Название"}
-          value={name}
-          onChangeText={setName}
+        <LabeledTextInput
+          value={model}
+          onChangeText={setModel}
+          inputType={TextInputType.model}
         />
-        <EditComponent
-          label={"Предложение"}
-          placeholder={"Предложение"}
-          value={offerShortSum}
-          onChangeText={setOfferShortSum}
+        <LabeledTextInput
+          value={ctc}
+          onChangeText={setCtc}
+          inputType={TextInputType.ctc}
         />
-        <EditComponent
-          label={"Преимущества"}
-          placeholder={"Преимущества"}
-          value={advantage}
-          onChangeText={setAdvantage}
+        <LabeledTextInput
+          value={organization}
+          onChangeText={setOrganization}
+          inputType={TextInputType.organization}
         />
-        <EditComponent
-          label={"Сумма займа"}
-          placeholder={"Сумма займа"}
-          value={loanSum}
-          onChangeText={setLoanSum}
+        <LabeledTextInput
+          value={summa_buy}
+          onChangeText={(value) => handleIntegerChange(setSumma_buy, value)}
+          inputType={TextInputType.summa_buy}
         />
 
-        <EditComponent
-          label={"Возраст"}
-          placeholder={"Возраст"}
-          value={age}
-          onChangeText={setAge}
+        <LabeledTextInput
+          value={summa_sell}
+          onChangeText={(value) => handleIntegerChange(setSumma_sell, value)}
+          inputType={TextInputType.summa_sell}
         />
-        <EditComponent
-          label={"Документы"}
-          placeholder={"Документы"}
-          value={docs}
-          onChangeText={setDocs}
+        <LabeledTextInput
+          value={status}
+          onChangeText={setStatus}
+          inputType={TextInputType.status}
         />
-        <EditComponent
-          label={"График работы"}
-          placeholder={"График работы"}
-          value={schedule}
-          onChangeText={setSchedule}
+        <LabeledTextInput
+          value={buy_price}
+          onChangeText={(value) => handleIntegerChange(setBuy_price, value)}
+          inputType={TextInputType.buy_price}
         />
-        <EditComponent
-          label={"Лицензия"}
-          placeholder={"Лицензия"}
-          value={license}
-          onChangeText={setLicense}
+        <LabeledTextInput
+          value={buy_terms}
+          onChangeText={(value) => handleIntegerChange(setBuy_terms, value)}
+          inputType={TextInputType.buy_terms}
         />
 
-        <EditComponent
-          label={"Одобрение"}
-          placeholder={"Одобрение"}
-          value={approval}
-          onChangeText={setApproval}
+        <LabeledTextInput
+          value={payment_day}
+          onChangeText={(value) => handleIntegerChange(setPayment_day, value)}
+          inputType={TextInputType.payment_day}
         />
-        <EditComponent
-          label={"Рейтинг"}
-          placeholder={"Рейтинг"}
-          value={rate?.toString()}
-          onChangeText={setRate}
+        <LabeledTextInput
+          value={latestNumber}
+          onChangeText={setLatestNumber}
+          inputType={TextInputType.latestNumber}
         />
 
-        <View style={{ ...styles.columnStyle }}>
-          <Text style={styles.lineName}>Просмотры</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="1000"
-            placeholderTextColor="#A9A9A9"
-            keyboardType="numeric" // Numeric keyboard for rate input
-            value={views?.toString()}
-            onChangeText={handleIntegerChange(setViews)}
-          />
-        </View>
-
-        <View style={{ ...styles.columnStyle }}>
-          <Text style={styles.lineName}>Активный</Text>
-          <View style={{ ...styles.input, borderWidth: 0 }}>
-            <Checkbox
-              style={{ marginTop: 8 }}
-              value={active}
-              color={active ? "#4630EB" : undefined}
-              onValueChange={setActive}
-            />
-          </View>
-        </View>
-
-        <EditComponent
-          label={"Детали предложения"}
-          placeholder={"Детали предложения"}
-          value={offerDetail}
-          onChangeText={setOfferDetail}
+        <LabeledTextInput
+          value={customerName}
+          onChangeText={setCustomerName}
+          inputType={TextInputType.customerName}
         />
-        <EditComponent
-          label={"Лого"}
-          placeholder={"https://"}
-          value={image}
-          onChangeText={setImage}
+        <LabeledTextInput
+          value={customerPhone}
+          onChangeText={setCustomerPhone}
+          inputType={TextInputType.customerPhone}
         />
-        <EditComponent
-          label={"Сайт"}
-          placeholder={"Сайт"}
-          value={site}
-          onChangeText={setSite}
+        <LabeledTextInput
+          value={customerAddress}
+          onChangeText={setCustomerAddress}
+          inputType={TextInputType.customerAddress}
+        />
+        <LabeledTextInput
+          value={customerPassport}
+          onChangeText={setCustomerPassport}
+          inputType={TextInputType.customerPassport}
         />
 
         <View style={{ ...styles.rowStyle, marginStart: "auto" }}>

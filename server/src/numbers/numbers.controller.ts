@@ -3,12 +3,13 @@ import { NumbersService } from './numbers.service';
 import { CreateNumberDto } from './dto/create-number.dto';
 import { UpdateNumberDto } from './dto/update-number.dto';
 
-@Controller('numbers')
+@Controller('api/v1/numbers')
 export class NumbersController {
   constructor(private readonly numbersService: NumbersService) {}
 
   @Post()
   create(@Body() createNumberDto: CreateNumberDto) {
+    console.log("createNumberDto:", createNumberDto);
     return this.numbersService.create(createNumberDto);
   }
 

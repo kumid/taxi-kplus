@@ -36,6 +36,9 @@ export enum TextInputType {
   customerAddress = "customerAddress", // адрес покупателя
   customerPassport = "customerPassport", // паспорт покупателя,
   latestNumber = "latestNumber",
+
+  summa_payment = "summa_payment", // 
+  comment_payment = "comment_payment", // 
 }
 
 interface LabeledTextInputProps {
@@ -172,7 +175,15 @@ const LabeledTextInput: React.FC<LabeledTextInputProps> = ({
         placeholder = "Введите госномер";
         label = "Госномер";
         break;
-
+      case TextInputType.summa_payment:
+          keyboardType = "numeric";
+          placeholder = "Введите сумму платежа";
+          label = "Сумма платежа";
+          break; // bought
+        case TextInputType.comment_payment:
+          placeholder = "Комментарий";
+          label = "Комментарий";
+          keyboardType = "default";
       default:
         keyboardType = "default";
         break;
@@ -207,6 +218,7 @@ const LabeledTextInput: React.FC<LabeledTextInputProps> = ({
           secureTextEntry={secureTextEntryState}
           keyboardType={keyboardTypeState}
           autoCapitalize={autoCapitalizeState}
+          placeholderTextColor={"gray"}
         />
       </View>
     </>

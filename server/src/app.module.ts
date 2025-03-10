@@ -12,6 +12,8 @@ import { PaymentsModule } from './payments/payments.module';
   imports: [
     DrizzleModule,
     CarModule,  
+    NumbersModule,
+    PaymentsModule,
     ConfigModule.forRoot({ isGlobal: true }), NumbersModule, PaymentsModule,
   ],
   controllers: [AppController],

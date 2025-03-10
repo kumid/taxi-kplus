@@ -1,26 +1,37 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateNumberDto } from './dto/create-number.dto';
 import { UpdateNumberDto } from './dto/update-number.dto';
+import { DrizzleDB } from 'src/drizzle/types/drizzle';
+import { DRIZZLE } from 'src/drizzle/drizzle.module';
+import { numbers } from 'src/drizzle/schema/numbers.schema';
+import { eq } from 'drizzle-orm';
 
 @Injectable()
 export class NumbersService {
-  create(createNumberDto: CreateNumberDto) {
-    return 'This action adds a new number';
+  constructor(@Inject(DRIZZLE) private db: DrizzleDB) {}
+  
+  async create(createNumberDto: CreateNumberDto) {
+    return await this.db.insert(numbers).values(createNumberDto); 
   }
 
-  findAll() {
-    return `This action returns all numbers`;
+  async findAll() {
+    return await this.db.query.numbers.findMany({
+      orderBy: (number, { asc }) => [asc(number.id)],
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} number`;
+  async findOne(id: number) {
+    const number = await this.db.query.numbers.findFirst({
+      where: (number, { eq }) => eq(number.id, id),
+    });
+    return number;
   }
 
-  update(id: number, updateNumberDto: UpdateNumberDto) {
-    return `This action updates a #${id} number`;
+  async update(id: number, updateNumberDto: UpdateNumberDto) {
+     return await this.db.update(numbers).set(updateNumberDto).where(eq(numbers.id, id));
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} number`;
+  async remove(id: number) {
+    return await this.db.delete(numbers).where(eq(numbers.id, id));
   }
 }

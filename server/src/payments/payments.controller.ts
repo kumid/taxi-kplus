@@ -3,12 +3,13 @@ import { PaymentsService } from './payments.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 
-@Controller('payments')
+@Controller('api/v1/payments')
 export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) {}
 
   @Post()
   create(@Body() createPaymentDto: CreatePaymentDto) {
+    console.log("createPaymentDto:", createPaymentDto);
     return this.paymentsService.create(createPaymentDto);
   }
 
