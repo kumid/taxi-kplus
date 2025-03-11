@@ -6,6 +6,7 @@ import { DrizzleDB } from 'src/drizzle/types/drizzle';
 import { CreateCarDto } from './dto/create-car.dto';
 import { UpdateCarDto } from './dto/update-car.dto';
 import { numbers } from 'src/drizzle/schema/numbers.schema';
+import { payments } from 'src/drizzle/schema/payments.schema';
 
 export class CarService {
   constructor(@Inject(DRIZZLE) private db: DrizzleDB) {}
@@ -57,19 +58,47 @@ export class CarService {
         customerPhone: cars.customerPhone, // телефон покупателя
         customerAddress: cars.customerAddress, // адрес покупателя
         customerPassport: cars.customerPassport, // паспорт покупателя,
-        latestNumber: numbers.gov_number,
+        numbers: sql`COALESCE(json_agg(
+          json_build_object(
+                'gov_number', ${numbers.gov_number}, 
+                'comment', ${numbers.comment}
+              ) 
+              ORDER BY ${numbers.id}
+          ), '[]')`.as('numbers'),
+        payments: sql`COALESCE(json_agg(
+          json_build_object(
+                'date', ${payments.date}, 
+                'comment', ${payments.type}, 
+                'sum', ${payments.sum}
+              ) 
+              ORDER BY ${payments.id}
+          ), '[]')`.as('payments'),
+         
+        //latestNumber: numbers.gov_number,
       })
       .from(cars)
-      .leftJoin(
-        numbers,
-        sql`${numbers.id} = (
-          SELECT id FROM ${numbers}
-          WHERE ${numbers.carId} = ${cars.id}
-          ORDER BY ${numbers.id} DESC
-          LIMIT 1
-        )`,
-      )
-      .orderBy(cars.id) // Ensures consistent ordering
+      // .leftJoin(
+      //   numbers,
+      //   sql`${numbers.id} = (
+      //     SELECT id FROM ${numbers}
+      //     WHERE ${numbers.carId} = ${cars.id}
+      //     ORDER BY ${numbers.id} DESC
+      //     LIMIT 1
+      //   )`,
+      // )
+      // .leftJoin(
+      //   numbers,
+      //   sql`${numbers.id} = (
+      //     SELECT id FROM ${numbers}
+      //     WHERE ${numbers.carId} = ${cars.id}
+      //     ORDER BY ${numbers.id} DESC
+      //     LIMIT 1
+      //   )`,
+      // )
+      .leftJoin(numbers, eq(numbers.carId, cars.id))
+      .leftJoin(payments, eq(payments.carId, cars.id))
+      .groupBy(cars.id) // Ensures grouping by car ID
+      .orderBy(cars.id) // Ensures predictable pagination
       .limit(limit)
       .offset(offset);
 
