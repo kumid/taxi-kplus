@@ -31,14 +31,15 @@ export enum TextInputType {
   buy_price = "buy_price", // price in market
   buy_terms = "buy_terms", // terms
   payment_day = "payment_day",
+  payment = "payment",
   customerName = "customerName", // имя покупателя
   customerPhone = "customerPhone", // телефон покупателя
   customerAddress = "customerAddress", // адрес покупателя
   customerPassport = "customerPassport", // паспорт покупателя,
   latestNumber = "latestNumber",
 
-  summa_payment = "summa_payment", // 
-  comment_payment = "comment_payment", // 
+  summa_payment = "summa_payment", //
+  comment_payment = "comment_payment", //
 }
 
 interface LabeledTextInputProps {
@@ -150,6 +151,11 @@ const LabeledTextInput: React.FC<LabeledTextInputProps> = ({
         placeholder = "Введите день выплаты";
         label = "День выплаты";
         break;
+      case TextInputType.payment:
+        keyboardType = "numeric";
+        placeholder = "Введите сумму выплаты";
+        label = "Выплата";
+        break;
       case TextInputType.customerName:
         keyboardType = "default";
         placeholder = "Введите Покупателя";
@@ -176,14 +182,14 @@ const LabeledTextInput: React.FC<LabeledTextInputProps> = ({
         label = "Госномер";
         break;
       case TextInputType.summa_payment:
-          keyboardType = "numeric";
-          placeholder = "Введите сумму платежа";
-          label = "Сумма платежа";
-          break; // bought
-        case TextInputType.comment_payment:
-          placeholder = "Комментарий";
-          label = "Комментарий";
-          keyboardType = "default";
+        keyboardType = "numeric";
+        placeholder = "Введите сумму платежа";
+        label = "Сумма платежа";
+        break; // bought
+      case TextInputType.comment_payment:
+        placeholder = "Комментарий";
+        label = "Комментарий";
+        keyboardType = "default";
       default:
         keyboardType = "default";
         break;
@@ -208,7 +214,9 @@ const LabeledTextInput: React.FC<LabeledTextInputProps> = ({
             ...styleUI?.label,
           }}
         >
-          {value && value.length > 0 && labelState.length > 0 ? labelState : "..."}
+          {value && value.length > 0 && labelState.length > 0
+            ? labelState
+            : "..."}
         </Text>
         <TextInput
           style={{ ...styles.input, ...styleUI?.input }}

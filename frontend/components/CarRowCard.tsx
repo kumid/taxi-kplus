@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Dialog from "@/components/DialogComponent ";
 import {
@@ -9,8 +9,10 @@ import {
   StyleSheet,
   Platform,
   Pressable,
+  FlatList,
 } from "react-native";
 import AddPaymentDialog from "./AddPaymentDialog";
+import CarDetails, { formatNumber } from "./CarDetails";
 
 export interface CarElement {
   id: number;
@@ -25,12 +27,15 @@ export interface CarElement {
   buy_price: number; // price in market
   buy_terms: number; // terms
   payment_day: number;
+  payment: number;
 
   customerName: string; // имя покупателя
   customerPhone: string; // телефон покупателя
   customerAddress: string; // адрес покупателя
   customerPassport: string; // паспорт покупателя,
   latestNumber: string;
+  numbers: any[];
+  payments: any[];
 }
 
 export interface CardProps {
@@ -40,6 +45,8 @@ export interface CardProps {
   elementDelete: () => void;
 }
 
+
+
 const CarRowCard: React.FC<CardProps> = ({
   element,
   elementEdit,
@@ -47,8 +54,17 @@ const CarRowCard: React.FC<CardProps> = ({
   elementDelete,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [isAddPaymentDialogVisible, setIsPaymentAddDialogVisible] =
-    useState<boolean>(false);
+  const [isAddPaymentDialogVisible, setIsPaymentAddDialogVisible] = useState<boolean>(false);
+  const [isDetailsExpanded, setIsDetailsExpanded] = useState<Map<number, boolean>>(new Map());
+
+  // Function to toggle an item's expansion state
+  const toggleDetails = (id: number) => {
+    setIsDetailsExpanded((prev) => {
+      const newMap = new Map(prev);
+      newMap.set(id, !newMap.get(id)); // Toggle value
+      return newMap;
+    });
+  };
 
   const dialogSize = useMemo(() => {
     if (Platform.OS === "web") {
@@ -58,6 +74,28 @@ const CarRowCard: React.FC<CardProps> = ({
     }
   }, []);
 
+  const ostatokSumma = useCallback(() => {
+    let summa = element.summa_sell;
+    element.payments.forEach((payment: any) => {
+      summa -= payment.sum;
+    });
+    return summa;
+  }, [element])
+
+  const nexpPaymentDate = useCallback(() => {
+    const today = new Date();
+    const currentYear = today.getFullYear();
+    const currentMonth = today.getMonth();
+  
+    let nextPaymentDate = new Date(currentYear, currentMonth, element.payment_day);
+   
+    // If today is past the payment day, move to next month
+    if (today.getDate() > element.payment_day) {
+      nextPaymentDate = new Date(currentYear, currentMonth + 1, element.payment_day);
+    }
+  
+    return nextPaymentDate.toLocaleDateString();
+  }, [element])
 
 
   return (
@@ -66,37 +104,51 @@ const CarRowCard: React.FC<CardProps> = ({
         style={[styles.card, isHovered && styles.cardHovered]}
         onHoverIn={() => setIsHovered(true)}
         onHoverOut={() => setIsHovered(false)}
-        onPress={() => elementEdit()}
+        onPress={() => {
+          toggleDetails(element.id);
+          // elementEdit();
+        }}
       >
-        <View style={{ ...styles.rowStyle, paddingVertical: 24 }}>
-          <View style={{ width: "10%" }}>
-            <Text style={{}}>{element.model}</Text>
+        <View style={{ ...styles.rowStyle, paddingLeft: 8, paddingTop: 24, paddingBottom: (isDetailsExpanded.get(element.id) ? 0 : 24) }}>
+        
+          <View style={{ width: "10%",  }}>
+            <Text style={{borderWidth: 2, borderColor: 'blue', marginEnd: 'auto', padding: 8, borderRadius: 8, fontWeight: 700}}>
+              {element.latestNumber}
+              </Text>
           </View>
           <View style={{ width: "10%" }}>
-            <Text style={{}}>{element.ctc}</Text>
+            <Text style={{marginVertical: 'auto'}}>{element.model}</Text>
           </View>
           <View style={{ width: "10%" }}>
-            <Text style={{}}>{element.year}</Text>
+            <Text style={{marginVertical: 'auto'}}>{element.year}</Text>
           </View>
           <View style={{ width: "10%" }}>
-            <Text style={{}}>{element.organization}</Text>
+            <Text style={{marginVertical: 'auto'}}>{element.customerName}</Text>
           </View>
           <View style={{ width: "10%" }}>
-            <Text style={{}}>{element.summa_sell}</Text>
+            <Text style={{marginVertical: 'auto'}}>{element.customerPhone}</Text>
+          </View>
+          <View style={{ width: "10%" }}>
+            <Text style={{marginVertical: 'auto', color: 'blue', fontWeight: 700}}>{formatNumber(element.summa_sell)}</Text>
+          </View>
+          <View style={{ width: "10%" }}>
+            <Text style={{marginVertical: 'auto', color: 'red', fontWeight: 700}}>{formatNumber(ostatokSumma())}</Text>
           </View>
           <View style={{ width: "10%" }}>
             <Text style={{}}>{element.buy_terms}</Text>
+            <Text style={{}}>{element.payment}</Text>
           </View>
           <View style={{ width: "10%" }}>
-            <Text style={{}}>{element.payment_day}</Text>
+            <Text style={{marginVertical: 'auto'}}>{nexpPaymentDate()}</Text>
+            <Text style={{}}>{formatNumber(element.payment)}</Text>
+          </View> 
+          <View style={{ width: "10%",  }}>
+            <Text style={{borderWidth: 2, borderColor: 'blue', marginEnd: 'auto', padding: 8, borderRadius: 8, 
+              fontWeight: 700, backgroundColor: 'blue', color: 'yellow'}}>
+              {element.status}
+              </Text>
           </View>
-          <View style={{ width: "10%" }}>
-            <Text style={{}}>{element.customerName}</Text>
-          </View>
-          <View style={{ width: "10%" }}>
-            <Text style={{}}>{element.customerPhone}</Text>
-          </View>
-          <View style={{ width: "10%" }}>
+          {/* <View style={{ width: "10%" }}>
             <TouchableOpacity
               style={{ padding: 0 }}
               onPress={() => {
@@ -105,8 +157,14 @@ const CarRowCard: React.FC<CardProps> = ({
             >
               <FontAwesome name="money" size={24} color="black" />
             </TouchableOpacity>
-          </View>
+          </View> */}
         </View>
+
+        {isDetailsExpanded.get(element.id) && (
+          <CarDetails element={element} 
+            elementEdit={() => {}} 
+            addPayment={() => {setIsPaymentAddDialogVisible(!isAddPaymentDialogVisible);}}/> 
+          )}
       </Pressable>
 
       <Dialog
@@ -115,7 +173,7 @@ const CarRowCard: React.FC<CardProps> = ({
         dialogWidth={dialogSize}
         scrollable={true}
       >
-        <AddPaymentDialog requestText={"Платеж"} 
+        <AddPaymentDialog requestText={`Платеж за ${element.latestNumber} от ${element.customerName}`} 
           setIsDialogVisible={setIsPaymentAddDialogVisible }
           car={element} 
           setter={ (summa) => {console.log("Summa: ", summa)} } />

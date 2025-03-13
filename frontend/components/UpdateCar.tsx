@@ -32,7 +32,7 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
   const [organization, setOrganization] = useState<string>("");
   const [summa_buy, setSumma_buy] = useState<string>("0");
   const [summa_sell, setSumma_sell] = useState<string>("0");
-  const [status, setStatus] = useState<string>("");
+  const [status, setStatus] = useState<string>("Куплена");
   const [buy_price, setBuy_price] = useState<string>("0");
   const [buy_terms, setBuy_terms] = useState<string>("0");
   const [payment_day, setPayment_day] = useState<string>("0");
@@ -40,7 +40,8 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
   const [customerPhone, setCustomerPhone] = useState<string>("");
   const [customerAddress, setCustomerAddress] = useState<string>("");
   const [customerPassport, setCustomerPassport] = useState<string>("");
-  const [latestNumber, setLatestNumber] = useState<string>("0");
+  const [payment, setPayment] = useState<string>("0");
+  const [latestNumber, setLatestNumber] = useState<string>("");
 
 
 
@@ -48,14 +49,15 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
     setId(element.id);
     setModel(element.model);
     setCtc(element.ctc);
-    setYear(String(element.year));
+    setYear(element.year ? element.year.toString() : "");
     setOrganization(element.organization);
-    setSumma_buy(String(element.summa_buy));
-    setSumma_sell(String(element.summa_sell));
+    setSumma_buy(element.summa_buy ? element.summa_buy.toString() : "");
+    setSumma_sell(element.summa_sell ? element.summa_sell.toString() : "");  
     setStatus(element.status);
-    setBuy_price(String(element.buy_price));
-    setBuy_terms(String(element.buy_terms));
-    setPayment_day(String(element.payment_day));
+    setBuy_price(element.buy_price ? element.buy_price.toString() : "");  
+    setBuy_terms(element.buy_terms ? element.buy_terms.toString() : ""); 
+    setPayment_day(element.payment_day ? element.payment_day.toString() : "");  
+    setPayment(element.payment ? element.payment.toString() : "");  
     setCustomerName(element.customerName);
     setCustomerPhone(element.customerPhone);
     setCustomerAddress(element.customerAddress);
@@ -76,17 +78,20 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
       ctc: ctc,
       year: Number(year),
       organization: organization,
-      summa_buy: Number(summa_buy),
-      summa_sell: Number(summa_sell),
+      summa_buy: 0,
+      summa_sell: 0,
       status: status,
-      buy_price: Number(buy_price),
-      buy_terms: Number(buy_terms),
-      payment_day: Number(payment_day),
+      buy_price: 0,
+      buy_terms: 0,
+      payment_day: 14,
       customerName: customerName,
       customerPhone: customerPhone,
       customerAddress: customerAddress,
       customerPassport: customerPassport,
-      latestNumber: latestNumber
+      latestNumber: latestNumber,
+      payment: 0,
+      numbers: [],
+      payments: []
     };
 
     updateElement(data);
@@ -101,27 +106,39 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
         </Text>
 
         <View style={{ ...styles.rowStyle, marginStart: 10, marginBottom: 16 }}>
+          <LabeledTextInput value={latestNumber} onChangeText={setLatestNumber} inputType={TextInputType.latestNumber} />
           <LabeledTextInput value={model} onChangeText={setModel} inputType={TextInputType.model} />
+          <LabeledTextInput value={year} onChangeText={setYear} inputType={TextInputType.year} />
+        </View>  
+
+        <View style={{ ...styles.rowStyle, marginStart: 10, marginBottom: 16 }}>
+          <LabeledTextInput value={latestNumber} onChangeText={setLatestNumber} inputType={TextInputType.latestNumber} />
           <LabeledTextInput value={ctc} onChangeText={setCtc} inputType={TextInputType.ctc} />
           <LabeledTextInput value={organization} onChangeText={setOrganization} inputType={TextInputType.organization} />
-          <LabeledTextInput value={summa_buy} onChangeText={(value) => handleIntegerChange(setSumma_buy, value)} inputType={TextInputType.summa_buy}/>
-        </View>  
-    
+          </View>  
+     
+
         <View style={{ ...styles.rowStyle, marginStart: 10, marginBottom: 16 }}>
-          <LabeledTextInput value={summa_sell} onChangeText={(value) => handleIntegerChange(setSumma_sell, value)}  inputType={TextInputType.summa_sell} />
           <LabeledTextInput value={status} onChangeText={setStatus} inputType={TextInputType.status} />
+          <LabeledTextInput value={summa_buy} onChangeText={(value) => handleIntegerChange(setSumma_buy, value)} inputType={TextInputType.summa_buy}/>
           <LabeledTextInput value={buy_price} onChangeText={(value) => handleIntegerChange(setBuy_price, value)}  inputType={TextInputType.buy_price} />
-          <LabeledTextInput value={buy_terms} onChangeText={(value) => handleIntegerChange(setBuy_terms, value)} inputType={TextInputType.buy_terms} />
         </View> 
-        <View style={{ ...styles.rowStyle, marginStart: 10, marginBottom: 16 }}>
-          <LabeledTextInput value={payment_day} onChangeText={(value) => handleIntegerChange(setPayment_day, value)}  inputType={TextInputType.payment_day} />
-          <LabeledTextInput value={latestNumber} onChangeText={setLatestNumber} inputType={TextInputType.latestNumber} />
-        </View>
- 
+
+        <View style={{width: '100%', borderBottomWidth: 1, borderColor: 'gray', marginBottom: 16}}/>
+
         <View style={{ ...styles.rowStyle, marginStart: 10, marginBottom: 16 }}>
           <LabeledTextInput value={customerName} onChangeText={setCustomerName} inputType={TextInputType.customerName} />
           <LabeledTextInput value={customerPhone} onChangeText={setCustomerPhone} inputType={TextInputType.customerPhone} />
           <LabeledTextInput value={customerAddress} onChangeText={setCustomerAddress} inputType={TextInputType.customerAddress} />
+        </View>
+
+        <View style={{ ...styles.rowStyle, marginStart: 10, marginBottom: 16 }}>
+          <LabeledTextInput value={buy_terms} onChangeText={(value) => handleIntegerChange(setBuy_terms, value)} inputType={TextInputType.buy_terms} />
+          <LabeledTextInput value={payment_day} onChangeText={(value) => handleIntegerChange(setPayment_day, value)}  inputType={TextInputType.payment_day} />     
+          <LabeledTextInput value={payment} onChangeText={(value) => handleIntegerChange(setPayment, value)}  inputType={TextInputType.payment} />     
+        </View>
+ 
+        <View style={{ ...styles.rowStyle, marginStart: 10, marginBottom: 16 }}>
           <LabeledTextInput value={customerPassport} onChangeText={setCustomerPassport} inputType={TextInputType.customerPassport} />
         </View>
 

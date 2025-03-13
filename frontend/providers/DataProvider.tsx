@@ -34,8 +34,28 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
   const getCars = async () => {
     try {
       const response = await axios.get(`${apiUrl}/cars`);
-      setCachedCars(response.data ?? [])
-      console.log(response.data);
+      
+      const data = response.data ?? [];
+
+      data.forEach((item: any) => {
+        try {
+          if(item.numbers) {
+            console.log(item.numbers);
+            
+            if(item.numbers.length != 0) {
+              console.log('lst.gov_number: ', item.numbers[item.numbers.length - 1]?.gov_number);
+              item.latestNumber = item.numbers[item.numbers.length - 1]?.gov_number;
+            }
+  
+          }
+            
+        } catch (error) {
+          console.log(error);
+        }
+      });
+
+      setCachedCars(data)
+      console.log(data);
     } catch (error) {
       console.error('Error fetching data:', error);
     }

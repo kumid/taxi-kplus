@@ -4,7 +4,7 @@ FROM node:20-slim
 # Set working directory
 WORKDIR /app
 
-ENV API_URL=http://192.168.0.17:3000/api/v1 
+ENV API_URL=http://192.168.0.15:3000/api/v1 
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \

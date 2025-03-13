@@ -46,13 +46,14 @@ export class CarService {
         ctc: cars.ctc,
         year: cars.year,
         organization: cars.organization,
-        summa_buy: cars.summa_buy, // bought
-        summa_sell: cars.summa_sell, // price
+        summa_buy: cars.summa_buy, // цена покупки
+        summa_sell: cars.summa_sell, // цена продажи
         status: cars.status, // статус машины (bought-куплена, installment - в рассрочке, sold - выплачена)
 
         buy_price: cars.buy_price, // price in market
         buy_terms: cars.buy_terms, // terms
         payment_day: cars.payment_day,
+        payment: cars.payment,
 
         customerName: cars.customerName, // имя покупателя
         customerPhone: cars.customerPhone, // телефон покупателя
@@ -74,7 +75,7 @@ export class CarService {
               ORDER BY ${payments.id}
           ), '[]')`.as('payments'),
          
-        //latestNumber: numbers.gov_number,
+        // latestNumber:  numbers.gov_number,
       })
       .from(cars)
       // .leftJoin(
@@ -101,7 +102,7 @@ export class CarService {
       .orderBy(cars.id) // Ensures predictable pagination
       .limit(limit)
       .offset(offset);
-
+ 
     return data;
   }
 }

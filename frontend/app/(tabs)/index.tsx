@@ -24,15 +24,15 @@ const sampleCard: any = {
     id: 0,
     model: "",
     ctc: "",
-    year: "2025",
+    year: 2025,
     organization: "",
-    summa_buy: "0",
-    summa_sell: "",
-    status: "куплена",
+    summa_buy: 0,
+    summa_sell: 0,
+    status: "Куплена",
 
-    buy_price: "",
-    buy_terms: "",
-    payment_day: "14",
+    buy_price: 0,
+    buy_terms: 0,
+    payment_day: 14,
 
     customerName: "",
     customerPhone: "",
@@ -121,31 +121,20 @@ export default function CardsScreen() {
         flexDirection: "row",
         justifyContent: "space-between",
         marginBottom: 6,
+        paddingLeft: 8,
         borderBottomColor: "black",
         paddingBottom: 16,
         borderBottomWidth: 1,
       }}
     >
       <View style={{ width: "10%" }}>
+        <Text style={{ fontWeight: 900 }}>Госномер</Text>
+      </View>
+      <View style={{ width: "10%" }}>
         <Text style={{ fontWeight: 900 }}>Модель</Text>
       </View>
       <View style={{ width: "10%" }}>
-        <Text style={{ fontWeight: 900 }}>СТС</Text>
-      </View>
-      <View style={{ width: "10%" }}>
         <Text style={{ fontWeight: 900 }}>Год</Text>
-      </View>
-      <View style={{ width: "10%" }}>
-        <Text style={{ fontWeight: 900 }}>Организация</Text>
-      </View>
-      <View style={{ width: "10%" }}>
-        <Text style={{ fontWeight: 900 }}>Стоимость</Text>
-      </View>
-      <View style={{ width: "10%" }}>
-        <Text style={{ fontWeight: 900 }}>Срок</Text>
-      </View>
-      <View style={{ width: "10%" }}>
-        <Text style={{ fontWeight: 900 }}>День оплаты</Text>
       </View>
       <View style={{ width: "10%" }}>
         <Text style={{ fontWeight: 900 }}>Покупатель</Text>
@@ -153,7 +142,21 @@ export default function CardsScreen() {
       <View style={{ width: "10%" }}>
         <Text style={{ fontWeight: 900 }}>Телефон</Text>
       </View>
-      <View style={{ width: "10%" }}></View>
+      <View style={{ width: "10%" }}>
+        <Text style={{ fontWeight: 900 }}>Стоимость</Text>
+      </View>
+      <View style={{ width: "10%" }}>
+        <Text style={{ fontWeight: 900 }}>Остаток</Text>
+      </View>
+      <View style={{ width: "10%" }}>
+        <Text style={{ fontWeight: 900 }}>Срок/Остаток</Text>
+      </View>
+      <View style={{ width: "10%" }}>
+        <Text style={{ fontWeight: 900 }}>Ближайший платеж</Text>
+      </View>
+      <View style={{ width: "10%" }}>
+        <Text style={{ fontWeight: 900 }}>Статус</Text>
+      </View>
     </View>
   );
 
@@ -179,7 +182,14 @@ export default function CardsScreen() {
           keyExtractor={(item) => item.id}
           numColumns={columnCount} // Display 4 cards per row
           renderItem={({ item }) => (
-            <View style={{ width: "100%" }}>
+            <div style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              borderBottom: "1px solid #ccc",
+              background: "linear-gradient(to bottom, #f9f9f9, #f0f0f0)",
+            }}>
+                          <View style={{ width: "100%" }}>
               <CarRowCard
                 element={item}
                 elementEdit={() => handleItemPress({ ...item })}
@@ -187,6 +197,8 @@ export default function CardsScreen() {
                 elementDelete={() => handleItemDeletePress(item)}
               />
             </View>
+            </div>
+
           )}
           ListHeaderComponent={Header}
         />
