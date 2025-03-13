@@ -156,8 +156,8 @@ const paymentSum = useCallback(() => {
             </View>
           )}
           ListHeaderComponent={
-            <View>
-              <View style={{ width: "50%", flexDirection: "row", marginBottom: 10 }}>
+            <View style={{}}>
+              <View style={{borderBottomWidth: 1, borderBottomColor: 'gray', width: "50%", flexDirection: "row", marginBottom: 10 }}>
                 <h3 style={{ marginBottom: 12 }}>Платежи</h3>
                 <TouchableOpacity style={{marginVertical: 'auto', marginLeft: 'auto'}} 
                   onPress={() => {addPayment()}}>

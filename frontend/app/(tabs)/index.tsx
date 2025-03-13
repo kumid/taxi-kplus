@@ -65,7 +65,7 @@ export default function CardsScreen() {
       element.name = `${element.name} (копия)`;
     }
     setOfferToDialog(element);
-    setIsAddDialogVisible(!isAddDialogVisible); 
+    setIsAddDialogVisible(!isAddDialogVisible);
   };
   const handleItemDeletePress = async (element: any) => {
     setIsConfirmationDialogVisible(true);
@@ -92,7 +92,7 @@ export default function CardsScreen() {
   const toggleAddDialogModal = (): void => {
     setOfferToDialog({
       ...sampleCard,
-      id: 0, 
+      id: 0,
     });
     setIsAddDialogVisible(!isAddDialogVisible);
   };
@@ -119,8 +119,7 @@ export default function CardsScreen() {
     <View
       style={{
         flexDirection: "row",
-        justifyContent: "space-between",
-        marginBottom: 6,
+        justifyContent: "space-between", 
         paddingLeft: 8,
         borderBottomColor: "black",
         paddingBottom: 16,
@@ -149,7 +148,7 @@ export default function CardsScreen() {
         <Text style={{ fontWeight: 900 }}>Остаток</Text>
       </View>
       <View style={{ width: "10%" }}>
-        <Text style={{ fontWeight: 900 }}>Срок/Остаток</Text>
+        <Text style={{ fontWeight: 900 }}>Срок</Text>
       </View>
       <View style={{ width: "10%" }}>
         <Text style={{ fontWeight: 900 }}>Ближайший платеж</Text>
@@ -175,32 +174,47 @@ export default function CardsScreen() {
           </TouchableOpacity>
         </View>
 
+        <View
+          style={{
+            backgroundColor: "#fff",
+            borderTopRightRadius: 10,
+            borderTopLeftRadius: 10,
+            paddingHorizontal: 20,
+            paddingTop: 20,
+            marginHorizontal: 5,
+            elevation: 3,
+          }}
+        >
+          <Header />
+        </View>
+
         <FlatList
-          style={{ ...styles.freeHeight }}
+          style={{ ...styles.freeHeight, marginTop: 0 }}
           contentContainerStyle={styles.listContent}
           data={cachedCars}
           keyExtractor={(item) => item.id}
           numColumns={columnCount} // Display 4 cards per row
           renderItem={({ item }) => (
-            <div style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              borderBottom: "1px solid #ccc",
-              background: "linear-gradient(to bottom, #f9f9f9, #f0f0f0)",
-            }}>
-                          <View style={{ width: "100%" }}>
-              <CarRowCard
-                element={item}
-                elementEdit={() => handleItemPress({ ...item })}
-                elementCopy={() => handleItemPress({ ...item }, true)}
-                elementDelete={() => handleItemDeletePress(item)}
-              />
-            </View>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderBottom: "1px solid #ccc",
+                background: "linear-gradient(to bottom, #f9f9f9, #f0f0f0)",
+              }}
+            >
+              <View style={{ width: "100%" }}>
+                <CarRowCard
+                  element={item}
+                  elementEdit={() => handleItemPress({ ...item })}
+                  elementCopy={() => handleItemPress({ ...item }, true)}
+                  elementDelete={() => handleItemDeletePress(item)}
+                />
+              </View>
             </div>
-
           )}
-          ListHeaderComponent={Header}
+          // ListHeaderComponent={Header}
         />
       </View>
       <Dialog
@@ -270,7 +284,8 @@ const styles = StyleSheet.create({
   freeHeight: {
     flex: 1,
     backgroundColor: "#fff",
-    borderRadius: 10,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
     padding: 20,
     margin: 5,
     elevation: 3,

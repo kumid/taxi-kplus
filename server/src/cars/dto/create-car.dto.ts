@@ -1,1 +1,3 @@
-export class CreateCarDto {}
+export class CreateCarDto {
+    latestNumber: string
+}

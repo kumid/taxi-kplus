@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import AddPaymentDialog from "./AddPaymentDialog";
 import CarDetails, { formatNumber } from "./CarDetails";
+import { Feather } from "@expo/vector-icons";
 
 export interface CarElement {
   id: number;
@@ -134,30 +135,26 @@ const CarRowCard: React.FC<CardProps> = ({
           <View style={{ width: "10%" }}>
             <Text style={{marginVertical: 'auto', color: 'red', fontWeight: 700}}>{formatNumber(ostatokSumma())}</Text>
           </View>
-          <View style={{ width: "10%" }}>
-            <Text style={{}}>{element.buy_terms}</Text>
-            <Text style={{}}>{element.payment}</Text>
+          <View style={{ width: "10%", marginVertical: 'auto',  }}>
+            <Text style={{}}>{element.buy_terms}</Text> 
           </View>
           <View style={{ width: "10%" }}>
             <Text style={{marginVertical: 'auto'}}>{nexpPaymentDate()}</Text>
-            <Text style={{}}>{formatNumber(element.payment)}</Text>
+            <Text style={{fontWeight: 900}}>{formatNumber(element.payment)}</Text>
           </View> 
-          <View style={{ width: "10%",  }}>
+          <View style={{ width: "7%",  }}>
             <Text style={{borderWidth: 2, borderColor: 'blue', marginEnd: 'auto', padding: 8, borderRadius: 8, 
               fontWeight: 700, backgroundColor: 'blue', color: 'yellow'}}>
               {element.status}
               </Text>
           </View>
-          {/* <View style={{ width: "10%" }}>
+          <View style={{ width: "3%", padding:'auto' }}>
             <TouchableOpacity
-              style={{ padding: 0 }}
-              onPress={() => {
-                setIsPaymentAddDialogVisible(!isAddPaymentDialogVisible);
-              }}
-            >
-              <FontAwesome name="money" size={24} color="black" />
+              style={{ margin: 'auto' }}
+              onPress={elementEdit}>
+              <Feather name="edit" size={24} color="gray" />
             </TouchableOpacity>
-          </View> */}
+          </View>
         </View>
 
         {isDetailsExpanded.get(element.id) && (

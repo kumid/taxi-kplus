@@ -12,7 +12,9 @@ export class CarService {
   constructor(@Inject(DRIZZLE) private db: DrizzleDB) {}
 
   async create(createCarDto: CreateCarDto) {
-    return await this.db.insert(cars).values(createCarDto);
+    console.log("createCarDto:", createCarDto);
+    const car =  await this.db.insert(cars).values(createCarDto).returning({ id: cars.id });
+    return car[0];
   }
 
   async findAll() {

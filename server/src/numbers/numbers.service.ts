@@ -26,6 +26,13 @@ export class NumbersService {
     });
     return number;
   }
+  async findLastNumber(carId: number) {
+    const number = await this.db.query.numbers.findFirst({
+      where: (number, { eq }) => eq(number.carId, carId),
+      orderBy: (number, { desc }) => [desc(number.id)],
+    });
+    return number;
+  }
 
   async update(id: number, updateNumberDto: UpdateNumberDto) {
      return await this.db.update(numbers).set(updateNumberDto).where(eq(numbers.id, id));
