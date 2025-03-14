@@ -2,6 +2,7 @@ import React, { createContext, useState, useContext, useEffect, useMemo } from "
 import axios from 'axios'; 
 import Constants from "expo-constants"; 
 import { CarElement } from "@/components/CarRowCard";
+import {Picker} from '@react-native-picker/picker';
 
 interface DataContextType {
   cachedCars: any[]; 

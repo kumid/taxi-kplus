@@ -35,7 +35,7 @@ export interface CarElement {
   customerAddress: string; // адрес покупателя
   customerPassport: string; // паспорт покупателя,
   latestNumber: string;
-  nexpPaymentDate: Date;
+  nexpPaymentDate?: Date;
   numbers: any[];
   payments: any[];
 }
@@ -140,7 +140,7 @@ const CarRowCard: React.FC<CardProps> = ({
             <Text style={{}}>{element.buy_terms}</Text> 
           </View>
           <View style={{ width: "10%" }}>
-            <Text style={{marginVertical: 'auto'}}>{element.nexpPaymentDate.toLocaleDateString()}</Text>
+            <Text style={{marginVertical: 'auto'}}>{element.nexpPaymentDate?.toLocaleDateString()}</Text>
             <Text style={{fontWeight: 900}}>{formatNumber(element.payment)}</Text>
           </View> 
           <View style={{ width: "7%",  }}>

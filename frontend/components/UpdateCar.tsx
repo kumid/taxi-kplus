@@ -17,6 +17,7 @@ import { CarElement } from "./CarRowCard";
 import LabeledTextInput, { TextInputType } from "./LabeledTextInput";
 import { handleIntegerChange } from "./handleIntegerChange";
 import { formatNumber } from "./CarDetails";
+import { Picker } from "@react-native-picker/picker";
 
 export interface CardProps {
   element: CarElement;
@@ -33,7 +34,7 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
   const [organization, setOrganization] = useState<string>("");
   const [summa_buy, setSumma_buy] = useState<string>("0");
   const [summa_sell, setSumma_sell] = useState<string>("0");
-  const [status, setStatus] = useState<string>("Куплена");
+  const [status, setStatus] = useState<string>("Не выбрано");
   const [buy_price, setBuy_price] = useState<string>("0");
   const [buy_terms, setBuy_terms] = useState<string>("0");
   const [payment_day, setPayment_day] = useState<string>("0");
@@ -90,7 +91,7 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
       summa_sell: Number(summa_sell),
       status: status,
       buy_price: Number(buy_price),
-      buy_terms:  Number(buy_terms),
+      buy_terms: Number(buy_terms),
       payment_day: Number(payment_day),
       customerName: customerName,
       customerPhone: customerPhone,
@@ -99,7 +100,7 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
       latestNumber: latestNumber,
       payment: Number(payment),
       numbers: [],
-      payments: []
+      payments: [], 
     };
 
     updateElement(data);
@@ -122,7 +123,22 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
         <View style={{ ...styles.rowStyle, marginStart: 10, marginBottom: 16 }}> 
           <LabeledTextInput value={ctc} onChangeText={setCtc} inputType={TextInputType.ctc} />
           <LabeledTextInput value={organization} onChangeText={setOrganization} inputType={TextInputType.organization} />
-          <LabeledTextInput value={status} onChangeText={setStatus} inputType={TextInputType.status} />
+          <View style={{width: '33%'}}>
+            <Text style={{ fontSize: 14, fontWeight: "500", color: "dark-gray", marginBottom: 4 }}>Статус</Text>
+            <Picker
+              style={{marginHorizontal: 8, height:40, borderColor: 'gray'}}
+              
+              selectedValue={status}
+              onValueChange={(itemValue, itemIndex) =>
+                setStatus(itemValue)
+              }>
+              <Picker.Item label="Не выбрано" value="Не выбрано" />
+              <Picker.Item label="Куплена" value="Куплена" />
+              <Picker.Item label="В лизинге" value="В лизинге" />
+              <Picker.Item label="Выплачена" value="Выплачена" />
+            </Picker>
+          </View>
+          {/* <LabeledTextInput value={status} onChangeText={setStatus} inputType={TextInputType.status} /> */}
         </View>  
      
 
@@ -142,10 +158,9 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
           <LabeledTextInput value={buy_terms} onChangeText={(value) => handleIntegerChange(setBuy_terms, value)} inputType={TextInputType.buy_terms} />
           <LabeledTextInput value={payment_day} onChangeText={(value) => handleIntegerChange(setPayment_day, value)}  inputType={TextInputType.payment_day} />     
           <View style={{width: '33%', marginLeft: 12,}}>
-                    <Text style={{ fontSize: 14, fontWeight: "500", color: "dark-gray", marginBottom: 16 }}>Платеж</Text>
-                    <Text style={{fontSize: 20, fontWeight: "900", color: 'red' }}>{formatNumber(payment)}</Text>
-                  </View>
-          {/* <LabeledTextInput value={payment} onChangeText={(value) => handleIntegerChange(setPayment, value)}  inputType={TextInputType.payment} readOnly/>      */}
+            <Text style={{ fontSize: 14, fontWeight: "500", color: "dark-gray", marginBottom: 16 }}>Платеж</Text>
+            <Text style={{fontSize: 20, fontWeight: "900", color: 'red' }}>{formatNumber(payment)}</Text>
+          </View> 
         </View>
         
         <View style={{ ...styles.rowStyle, marginStart: 10, marginBottom: 16 }}>
