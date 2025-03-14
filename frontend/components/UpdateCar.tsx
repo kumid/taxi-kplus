@@ -123,10 +123,10 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
         <View style={{ ...styles.rowStyle, marginStart: 10, marginBottom: 16 }}> 
           <LabeledTextInput value={ctc} onChangeText={setCtc} inputType={TextInputType.ctc} />
           <LabeledTextInput value={organization} onChangeText={setOrganization} inputType={TextInputType.organization} />
-          <View style={{width: '33%'}}>
-            <Text style={{ fontSize: 14, fontWeight: "500", color: "dark-gray", marginBottom: 4 }}>Статус</Text>
+          <View style={{width: '33%', marginHorizontal: 8, }}>
+            <Text style={{ fontSize: 14, fontWeight: "500", color: "dark-gray",   marginBottom: 4 }}>Статус</Text>
             <Picker
-              style={{marginHorizontal: 8, height:40, borderColor: 'gray'}}
+              style={{height:40, borderColor: 'gray', marginRight: 12, }}
               
               selectedValue={status}
               onValueChange={(itemValue, itemIndex) =>

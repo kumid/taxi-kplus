@@ -12,7 +12,7 @@ export const cars = pgTable(
     organization: text('organization').default('').notNull(), 
     summa_buy: doublePrecision('summa_buy').default(0.0).notNull(),    // Цена покупки
     summa_sell: doublePrecision('summa_sell').default(0.0).notNull(),  // Стоимость продажи
-    status: text('status').default('bought').notNull(), // статус машины (bought-куплена, installment - в рассрочке, sold - выплачена)
+    status: text('status').default('Не выбрано').notNull(), // статус машины (bought-куплена, installment - в рассрочке, sold - выплачена)
     
     buy_price: doublePrecision('buy_price').default(0.0).notNull(),  // price in market
     buy_terms: doublePrecision('buy_terms').default(0.0).notNull(),  // terms - срок в месяцах

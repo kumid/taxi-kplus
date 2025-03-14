@@ -1,0 +1,1 @@
+ALTER TABLE "cars" ALTER COLUMN "status" SET DEFAULT 'Не выбрано';
