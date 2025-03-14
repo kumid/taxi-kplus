@@ -35,6 +35,7 @@ export interface CarElement {
   customerAddress: string; // адрес покупателя
   customerPassport: string; // паспорт покупателя,
   latestNumber: string;
+  nexpPaymentDate: Date;
   numbers: any[];
   payments: any[];
 }
@@ -83,20 +84,20 @@ const CarRowCard: React.FC<CardProps> = ({
     return summa;
   }, [element])
 
-  const nexpPaymentDate = useCallback(() => {
-    const today = new Date();
-    const currentYear = today.getFullYear();
-    const currentMonth = today.getMonth();
+  // const nexpPaymentDate = useCallback(() => {
+  //   const today = new Date();
+  //   const currentYear = today.getFullYear();
+  //   const currentMonth = today.getMonth();
   
-    let nextPaymentDate = new Date(currentYear, currentMonth, element.payment_day);
+  //   let nextPaymentDate = new Date(currentYear, currentMonth, element.payment_day);
    
-    // If today is past the payment day, move to next month
-    if (today.getDate() > element.payment_day) {
-      nextPaymentDate = new Date(currentYear, currentMonth + 1, element.payment_day);
-    }
+  //   // If today is past the payment day, move to next month
+  //   if (today.getDate() > element.payment_day) {
+  //     nextPaymentDate = new Date(currentYear, currentMonth + 1, element.payment_day);
+  //   }
   
-    return nextPaymentDate.toLocaleDateString();
-  }, [element])
+  //   return nextPaymentDate.toLocaleDateString();
+  // }, [element])
 
 
   return (
@@ -139,7 +140,7 @@ const CarRowCard: React.FC<CardProps> = ({
             <Text style={{}}>{element.buy_terms}</Text> 
           </View>
           <View style={{ width: "10%" }}>
-            <Text style={{marginVertical: 'auto'}}>{nexpPaymentDate()}</Text>
+            <Text style={{marginVertical: 'auto'}}>{element.nexpPaymentDate.toLocaleDateString()}</Text>
             <Text style={{fontWeight: 900}}>{formatNumber(element.payment)}</Text>
           </View> 
           <View style={{ width: "7%",  }}>

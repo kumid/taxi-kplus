@@ -31,6 +31,21 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
     return Constants.manifest.extra.API_URL ?? Constants.manifest2.extra.API_URL
   }, [])
 
+  const nexpPaymentDate = (element: any) => {
+      const today = new Date();
+      const currentYear = today.getFullYear();
+      const currentMonth = today.getMonth();
+    
+      let nextPaymentDate = new Date(currentYear, currentMonth, element.payment_day);
+     
+      // If today is past the payment day, move to next month
+      if (today.getDate() > element.payment_day) {
+        nextPaymentDate = new Date(currentYear, currentMonth + 1, element.payment_day);
+      }
+    
+      return nextPaymentDate;
+    }
+
   const getCars = async () => {
     try {
       const response = await axios.get(`${apiUrl}/cars`);
@@ -39,19 +54,27 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
 
       data.forEach((item: any) => {
         try {
-          if(item.numbers) {
-            console.log(item.numbers);
-            
-            if(item.numbers.length != 0) {
-              console.log('lst.gov_number: ', item.numbers[item.numbers.length - 1]?.gov_number);
-              item.latestNumber = item.numbers[item.numbers.length - 1]?.gov_number;
-            }
-  
-          }
-            
+          item.nexpPaymentDate = nexpPaymentDate(item);
+          
         } catch (error) {
           console.log(error);
         }
+
+        try {
+          if(item.numbers) {            
+            if(item.numbers.length != 0) {
+              item.latestNumber = item.numbers[item.numbers.length - 1]?.gov_number;
+            }  
+          }            
+        } catch (error) {
+          console.log(error);
+        }
+      });
+      data.sort((a: any, b: any) => {
+        const dateA = new Date(a.nexpPaymentDate);
+        const dateB = new Date(b.nexpPaymentDate);
+
+        return dateA.getTime() - dateB.getTime();
       });
 
       setCachedCars(data)

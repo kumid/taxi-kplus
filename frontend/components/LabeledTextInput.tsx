@@ -52,6 +52,7 @@ interface LabeledTextInputProps {
   keyboardType?: KeyboardTypeOptions;
   autoCapitalize?: "none" | "sentences" | "words" | "characters";
   styleUI?: { label?: TextStyle; input?: TextStyle };
+  readOnly?: boolean
 }
 const LabeledTextInput: React.FC<LabeledTextInputProps> = ({
   label,
@@ -63,6 +64,7 @@ const LabeledTextInput: React.FC<LabeledTextInputProps> = ({
   keyboardType = "default",
   autoCapitalize = "none",
   styleUI,
+  readOnly = false
 }) => {
   const [placeholderState, setPlaceholderState] = useState<any>(null);
   const [labelState, setLabelState] = useState<string>("");
@@ -227,6 +229,7 @@ const LabeledTextInput: React.FC<LabeledTextInputProps> = ({
           keyboardType={keyboardTypeState}
           autoCapitalize={autoCapitalizeState}
           placeholderTextColor={"gray"}
+          readOnly={readOnly}
         />
       </View>
     </>

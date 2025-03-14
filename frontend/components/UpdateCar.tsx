@@ -1,5 +1,5 @@
 import Checkbox from "expo-checkbox";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -16,6 +16,7 @@ import { EditComponent } from "./UpdateCarMobile";
 import { CarElement } from "./CarRowCard";
 import LabeledTextInput, { TextInputType } from "./LabeledTextInput";
 import { handleIntegerChange } from "./handleIntegerChange";
+import { formatNumber } from "./CarDetails";
 
 export interface CardProps {
   element: CarElement;
@@ -68,7 +69,14 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
     else setTitle("Новая машина");
   }, [element]);
 
-  
+  useEffect(() => {
+    let summa = 0
+    if(summa_sell.length != 0 && buy_terms.length != 0 && buy_terms != "0") {
+      summa = Math.round(Number(summa_sell) / Number(buy_terms)); 
+    }
+
+    setPayment(summa.toString());
+  }, [summa_sell, buy_terms])
   
   const handleSave = () => {
       
@@ -133,7 +141,11 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
         <View style={{ ...styles.rowStyle, marginStart: 10, marginBottom: 16 }}>
           <LabeledTextInput value={buy_terms} onChangeText={(value) => handleIntegerChange(setBuy_terms, value)} inputType={TextInputType.buy_terms} />
           <LabeledTextInput value={payment_day} onChangeText={(value) => handleIntegerChange(setPayment_day, value)}  inputType={TextInputType.payment_day} />     
-          <LabeledTextInput value={payment} onChangeText={(value) => handleIntegerChange(setPayment, value)}  inputType={TextInputType.payment} />     
+          <View style={{width: '33%', marginLeft: 12,}}>
+                    <Text style={{ fontSize: 14, fontWeight: "500", color: "dark-gray", marginBottom: 16 }}>Платеж</Text>
+                    <Text style={{fontSize: 20, fontWeight: "900", color: 'red' }}>{formatNumber(payment)}</Text>
+                  </View>
+          {/* <LabeledTextInput value={payment} onChangeText={(value) => handleIntegerChange(setPayment, value)}  inputType={TextInputType.payment} readOnly/>      */}
         </View>
         
         <View style={{ ...styles.rowStyle, marginStart: 10, marginBottom: 16 }}>
