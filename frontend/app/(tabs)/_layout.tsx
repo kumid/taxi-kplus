@@ -28,14 +28,14 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Машины',
+          title: 'Лизинг',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="banknote" color={color} />,
         }}
       />
       <Tabs.Screen
-        name="loans"
+        name="arenda"
         options={{
-          title: 'Займы',
+          title: 'Аренда',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="banknote.fill" color={color} />,
         }}
       />

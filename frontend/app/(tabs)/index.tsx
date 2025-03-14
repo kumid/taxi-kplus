@@ -164,7 +164,7 @@ export default function CardsScreen() {
       <View style={{ flex: 1, padding: 15 }}>
         <View style={styles.header}>
           <View>
-            <Text style={styles.welcome}>Автомобили</Text>
+            <Text style={styles.welcome}>Лизинг</Text>
           </View>
           <TouchableOpacity
             style={styles.notificationIcon}

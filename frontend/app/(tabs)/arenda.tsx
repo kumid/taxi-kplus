@@ -1,5 +1,3 @@
-
-
 import AntDesign from "@expo/vector-icons/AntDesign";
 
 import { useDataContext } from "@/providers/DataProvider";
@@ -9,40 +7,42 @@ import Dialog from "@/components/DialogComponent ";
 import UpdateCarCard from "@/components/UpdateCar";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
 import UpdateCarCardMobile from "@/components/UpdateCarMobile";
-import { Dimensions, Platform, Alert, View, TouchableOpacity, FlatList, Text, StyleSheet} from "react-native";
+import {
+  Dimensions,
+  Platform,
+  Alert,
+  View,
+  TouchableOpacity,
+  FlatList,
+  Text,
+  StyleSheet,
+} from "react-native";
+import CarRowCard from "@/components/CarRowCard";
 
 const sampleCard: any = {
   element: {
     id: 0,
-    name: "",
-    rate: 5,
-    offer_short: "",
-    offer_short_sum: "",
-    grace_period: "",
-    service: "",
-    opening_card: "",
-    cashback: "",
-    release_date: "",
-    credits: "",
-    additionally: "",
-    registration: "",
-    term: "",
-    approval: "",
-    views: 1000,
-    advantage: "",
-    loan_sum: "",
-    age: "",
-    docs: "",
-    schedule: "",
-    license: "",
-    offer_detail: "",
-    image: "",
-    active: true,
-    site: "",
+    model: "",
+    ctc: "",
+    year: 2025,
+    organization: "",
+    summa_buy: 0,
+    summa_sell: 0,
+    status: "Куплена",
+
+    buy_price: 0,
+    buy_terms: 0,
+    payment_day: 14,
+
+    customerName: "",
+    customerPhone: "",
+    customerAddress: "",
+    customerPassport: "",
+    latestNumber: "",
   },
 };
 
-export default function CardsScreen() {
+export default function ArendaScreen() {
   const { cachedCars, loadingCars, updateCars, updateCarsResult, deleteCar } =
     useDataContext();
   const { width } = Dimensions.get("window"); // Get the screen width
@@ -66,15 +66,6 @@ export default function CardsScreen() {
     }
     setOfferToDialog(element);
     setIsAddDialogVisible(!isAddDialogVisible);
-
-    // const decrypted = await decryptStringWithIV(element.site);
-    // router.push({
-    //   pathname: "/webview",
-    //   params: {
-    //     site: decrypted,
-    //     name: element.name
-    //   }
-    // })
   };
   const handleItemDeletePress = async (element: any) => {
     setIsConfirmationDialogVisible(true);
@@ -102,7 +93,6 @@ export default function CardsScreen() {
     setOfferToDialog({
       ...sampleCard,
       id: 0,
-      lang: selectedLang,
     });
     setIsAddDialogVisible(!isAddDialogVisible);
   };
@@ -125,12 +115,56 @@ export default function CardsScreen() {
       { text: "OK", onPress: () => console.log("OK Pressed") },
     ]);
 
+  const Header = () => (
+    <View
+      style={{
+        flexDirection: "row",
+        justifyContent: "space-between", 
+        paddingLeft: 8,
+        borderBottomColor: "black",
+        paddingBottom: 16,
+        borderBottomWidth: 1,
+      }}
+    >
+      <View style={{ width: "10%" }}>
+        <Text style={{ fontWeight: 900 }}>Госномер</Text>
+      </View>
+      <View style={{ width: "10%" }}>
+        <Text style={{ fontWeight: 900 }}>Модель</Text>
+      </View>
+      <View style={{ width: "10%" }}>
+        <Text style={{ fontWeight: 900 }}>Год</Text>
+      </View>
+      <View style={{ width: "10%" }}>
+        <Text style={{ fontWeight: 900 }}>Покупатель</Text>
+      </View>
+      <View style={{ width: "10%" }}>
+        <Text style={{ fontWeight: 900 }}>Телефон</Text>
+      </View>
+      <View style={{ width: "10%" }}>
+        <Text style={{ fontWeight: 900 }}>Стоимость</Text>
+      </View>
+      <View style={{ width: "10%" }}>
+        <Text style={{ fontWeight: 900 }}>Остаток</Text>
+      </View>
+      <View style={{ width: "10%" }}>
+        <Text style={{ fontWeight: 900 }}>Срок</Text>
+      </View>
+      <View style={{ width: "10%" }}>
+        <Text style={{ fontWeight: 900 }}>Ближайший платеж</Text>
+      </View>
+      <View style={{ width: "10%" }}>
+        <Text style={{ fontWeight: 900 }}>Статус</Text>
+      </View>
+    </View>
+  );
+
   return (
     <>
       <View style={{ flex: 1, padding: 15 }}>
         <View style={styles.header}>
           <View>
-            <Text style={styles.welcome}>Карты</Text>
+            <Text style={styles.welcome}>Аренда</Text>
           </View>
           <TouchableOpacity
             style={styles.notificationIcon}
@@ -140,46 +174,47 @@ export default function CardsScreen() {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.infoBox}>
-          <View style={styles.row}>
-            {["ru", "en", "es", "vi"].map((value) => (
-              <TouchableOpacity
-                key={value}
-                onPress={() => setSelectedLang(value)}
-                style={[
-                  styles.button,
-                  selectedLang === value && styles.selected,
-                ]}
-              >
-                <Text
-                  style={[
-                    styles.buttonLabel,
-                    selectedLang === value && styles.selectedLabel,
-                  ]}
-                >
-                  {value}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
+        <View
+          style={{
+            backgroundColor: "#fff",
+            borderTopRightRadius: 10,
+            borderTopLeftRadius: 10,
+            paddingHorizontal: 20,
+            paddingTop: 20,
+            marginHorizontal: 5,
+            elevation: 3,
+          }}
+        >
+          <Header />
         </View>
 
         <FlatList
-          style={styles.freeHeight}
+          style={{ ...styles.freeHeight, marginTop: 0 }}
           contentContainerStyle={styles.listContent}
-          data={filteredCards}
+          data={cachedCars}
           keyExtractor={(item) => item.id}
           numColumns={columnCount} // Display 4 cards per row
           renderItem={({ item }) => (
-            <View style={{ width: cardWidth }}>
-              <CarCard
-                element={item}
-                elementEdit={() => handleItemPress({ ...item })}
-                elementCopy={() => handleItemPress({ ...item }, true)}
-                elementDelete={() => handleItemDeletePress(item)}
-              />
-            </View>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderBottom: "1px solid #ccc",
+                background: "linear-gradient(to bottom, #f9f9f9, #f0f0f0)",
+              }}
+            >
+              <View style={{ width: "100%" }}>
+                <CarRowCard
+                  element={item}
+                  elementEdit={() => handleItemPress({ ...item })}
+                  elementCopy={() => handleItemPress({ ...item }, true)}
+                  elementDelete={() => handleItemDeletePress(item)}
+                />
+              </View>
+            </div>
           )}
+          // ListHeaderComponent={Header}
         />
       </View>
       <Dialog
@@ -248,6 +283,12 @@ const styles = StyleSheet.create({
   },
   freeHeight: {
     flex: 1,
+    backgroundColor: "#fff",
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    padding: 20,
+    margin: 5,
+    elevation: 3,
   },
   listContent: {
     paddingBottom: 20, // Add some space at the bottom
