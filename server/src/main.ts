@@ -10,7 +10,7 @@ async function bootstrap() {
       // Allow localhost and any IP in the 192.168.0.* range
       const allowedOrigins = [
         'http://localhost:8081', 
-        // 'http://192.168.0.15:8081',
+        // 'http://192.168.0.20:8081',
         process.env.FRONTEND_URL
       ];
 
