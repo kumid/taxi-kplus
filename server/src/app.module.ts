@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { CarModule } from './cars/cars.module';
 import { NumbersModule } from './numbers/numbers.module';
 import { PaymentsModule } from './payments/payments.module';
+import { UserModule } from './user/user.module';
 
 
 @Module({
@@ -13,8 +14,8 @@ import { PaymentsModule } from './payments/payments.module';
     DrizzleModule,
     CarModule,  
     NumbersModule,
-    PaymentsModule,
-    ConfigModule.forRoot({ isGlobal: true }), NumbersModule, PaymentsModule,
+    PaymentsModule, 
+    ConfigModule.forRoot({ isGlobal: true }), NumbersModule, PaymentsModule, UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
