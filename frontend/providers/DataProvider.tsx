@@ -11,6 +11,7 @@ interface DataContextType {
   updateCarsResult: {success: boolean, error: string};
   deleteCar: (element: any) => void;  
   addPayment: (element: any) => Promise<boolean>;
+  // signin: (email: string, password: string) => Promise<{success: boolean, error?: string, token?: string}>;
 }
   
  
@@ -46,6 +47,17 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
     
       return nextPaymentDate;
     }
+
+  const signin = async (email: string, password: string): Promise<{success: boolean, error?: string, token?: string}> => {
+    try {
+      const response = await axios.post(`${apiUrl}/signin`, {email, password});
+      console.log(response.data);
+      return {success: true, token: response.data.token}
+    } catch (error: any) {
+      console.error('Error signin:', error);
+      return {success: false, error: error.response.data.error}
+    }
+  }
 
   const getCars = async () => {
     try {
@@ -156,7 +168,8 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
         updateCars,
         updateCarsResult,
         deleteCar,  
-        addPayment
+        addPayment,
+        // signin
       }}
     >
       {children}

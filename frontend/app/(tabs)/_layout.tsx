@@ -1,5 +1,5 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+import { router, Tabs } from 'expo-router';
+import React, { useContext, useEffect } from 'react';
 import { Platform } from 'react-native';
 
 import { HapticTab } from '@/components/HapticTab';
@@ -7,10 +7,20 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { AuthContext } from '@/providers/AuthContext';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const auth = useContext(AuthContext);
 
+  useEffect(() => {
+      if (!auth || !auth.token || auth.token === "") {
+        router.push("/sign-in");
+      } else {
+        router.push("/(tabs)");
+      }
+    }, [auth]);
+    
   return (
     <Tabs
       screenOptions={{
