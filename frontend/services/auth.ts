@@ -10,7 +10,7 @@ export interface AppUser {
 
 export const signin = async (apiUrl: string, email: string, password: string) => {
   try {
-    const response = await axios.post(`${apiUrl}/signin`, {email, password});
+    const response = await axios.post(`${apiUrl}/users/signin`, {email, password});
     const token = response.data.token;
     
     if (!token) {

@@ -54,8 +54,8 @@ export class UserController {
   }
 
   @Post('signin')
-  signin(@Body() signinUserDto: SigninUserDto) {
+  async signin(@Body() signinUserDto: SigninUserDto) {
     console.log('signinUserDto:', signinUserDto);
-    return this.usersService.signin(signinUserDto);
+    return await this.usersService.signin(signinUserDto);
   }
 }

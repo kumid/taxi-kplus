@@ -11,15 +11,7 @@ import { AuthContext } from '@/providers/AuthContext';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-  const auth = useContext(AuthContext);
-
-  useEffect(() => {
-      if (!auth || !auth.token || auth.token === "") {
-        router.push("/sign-in");
-      } else {
-        router.push("/(tabs)");
-      }
-    }, [auth]);
+  
     
   return (
     <Tabs

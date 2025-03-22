@@ -50,7 +50,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const signin = async (email: string, password: string): Promise<{success: boolean, error?: string, token?: string}> => {
     try {
-      const response = await axios.post(`${apiUrl}/signin`, {email, password});
+      const response = await axios.post(`${apiUrl}/users/signin`, {email, password});
       console.log(response.data);
       return {success: true, token: response.data.token}
     } catch (error: any) {

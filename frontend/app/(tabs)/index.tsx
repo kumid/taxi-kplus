@@ -1,7 +1,7 @@
 import AntDesign from "@expo/vector-icons/AntDesign";
 
 import { useDataContext } from "@/providers/DataProvider";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import CarCard from "@/components/CarCard";
 import Dialog from "@/components/DialogComponent ";
 import UpdateCarCard from "@/components/UpdateCar";
@@ -18,6 +18,8 @@ import {
   StyleSheet,
 } from "react-native";
 import CarRowCard from "@/components/CarRowCard";
+import { AuthContext } from "@/providers/AuthContext";
+import { router } from "expo-router";
 
 const sampleCard: any = {
   element: {
@@ -58,6 +60,8 @@ export default function CardsScreen() {
   const [isConfirmationDialogVisible, setIsConfirmationDialogVisible] =
     useState<boolean>(false);
   const [offerToDelete, setOfferToDelete] = useState<any>(null);
+
+  
 
   const handleItemPress = async (element: any, isCopy: boolean = false) => {
     if (isCopy) {
@@ -119,7 +123,7 @@ export default function CardsScreen() {
     <View
       style={{
         flexDirection: "row",
-        justifyContent: "space-between", 
+        justifyContent: "space-between",
         paddingLeft: 8,
         borderBottomColor: "black",
         paddingBottom: 16,

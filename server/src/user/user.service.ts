@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common'; 
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common'; 
 import { DRIZZLE } from 'src/drizzle/drizzle.module'; 
 import { DrizzleDB } from 'src/drizzle/types/drizzle'; 
 import { eq } from 'drizzle-orm';
@@ -8,6 +8,8 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { SigninUserDto } from './dto/sign-user.dto'; 
 import { log } from 'console';
 import * as bcrypt from 'bcryptjs';
+const jwt = require('jsonwebtoken'); // Import the library
+import 'dotenv/config';
 
 @Injectable()
 export class UserService {
@@ -53,12 +55,40 @@ export class UserService {
 
 
   async signin(signinUserDto: SigninUserDto) {
-    const {email, password} = signinUserDto
-    const user = await this.db.query.users.findFirst({
-      where: (user, { eq }) => eq(user.email, email),
-    });
+    console.log("signinUserDto", signinUserDto);  
 
-    return ""
-    // return await this.db.update(users).set(signinUserDto).where(eq(users.id), );
+    const user = await this.db.query.users.findFirst({
+      where: (user, { eq }) => eq(user.email, signinUserDto.email),
+    });
+    console.log("user", user);
+
+
+    if (user) {
+      const isMatch = await bcrypt.compare(signinUserDto.password, user.password);
+      console.log("isMatch", isMatch);
+      if (isMatch) {
+
+        const token = generateToken(user.id);
+        console.log("token", token);
+
+        return {
+            name: user.name,
+            token: token
+        };
+      } 
+    }
+
+    throw new HttpException(
+            { error: 'Failed to signin' },
+            HttpStatus.INTERNAL_SERVER_ERROR,
+          );
   }
+ 
 }
+function generateToken(userId: number) {
+    console.log("process.env.JWT_SECRET", process.env.JWT_SECRET);  
+    const token = jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '24h' });
+    console.log("token", token);
+    return token;
+}
+

@@ -13,6 +13,7 @@ import "react-native-reanimated";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { DataProvider } from "@/providers/DataProvider";
 import { AuthContext, AuthProvider } from "@/providers/AuthContext";
+import AuthGuard from "@/providers/AuthGuard";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -22,8 +23,6 @@ export default function RootLayout() {
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
-
-  
 
   useEffect(() => {
     if (loaded) {
@@ -39,11 +38,13 @@ export default function RootLayout() {
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <AuthProvider>
         <DataProvider>
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="sign-in" options={{ headerShown: false }} />
-          </Stack>
-          <StatusBar style="auto" />
+          <AuthGuard>
+            <Stack> 
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen name="sign-in" options={{ headerShown: false }} />
+            </Stack>
+            <StatusBar style="auto" />
+          </AuthGuard>
         </DataProvider>
       </AuthProvider>
     </ThemeProvider>
