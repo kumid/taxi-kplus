@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DrizzleModule } from './drizzle/drizzle.module'; 
@@ -7,6 +7,7 @@ import { CarModule } from './cars/cars.module';
 import { NumbersModule } from './numbers/numbers.module';
 import { PaymentsModule } from './payments/payments.module';
 import { UserModule } from './user/user.module';
+import { AuthMiddleware } from './middleware/auth.middleware';
 
 
 @Module({
@@ -19,5 +20,13 @@ import { UserModule } from './user/user.module';
   ],
   controllers: [AppController],
   providers: [AppService],
-})
-export class AppModule {}
+}) 
+
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AuthMiddleware)
+      .exclude("api/v1/users/(.*)") // Exclude authentication routes
+      .forRoutes("*");
+  }
+}

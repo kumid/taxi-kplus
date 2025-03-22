@@ -1,21 +1,26 @@
-import React, { createContext, useState, useContext, useEffect, useMemo } from "react";
-import axios from 'axios'; 
-import Constants from "expo-constants"; 
+import React, {
+  createContext,
+  useState,
+  useContext,
+  useEffect,
+  useMemo,
+  useCallback,
+} from "react";
+import axios from "axios";
+import Constants from "expo-constants";
 import { CarElement } from "@/components/CarRowCard";
-import {Picker} from '@react-native-picker/picker';
+import { AuthContext, useAuth } from "@/providers/AuthContext";
+import { Picker } from "@react-native-picker/picker";
 
 interface DataContextType {
-  cachedCars: any[]; 
-  loadingCars: boolean; 
+  cachedCars: any[];
+  loadingCars: boolean;
   updateCars: (element: CarElement) => void;
-  updateCarsResult: {success: boolean, error: string};
-  deleteCar: (element: any) => void;  
+  updateCarsResult: { success: boolean; error: string };
+  deleteCar: (element: any) => void;
   addPayment: (element: any) => Promise<boolean>;
   // signin: (email: string, password: string) => Promise<{success: boolean, error?: string, token?: string}>;
 }
-  
- 
-
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
@@ -23,62 +28,78 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [cachedCars, setCachedCars] = useState<any[]>([]);
-  const [loadingCars, setLoadingCars] = useState<boolean>(false);;
-  const [updateCarsResult, setUpdateCarsResult] = useState<{success: boolean, error: string}>({success: false, error: ''});
- 
-  
+  const [loadingCars, setLoadingCars] = useState<boolean>(false);
+  const [headers, setHeaders] = useState<any>(null);
+  const [updateCarsResult, setUpdateCarsResult] = useState<{
+    success: boolean;
+    error: string;
+  }>({ success: false, error: "" });
+  const auth = useAuth();
+
+  useEffect(() => {
+    console.log("auth.token: ", auth.token);
+    setHeaders({
+      Authorization: `Bearer ${auth.token}`,
+    });
+  }, [auth.token]);
+
+  useEffect(() => {
+    getCars();
+  }, [headers]);
+
   const apiUrl = useMemo(() => {
-    console.log("DataProvider -> ", process.env.API_URL);  
-    
-    return Constants.manifest.extra.API_URL ?? Constants.manifest2.extra.API_URL
-  }, [])
+    console.log("DataProvider -> ", process.env.API_URL);
+
+    return (
+      Constants.manifest.extra.API_URL ?? Constants.manifest2.extra.API_URL
+    );
+  }, []);
 
   const nexpPaymentDate = (element: any) => {
-      const today = new Date();
-      const currentYear = today.getFullYear();
-      const currentMonth = today.getMonth();
-    
-      let nextPaymentDate = new Date(currentYear, currentMonth, element.payment_day);
-     
-      // If today is past the payment day, move to next month
-      if (today.getDate() > element.payment_day) {
-        nextPaymentDate = new Date(currentYear, currentMonth + 1, element.payment_day);
-      }
-    
-      return nextPaymentDate;
+    const today = new Date();
+    const currentYear = today.getFullYear();
+    const currentMonth = today.getMonth();
+
+    let nextPaymentDate = new Date(
+      currentYear,
+      currentMonth,
+      element.payment_day
+    );
+
+    // If today is past the payment day, move to next month
+    if (today.getDate() > element.payment_day) {
+      nextPaymentDate = new Date(
+        currentYear,
+        currentMonth + 1,
+        element.payment_day
+      );
     }
 
-  const signin = async (email: string, password: string): Promise<{success: boolean, error?: string, token?: string}> => {
-    try {
-      const response = await axios.post(`${apiUrl}/users/signin`, {email, password});
-      console.log(response.data);
-      return {success: true, token: response.data.token}
-    } catch (error: any) {
-      console.error('Error signin:', error);
-      return {success: false, error: error.response.data.error}
-    }
-  }
+    return nextPaymentDate;
+  };
 
   const getCars = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/cars`);
-      
+      const response = await axios.get(`${apiUrl}/cars`, {
+        headers: headers,
+      });
+
       const data = response.data ?? [];
 
       data.forEach((item: any) => {
         try {
           item.nexpPaymentDate = nexpPaymentDate(item);
-          
         } catch (error) {
           console.log(error);
         }
 
         try {
-          if(item.numbers) {            
-            if(item.numbers.length != 0) {
-              item.latestNumber = item.numbers[item.numbers.length - 1]?.gov_number;
-            }  
-          }            
+          if (item.numbers) {
+            if (item.numbers.length != 0) {
+              item.latestNumber =
+                item.numbers[item.numbers.length - 1]?.gov_number;
+            }
+          }
         } catch (error) {
           console.log(error);
         }
@@ -90,34 +111,41 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
         return dateA.getTime() - dateB.getTime();
       });
 
-      setCachedCars(data)
+      setCachedCars(data);
       console.log(data);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
     }
-  }; 
-  
+  };
 
   const updateCars = async (element: any) => {
     console.log(element);
     try {
       setLoadingCars(true);
-      setUpdateCarsResult({success: false, error: ''})
+      setUpdateCarsResult({ success: false, error: "" });
       if (element.id != 0) {
         console.log(`Call.....................${apiUrl}/cars/${element.id}`);
-        
-        const response = await axios.patch(`${apiUrl}/cars/${element.id}`, element);
+
+        const response = await axios.patch(
+          `${apiUrl}/cars/${element.id}`,
+          element,
+          {
+            headers: headers,
+          }
+        );
       } else {
-        delete element.id
-        const response = await axios.post(`${apiUrl}/cars`, element);
+        delete element.id;
+        const response = await axios.post(`${apiUrl}/cars`, element, {
+          headers: headers,
+        });
       }
       await getCars();
       setLoadingCars(false);
-      setUpdateCarsResult({success: true, error: ''})
+      setUpdateCarsResult({ success: true, error: "" });
     } catch (error) {
       setLoadingCars(false);
-      setUpdateCarsResult({success: false, error: `${error}`})
-      console.error('Error update data:', error);
+      setUpdateCarsResult({ success: false, error: `${error}` });
+      console.error("Error update data:", error);
     }
   };
 
@@ -125,49 +153,48 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
     console.log(element);
     try {
       setLoadingCars(true);
-      if (element.id == undefined || element.id == 0)
-        return
-      const response = await axios.delete(`${apiUrl}/cars/${element.id}`);      
+      if (element.id == undefined || element.id == 0) return;
+      const response = await axios.delete(`${apiUrl}/cars/${element.id}`, {
+        headers: headers,
+      });
       await getCars();
-      setLoadingCars(false);      
+      setLoadingCars(false);
     } catch (error) {
-      setLoadingCars(false); 
-      console.error('Error delete data:', error);
+      setLoadingCars(false);
+      console.error("Error delete data:", error);
     }
   };
 
   const addPayment = async (element: any): Promise<boolean> => {
     console.log("savePayment......2 -> ", element);
     try {
-      setLoadingCars(true); 
-      const response = await axios.post(`${apiUrl}/payments`, element);
+      setLoadingCars(true);
+      const response = await axios.post(`${apiUrl}/payments`, element, {
+        headers: headers,
+      });
       await getCars();
-      console.log("savePayment......3");    
+      console.log("savePayment......3");
       setLoadingCars(false);
-      return true
+      return true;
     } catch (error) {
       setLoadingCars(false);
-      console.error('Error delete data:', error);
-      return false
+      console.error("Error delete data:", error);
+      return false;
     }
   };
 
-
-
-   
-
   useEffect(() => {
-    getCars(); 
-  }, []); 
- 
+    getCars();
+  }, []);
+
   return (
     <DataContext.Provider
       value={{
-        cachedCars, 
-        loadingCars, 
+        cachedCars,
+        loadingCars,
         updateCars,
         updateCarsResult,
-        deleteCar,  
+        deleteCar,
         addPayment,
         // signin
       }}
@@ -176,7 +203,6 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
     </DataContext.Provider>
   );
 };
-
 
 // Хук для доступа к данным
 export const useDataContext = () => {
