@@ -1,0 +1,119 @@
+version: "3.8"
+services:
+  traefik:
+    container_name: coolify-proxy
+    image: 'traefik:v3.1'
+    restart: unless-stopped
+    networks:
+      - coolify
+    ports:
+      - '80:80'
+      - '443:443'
+      - '443:443/udp'
+      - '8080:8080'
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock:ro'
+      - '/data/coolify/proxy:/traefik'
+    command:
+      - '--ping=true'
+      - '--ping.entrypoint=http'
+      - '--api.dashboard=true'
+      - '--entrypoints.http.address=:80'
+      - '--entrypoints.https.address=:443'
+      - '--providers.docker=true'
+      - '--providers.file.directory=/traefik/dynamic/'
+      - '--providers.docker.exposedbydefault=false'
+      - '--certificatesresolvers.letsencrypt.acme.storage=/traefik/acme.json'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.entrypoints=http"
+      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.services.traefik.loadbalancer.server.port=8080"
+  
+  # PostgreSQL service
+  taxi-pg:
+    build:
+      context: .
+      dockerfile: Dockerfile.pg
+    image: shoh2025/taxi-pg:1.0.0
+    container_name: taxi-pg
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: taxi
+    volumes:
+      - pg_data:/var/lib/postgresql/data # Persist data across container restarts
+    networks:
+      - coolify
+    ports:
+      - "5434:5434" # Expose the DB on port 5434
+    command: ["postgres", "-p", "5434"]
+
+  # NestJS service
+  taxi-backend:
+    build: .
+    image: shoh2025/taxi-backend:1.0.0
+    restart: unless-stopped
+    container_name: taxi-backend
+    ports:
+      - "3000:3000" # Expose the app on port 3000
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://postgres:postgres@taxi-pg:5434/taxi
+      - FRONTEND_URL=http://192.168.0.15:8081
+    depends_on:
+      - taxi-pg
+    networks:
+      - coolify
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.taxi-api.rule=Host(`api.taxi.nebulagpt.io`)"
+      - "traefik.http.routers.taxi-api.entrypoints=http"
+      - "traefik.http.routers.taxi-api.middlewares=https-redirect"
+      - "traefik.http.routers.taxi-api-ssl.rule=Host(`api.taxi.nebulagpt.io`)"
+      - "traefik.http.routers.taxi-api-ssl.entrypoints=https"
+      - "traefik.http.routers.taxi-api-ssl.tls.certresolver=letsencrypt"
+      - "traefik.http.services.taxi-api.loadbalancer.server.port=3000"
+    command: sh -c "npx drizzle-kit migrate && npx drizzle-kit push && npm run start:prod"
+
+  taxi-web-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    image: shoh2025/taxi-web-app:1.0.0
+    restart: unless-stopped
+    container_name: taxi-web-app
+    ports:
+      - "8081:8081"
+      - "19000:19000"
+      - "19001:19001"
+      - "19002:19002"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - EXPO_DEVTOOLS_LISTEN_ADDRESS=0.0.0.0
+      - API_URL=http://192.168.0.17:3000/api/v1
+    depends_on:
+      - taxi-backend
+    networks:
+      - coolify
+    command: npm start
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.taxi-web.rule=Host(`taxi.nebulagpt.io`)"
+      - "traefik.http.routers.taxi-web.entrypoints=http"
+      - "traefik.http.routers.taxi-web.middlewares=https-redirect"
+      - "traefik.http.routers.taxi-web-ssl.rule=Host(`taxi.nebulagpt.io`)"
+      - "traefik.http.routers.taxi-web-ssl.entrypoints=https"
+      - "traefik.http.routers.taxi-web-ssl.tls.certresolver=letsencrypt"
+      - "traefik.http.services.taxi-web.loadbalancer.server.port=8081"
+
+networks:
+  coolify:
+    external: true
+
+volumes:
+  pg_data:
+    driver: local
