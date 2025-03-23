@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DrizzleModule } from './drizzle/drizzle.module'; 
@@ -26,7 +26,10 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthMiddleware)
-      .exclude("api/v1/users/(.*)") // Exclude authentication routes
+      .exclude(
+        { path: 'api/v1/users', method: RequestMethod.ALL }, // Исключает /api/v1/users
+        { path: 'api/v1/users/(.*)', method: RequestMethod.ALL } // Исключает все подмаршруты
+      )
       .forRoutes("*");
   }
 }
