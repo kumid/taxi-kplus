@@ -6,7 +6,7 @@ import React, {
   useMemo,
   useCallback,
 } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import Constants from "expo-constants";
 import { CarElement } from "@/components/CarRowCard";
 import { AuthContext, useAuth } from "@/providers/AuthContext";
@@ -80,9 +80,11 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const getCars = async () => {
     try {
+      console.log("Get cards....");
       const response = await axios.get(`${apiUrl}/cars`, {
         headers: headers,
       });
+      console.log("Get cards....2:", response);
 
       const data = response.data ?? [];
 
@@ -113,8 +115,12 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
 
       setCachedCars(data);
       console.log(data);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error fetching data:", error);
+
+      if (error.response?.status == 401) {
+        auth.logout();
+      }
     }
   };
 
@@ -142,10 +148,16 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
       await getCars();
       setLoadingCars(false);
       setUpdateCarsResult({ success: true, error: "" });
-    } catch (error) {
+    } catch (error: any) {
       setLoadingCars(false);
       setUpdateCarsResult({ success: false, error: `${error}` });
       console.error("Error update data:", error);
+
+      console.error("Error fetching data:", error);
+
+      if (error.response?.status == 401) {
+        auth.logout();
+      }
     }
   };
 
@@ -159,9 +171,12 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
       });
       await getCars();
       setLoadingCars(false);
-    } catch (error) {
+    } catch (error: any) {
       setLoadingCars(false);
       console.error("Error delete data:", error);
+      if (error.response?.status == 401) {
+        auth.logout();
+      }      
     }
   };
 
@@ -176,9 +191,12 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
       console.log("savePayment......3");
       setLoadingCars(false);
       return true;
-    } catch (error) {
+    } catch (error: any) {
       setLoadingCars(false);
       console.error("Error delete data:", error);
+      if (error.response?.status == 401) {
+        auth.logout();
+      }
       return false;
     }
   };

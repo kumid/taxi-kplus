@@ -100,11 +100,9 @@ export const AsyncStore = {
       return null;
     }
   },
-  delete: async (keysToDelete: (keyof typeof keys.async)[]) => {
+  delete: async (key: keyof typeof keys.async) => {
     try {
-      for (const key of keysToDelete) {
-        await AsyncStorage.removeItem(keys.async[key]);
-      }
+        await AsyncStorage.removeItem(keys.async[key]); 
     } catch (error) {
       console.error('Error removing items from AsyncStorage', error);
     }

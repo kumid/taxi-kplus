@@ -29,8 +29,8 @@ export const signin = async (apiUrl: string, email: string, password: string) =>
 };
 
 export const signout = async () => {
-    // await SecureStore.delete(['USER'])
-    await AsyncStore.delete(['USER_DATA'])
+  // console.log("SignOut...................");  
+  await AsyncStore.delete("USER_DATA")
 };
 
 export const getToken = async () => {
