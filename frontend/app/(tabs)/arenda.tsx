@@ -82,8 +82,7 @@ export default function ArendaScreen() {
     }
   }, [updateCarsResult]);
 
-  useEffect(() => {
-    console.log(cachedCars, "cachedCars.......................");
+  useEffect(() => { 
 
     const lst = cachedCars?.filter((card) => card.lang === selectedLang);
     setFilteredCards(lst);
@@ -159,6 +158,8 @@ export default function ArendaScreen() {
     </View>
   );
 
+  return <></>;
+  /*
   return (
     <>
       <View style={{ flex: 1, padding: 15 }}>
@@ -193,7 +194,7 @@ export default function ArendaScreen() {
           contentContainerStyle={styles.listContent}
           data={cachedCars}
           keyExtractor={(item) => item.id}
-          numColumns={columnCount} // Display 4 cards per row
+          numColumns={columnCount}  
           renderItem={({ item }) => (
             <div
               style={{
@@ -250,6 +251,7 @@ export default function ArendaScreen() {
       </Dialog>
     </>
   );
+  */
 }
 // Styles for the component
 const styles = StyleSheet.create({

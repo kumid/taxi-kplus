@@ -86,8 +86,7 @@ export default function CardsScreen() {
     }
   }, [updateCarsResult]);
 
-  useEffect(() => {
-    console.log(cachedCars, "cachedCars.......................");
+  useEffect(() => { 
 
     const lst = cachedCars?.filter((card) => card.lang === selectedLang);
     setFilteredCards(lst);

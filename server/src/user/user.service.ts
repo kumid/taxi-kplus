@@ -87,7 +87,7 @@ export class UserService {
 }
 function generateToken(userId: number) {
     console.log("process.env.JWT_SECRET", process.env.JWT_SECRET);  
-    const token = jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '24h' });
+    const token = jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRATION });
     console.log("token", token);
     return token;
 }

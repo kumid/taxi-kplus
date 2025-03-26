@@ -78,13 +78,20 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
     return nextPaymentDate;
   };
 
-  const getCars = async () => {
+  const formatDate = (date: string): string => {
     try {
-      console.log("Get cards....");
+      const [year, month, day] = date.split("-");
+      return `${day}.${month}.${year}`;        
+    } catch (error) {
+      return '***'
+    }
+  };
+
+  const getCars = async () => {
+    try { 
       const response = await axios.get(`${apiUrl}/cars`, {
         headers: headers,
       });
-      console.log("Get cards....2:", response);
 
       const data = response.data ?? [];
 
@@ -94,6 +101,11 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
         } catch (error) {
           console.log(error);
         }
+
+
+        item.payments?.forEach((pay: any) => { 
+          pay.date = formatDate(pay.date);
+        });
 
         try {
           if (item.numbers) {
@@ -180,15 +192,13 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  const addPayment = async (element: any): Promise<boolean> => {
-    console.log("savePayment......2 -> ", element);
+  const addPayment = async (element: any): Promise<boolean> => { 
     try {
       setLoadingCars(true);
       const response = await axios.post(`${apiUrl}/payments`, element, {
         headers: headers,
       });
-      await getCars();
-      console.log("savePayment......3");
+      await getCars(); 
       setLoadingCars(false);
       return true;
     } catch (error: any) {
