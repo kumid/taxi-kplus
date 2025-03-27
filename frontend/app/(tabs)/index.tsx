@@ -20,7 +20,7 @@ import {
 import CarRowCard from "@/components/CarRowCard";
 import { AuthContext } from "@/providers/AuthContext";
 import { router } from "expo-router";
-import MaterialCommunityIcons from "@expo/vector-icons/build/MaterialCommunityIcons";
+import MaterialCommunityIcons from "@expo/vector-icons/build/MaterialCommunityIcons"; 
 import ExcellReport from "@/services/excellReport";
 
 const sampleCard: any = {
