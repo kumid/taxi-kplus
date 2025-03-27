@@ -20,6 +20,8 @@ import {
 import CarRowCard from "@/components/CarRowCard";
 import { AuthContext } from "@/providers/AuthContext";
 import { router } from "expo-router";
+import MaterialCommunityIcons from "@expo/vector-icons/build/MaterialCommunityIcons";
+import ExcellReport from "@/services/excellReport";
 
 const sampleCard: any = {
   element: {
@@ -99,6 +101,10 @@ export default function CardsScreen() {
     });
     setIsAddDialogVisible(!isAddDialogVisible);
   };
+  
+  const exportToExcel = (): void => {
+    ExcellReport(cachedCars);
+  };
 
   const dialogSize = useMemo(() => {
     if (Platform.OS === "web") {
@@ -169,6 +175,14 @@ export default function CardsScreen() {
           <View>
             <Text style={styles.welcome}>Лизинг</Text>
           </View>
+
+          <TouchableOpacity
+            style={{...styles.notificationIcon, marginLeft: 'auto'}}
+            onPress={exportToExcel}
+          >
+            <MaterialCommunityIcons name="microsoft-excel" size={24} color="black" />
+          </TouchableOpacity>
+
           <TouchableOpacity
             style={styles.notificationIcon}
             onPress={toggleAddDialogModal}
