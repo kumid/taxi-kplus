@@ -44,55 +44,53 @@ export class CarService {
   async getCars(page: number, limit: number) {
     const offset = (page - 1) * limit;
 
-    const data = await this.db
-      .select({
-        id: cars.id,
-        model: cars.model,
-        ctc: cars.ctc,
-        year: cars.year,
-        organization: cars.organization,
-        summa_buy: cars.summa_buy, // цена покупки
-        summa_sell: cars.summa_sell, // цена продажи
-        status: cars.status, // статус машины (bought-куплена, installment - в рассрочке, sold - выплачена)
-
-        buy_price: cars.buy_price, // price in market
-        buy_terms: cars.buy_terms, // terms
-        payment_day: cars.payment_day,
-        payment: cars.payment,
-
-        customerName: cars.customerName, // имя покупателя
-        customerPhone: cars.customerPhone, // телефон покупателя
-        customerAddress: cars.customerAddress, // адрес покупателя
-        customerPassport: cars.customerPassport, // паспорт покупателя,
-
-        // Latest car number
-        latestNumber: sql`(
-          SELECT ${numbers.gov_number} 
-          FROM ${numbers}
-          WHERE ${numbers.carId} = ${cars.id}
-          ORDER BY ${numbers.id} DESC
+    const query = `
+        SELECT 
+      cars.id, 
+      cars.model, 
+      cars.ctc, 
+      cars.year, 
+      cars.organization, 
+      cars.summa_buy, 
+      cars.summa_sell, 
+      cars.status, 
+      cars.buy_price, 
+      cars.buy_terms, 
+      cars.payment_day, 
+      cars."customerName", 
+      cars."customerPhone", 
+      cars."customerAddress", 
+      cars."customerPassport", 
+      cars.payment,
+  
+      (
+          SELECT numbers.gov_number
+          FROM numbers
+          WHERE numbers."carId" = cars.id
+          ORDER BY numbers.id DESC
           LIMIT 1
-        )`.as('latestNumber'),
-
-        // Fetch all payments with proper type handling
-        payments: sql`COALESCE(
+      ) AS latestNumber,
+  
+      COALESCE(
           jsonb_agg(
-            jsonb_build_object(
-              'id', ${payments.id},
-              'date', ${payments.date},
-              'comment', ${payments.type},
-              'sum', ${payments.sum}
-            ) ORDER BY ${payments.date} ASC
-          )::jsonb, '[]'::jsonb
-        )`.as('payments'),
-      })
-      .from(cars)
-      .leftJoin(payments, eq(payments.carId, cars.id))
-      .groupBy(cars.id)
-      .orderBy(cars.id)
-      .limit(limit)
-      .offset(offset);
+              jsonb_build_object(
+                  'id', payments.id,
+                  'type', payments.type,
+                  'date', payments.date,
+                  'sum', payments.sum
+              ) ORDER BY payments.date ASC
+          ) FILTER (WHERE payments.id IS NOT NULL), '[]'::jsonb
+      ) AS payments
 
-    return data;
+  FROM public.cars
+  LEFT JOIN public.payments ON payments."carId" = cars.id
+  GROUP BY cars.id
+  ORDER BY cars.id 
+      LIMIT ${limit} OFFSET ${offset};
+    `;
+
+    const data = await this.db.execute(query);
+
+    return data.rows; // Returning rows since `execute` typically returns the result in `rows`.
   }
 }
