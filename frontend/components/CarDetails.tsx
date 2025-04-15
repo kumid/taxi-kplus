@@ -1,7 +1,8 @@
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import React, { useCallback, useMemo, useState } from "react";
 import { View, FlatList, Text, TouchableOpacity, Platform } from "react-native";
 import AddPaymentDialog from "./AddPaymentDialog"; 
+import { useDataContext } from "@/providers/DataProvider";
  
 export interface CarElement {
   id: number;
@@ -29,7 +30,7 @@ export interface CarElement {
 export interface CardProps {
   element: CarElement;
   elementEdit: () => void;
-  addPayment: () => void;
+  addPayment: () => void; 
 }
 
 export const formatNumber = (num: number | string): string => {
@@ -38,6 +39,7 @@ export const formatNumber = (num: number | string): string => {
 
 const CarDetails: React.FC<CardProps> = ({ element, elementEdit, addPayment }) => { 
 
+  const { deletePayment } = useDataContext();
 
   const dialogSize = useMemo(() => {
     if (Platform.OS === "web") {
@@ -83,56 +85,7 @@ const paymentSum = useCallback(() => {
             Паспорт Покупателя
           </Text>
           <Text style={{}}>{element.customerPassport}</Text>
-        </View>
-        {/* <FlatList
-          style={{ width: "30%" }}
-          contentContainerStyle={{}}
-          data={element.numbers}
-          keyExtractor={(item) => item.id}
-          numColumns={1} // Display 4 cards per row
-          renderItem={({ item }) => (
-            <View
-              style={{ width: "100%", flexDirection: "row", marginBottom: 10 }}
-            >
-              <View style={{ width: "20%" }}>
-                <Text
-                  style={{
-                    borderWidth: 1,
-                    borderColor: "black",
-                    marginEnd: "auto",
-                    padding: 8,
-                    borderRadius: 8,
-                    fontWeight: 700,
-                  }}
-                >
-                  {item.gov_number}
-                </Text>
-              </View>
-              <View style={{ width: "40%" }}>
-                <Text style={{ marginVertical: "auto" }}>{item.comment}</Text>
-              </View>
-            </View>
-          )}
-          ListHeaderComponent={
-            <View>
-              <h3 style={{ marginBottom: 12 }}>Номера</h3>
-              <View
-                style={{
-                  width: "100%",
-                  flexDirection: "row",
-                  marginBottom: 10,
-                }}
-              >
-                <View style={{ width: "20%" }}>
-                  <Text style={{ fontWeight: "bold" }}>Номер</Text>
-                </View>
-                <View style={{ width: "40%" }}>
-                  <Text style={{ fontWeight: "bold" }}>Комментарий</Text>
-                </View>
-              </View>
-            </View>
-          }
-        /> */}
+        </View> 
 
         <FlatList
           style={{ width: "50%" }}
@@ -142,17 +95,24 @@ const paymentSum = useCallback(() => {
           numColumns={1} // Display 4 cards per row
           renderItem={({ item }) => (
             <View style={{ width: "50%", flexDirection: "row", marginTop: 16 }}>
-              <View style={{ width: "20%" }}>
-                <Text style={{}}>{item.date}</Text>
+              <View style={{ width: "20%"}}>
+                <Text style={{marginTop: 4}}>{item.date}</Text>
               </View>
-              <View style={{ width: "60%" }}>
-                <Text style={{}}>{item.comment}</Text>
+              <View style={{ width: "53%" }}>
+                <Text style={{marginTop: 4}}>{item.comment}</Text>
               </View>
               <View style={{ width: "20%" }}>
-                <Text style={{ marginLeft: "auto" }}>
+                <Text style={{ marginLeft: "auto", marginTop: 4 }}>
                   {formatNumber(item.sum)}
                 </Text>
               </View>
+              <View style={{ width: "7%" }}>
+                <TouchableOpacity style={{marginLeft: 'auto'}} 
+                  onPress={() => {deletePayment(item)}}>
+                  <FontAwesome name="trash" size={24} color="black" /> 
+                </TouchableOpacity>
+              </View>
+
             </View>
           )}
           ListHeaderComponent={
@@ -170,7 +130,7 @@ const paymentSum = useCallback(() => {
                 <View style={{ width: "20%" }}>
                   <Text style={{ fontWeight: "bold" }}>Дата</Text>
                 </View>
-                <View style={{ width: "60%" }}>
+                <View style={{ width: "53%" }}>
                   <Text style={{ fontWeight: "bold" }}>Комментарий</Text>
                 </View>
                 <View style={{ width: "20%" }}>
@@ -178,6 +138,8 @@ const paymentSum = useCallback(() => {
                     Сумма
                   </Text>
                 </View>
+                <View style={{ width: "7%" }}></View>
+
               </View>
             </View>
           }
@@ -186,12 +148,14 @@ const paymentSum = useCallback(() => {
               <View style={{ width: "20%" }}>
                 <Text style={{ fontWeight: "bold" }}>Итого</Text>
               </View>
-              <View style={{ width: "60%" }}></View>
+              <View style={{ width: "53%" }}></View>
               <View style={{ width: "20%" }}>
                 <Text style={{ fontWeight: "bold", marginLeft: "auto" }}>
                   {formatNumber(paymentSum())}
                 </Text>
               </View>
+              <View style={{ width: "7%" }}></View>
+
             </View>
           }
         />  

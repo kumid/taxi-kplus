@@ -28,6 +28,7 @@ export interface CarElement {
   buy_price: number; // price in market
   buy_terms: number; // terms
   payment_day: number;
+  first_payment: number;
   payment: number;
 
   customerName: string; // имя покупателя
@@ -83,22 +84,7 @@ const CarRowCard: React.FC<CardProps> = ({
     });
     return summa;
   }, [element])
-
-  // const nexpPaymentDate = useCallback(() => {
-  //   const today = new Date();
-  //   const currentYear = today.getFullYear();
-  //   const currentMonth = today.getMonth();
-  
-  //   let nextPaymentDate = new Date(currentYear, currentMonth, element.payment_day);
-   
-  //   // If today is past the payment day, move to next month
-  //   if (today.getDate() > element.payment_day) {
-  //     nextPaymentDate = new Date(currentYear, currentMonth + 1, element.payment_day);
-  //   }
-  
-  //   return nextPaymentDate.toLocaleDateString();
-  // }, [element])
-
+ 
 
   return (
     <>
@@ -159,9 +145,11 @@ const CarRowCard: React.FC<CardProps> = ({
         </View>
 
         {isDetailsExpanded.get(element.id) && (
-          <CarDetails element={element} 
-            elementEdit={() => {}} 
-            addPayment={() => {setIsPaymentAddDialogVisible(!isAddPaymentDialogVisible);}}/> 
+          <CarDetails element={element}
+          elementEdit={() => { } }
+          addPayment={() => { setIsPaymentAddDialogVisible(!isAddPaymentDialogVisible); } }  
+            
+            /> 
           )}
       </Pressable>
 

@@ -42,6 +42,7 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
   const [customerPhone, setCustomerPhone] = useState<string>("");
   const [customerAddress, setCustomerAddress] = useState<string>("");
   const [customerPassport, setCustomerPassport] = useState<string>("");
+  const [first_payment, setFirst_payment] = useState<string>("0");
   const [payment, setPayment] = useState<string>("0");
   const [latestNumber, setLatestNumber] = useState<string>("");
 
@@ -60,6 +61,7 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
     setBuy_terms(element.buy_terms ? element.buy_terms.toString() : ""); 
     setPayment_day(element.payment_day ? element.payment_day.toString() : "");  
     setPayment(element.payment ? element.payment.toString() : "");  
+    setPayment(element.first_payment ? element.first_payment.toString() : "");  
     setCustomerName(element.customerName);
     setCustomerPhone(element.customerPhone);
     setCustomerAddress(element.customerAddress);
@@ -73,11 +75,11 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
   useEffect(() => {
     let summa = 0
     if(summa_sell.length != 0 && buy_terms.length != 0 && buy_terms != "0") {
-      summa = Math.round(Number(summa_sell) / Number(buy_terms)); 
+      summa = Math.round((Number(summa_sell) - Number(first_payment)) / Number(buy_terms)); 
     }
 
     setPayment(summa.toString());
-  }, [summa_sell, buy_terms])
+  }, [summa_sell, buy_terms, first_payment])
   
   const handleSave = () => {
       
@@ -99,6 +101,7 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
       customerPassport: customerPassport,
       latestNumber: latestNumber,
       payment: Number(payment),
+      first_payment: Number(first_payment),
       numbers: [],
       payments: [], 
     };
@@ -151,6 +154,7 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
 
         <View style={{ ...styles.rowStyle, marginStart: 10, marginBottom: 16 }}>
           <LabeledTextInput value={summa_sell} onChangeText={(value) => handleIntegerChange(setSumma_sell, value)} inputType={TextInputType.summa_sell} />
+          <LabeledTextInput value={first_payment} onChangeText={(value) => handleIntegerChange(setFirst_payment, value)} inputType={TextInputType.first_payment} />
           <LabeledTextInput value={customerName} onChangeText={setCustomerName} inputType={TextInputType.customerName} />
         </View>
 

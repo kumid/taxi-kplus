@@ -50,6 +50,13 @@
       "when": 1742545794555,
       "tag": "0006_solid_mad_thinker",
       "breakpoints": true
+    }, 
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1744744314758,
+      "tag": "0008_soft_master_mold",
+      "breakpoints": true
     }
   ]
 }

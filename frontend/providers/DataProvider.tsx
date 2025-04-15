@@ -19,6 +19,8 @@ interface DataContextType {
   updateCarsResult: { success: boolean; error: string };
   deleteCar: (element: any) => void;
   addPayment: (element: any) => Promise<boolean>;
+  updatePayment: (element: any) => Promise<boolean>;
+  deletePayment: (element: any) => Promise<boolean>;
   // signin: (email: string, password: string) => Promise<{success: boolean, error?: string, token?: string}>;
 }
 
@@ -211,6 +213,25 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  const deletePayment = async (element: any): Promise<boolean> => { 
+    try {
+      setLoadingCars(true);
+      const response = await axios.delete(`${apiUrl}/payments/${element.id}`, {
+        headers: headers,
+      });
+      await getCars(); 
+      setLoadingCars(false);
+      return true;
+    } catch (error: any) {
+      setLoadingCars(false);
+      console.error("Error delete data:", error);
+      if (error.response?.status == 401) {
+        auth.logout();
+      }
+      return false;
+    }
+  };
+
   useEffect(() => {
     getCars();
   }, []);
@@ -224,6 +245,8 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
         updateCarsResult,
         deleteCar,
         addPayment,
+        updatePayment: addPayment,
+        deletePayment,
         // signin
       }}
     >

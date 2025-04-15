@@ -32,6 +32,7 @@ export enum TextInputType {
   buy_terms = "buy_terms", // terms
   payment_day = "payment_day",
   payment = "payment",
+  first_payment = "first_payment",
   customerName = "customerName", // имя покупателя
   customerPhone = "customerPhone", // телефон покупателя
   customerAddress = "customerAddress", // адрес покупателя
@@ -154,10 +155,15 @@ const LabeledTextInput: React.FC<LabeledTextInputProps> = ({
         label = "День выплаты";
         break;
       case TextInputType.payment:
-        keyboardType = "numeric";
-        placeholder = "Введите сумму выплаты";
-        label = "Выплата";
-        break;
+          keyboardType = "numeric";
+          placeholder = "Введите сумму выплаты";
+          label = "Выплата";
+          break;
+      case TextInputType.first_payment:
+            keyboardType = "numeric";
+            placeholder = "Первоначальная взнос";
+            label = "Первоначальная взнос";
+            break;
       case TextInputType.customerName:
         keyboardType = "default";
         placeholder = "Введите Покупателя";

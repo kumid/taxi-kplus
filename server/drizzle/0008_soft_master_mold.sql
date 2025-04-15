@@ -1,0 +1,1 @@
+ALTER TABLE "cars" ADD COLUMN "first_payment" integer DEFAULT 0 NOT NULL;
