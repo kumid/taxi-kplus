@@ -34,6 +34,8 @@ export class CarService {
   }
 
   async update(id: number, updateCarDto: UpdateCarDto) {
+    console.log('update: ', id, updateCarDto);
+
     return await this.db.update(cars).set(updateCarDto).where(eq(cars.id, id));
   }
 
@@ -62,6 +64,7 @@ export class CarService {
       cars."customerAddress", 
       cars."customerPassport", 
       cars.payment,
+      cars.first_payment,
   
       (
           SELECT numbers.gov_number
@@ -69,7 +72,7 @@ export class CarService {
           WHERE numbers."carId" = cars.id
           ORDER BY numbers.id DESC
           LIMIT 1
-      ) AS latestNumber,
+      ) AS latestnumber,
   
       COALESCE(
           jsonb_agg(

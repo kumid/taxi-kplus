@@ -16,7 +16,7 @@ export const cars = pgTable(
     
     buy_price: doublePrecision('buy_price').default(0.0).notNull(),  // price in market
     buy_terms: doublePrecision('buy_terms').default(0.0).notNull(),  // terms - срок в месяцах
-    first_payment: integer('payment').default(0).notNull(),
+    first_payment: integer('first_payment').default(0).notNull(),
     payment_day: integer('payment_day').default(1).notNull(),
     payment: integer('payment').default(0).notNull(),
 

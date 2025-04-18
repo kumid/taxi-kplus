@@ -1,1 +1,0 @@
-ALTER TABLE "cars" ADD COLUMN "payment" integer DEFAULT 0 NOT NULL;

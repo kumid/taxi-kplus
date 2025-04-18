@@ -5,57 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1740598126737,
-      "tag": "0000_lame_hedge_knight",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1740674116375,
-      "tag": "0001_striped_lizard",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1741852996578,
-      "tag": "0002_volatile_abomination",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1741977192619,
-      "tag": "0003_windy_lightspeed",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1742541243352,
-      "tag": "0004_parched_hedge_knight",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1742545588826,
-      "tag": "0005_huge_wrecker",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "7",
-      "when": 1742545794555,
-      "tag": "0006_solid_mad_thinker",
-      "breakpoints": true
-    }, 
-    {
-      "idx": 8,
-      "version": "7",
-      "when": 1744744314758,
-      "tag": "0008_soft_master_mold",
+      "when": 1744793302185,
+      "tag": "0000_swift_lester",
       "breakpoints": true
     }
   ]

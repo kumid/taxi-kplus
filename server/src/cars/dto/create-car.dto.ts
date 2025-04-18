@@ -1,3 +1,3 @@
 export class CreateCarDto {
-    latestNumber: string
+  latestnumber: string;
 }

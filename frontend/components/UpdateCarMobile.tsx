@@ -72,7 +72,7 @@ const UpdateCarCardMobile: React.FC<CardProps> = ({
   const [customerPhone, setCustomerPhone] = useState<string>("");
   const [customerAddress, setCustomerAddress] = useState<string>("");
   const [customerPassport, setCustomerPassport] = useState<string>("");
-  const [latestNumber, setLatestNumber] = useState<string>("0");
+  const [latestnumber, setLatestNumber] = useState<string>("0");
 
   React.useEffect(() => {
     setId(element.id);
@@ -90,7 +90,7 @@ const UpdateCarCardMobile: React.FC<CardProps> = ({
     setCustomerPhone(element.customerPhone);
     setCustomerAddress(element.customerAddress);
     setCustomerPassport(element.customerPassport);
-    setLatestNumber(element.latestNumber);
+    setLatestNumber(element.latestnumber);
 
     if (element.id && element.id !== 0) setTitle("Редактировать машину");
     else setTitle("Новая машина");
@@ -113,7 +113,7 @@ const UpdateCarCardMobile: React.FC<CardProps> = ({
       customerPhone: customerPhone,
       customerAddress: customerAddress,
       customerPassport: customerPassport,
-      latestNumber: latestNumber,
+      latestnumber: latestnumber,
     };
 
     updateElement(data);
@@ -174,9 +174,9 @@ const UpdateCarCardMobile: React.FC<CardProps> = ({
           inputType={TextInputType.payment_day}
         />
         <LabeledTextInput
-          value={latestNumber}
+          value={latestnumber}
           onChangeText={setLatestNumber}
-          inputType={TextInputType.latestNumber}
+          inputType={TextInputType.latestnumber}
         />
 
         <LabeledTextInput

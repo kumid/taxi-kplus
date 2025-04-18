@@ -20,7 +20,7 @@ import {
 import CarRowCard from "@/components/CarRowCard";
 import { AuthContext } from "@/providers/AuthContext";
 import { router } from "expo-router";
-import MaterialCommunityIcons from "@expo/vector-icons/build/MaterialCommunityIcons"; 
+import MaterialCommunityIcons from "@expo/vector-icons/build/MaterialCommunityIcons";
 import ExcellReport from "@/services/excellReport";
 
 const sampleCard: any = {
@@ -42,7 +42,7 @@ const sampleCard: any = {
     customerPhone: "",
     customerAddress: "",
     customerPassport: "",
-    latestNumber: "",
+    latestnumber: "",
   },
 };
 
@@ -62,8 +62,6 @@ export default function CardsScreen() {
   const [isConfirmationDialogVisible, setIsConfirmationDialogVisible] =
     useState<boolean>(false);
   const [offerToDelete, setOfferToDelete] = useState<any>(null);
-
-  
 
   const handleItemPress = async (element: any, isCopy: boolean = false) => {
     if (isCopy) {
@@ -88,8 +86,7 @@ export default function CardsScreen() {
     }
   }, [updateCarsResult]);
 
-  useEffect(() => { 
-
+  useEffect(() => {
     const lst = cachedCars?.filter((card) => card.lang === selectedLang);
     setFilteredCards(lst);
   }, [cachedCars, selectedLang]);
@@ -101,7 +98,7 @@ export default function CardsScreen() {
     });
     setIsAddDialogVisible(!isAddDialogVisible);
   };
-  
+
   const exportToExcel = (): void => {
     ExcellReport(cachedCars);
   };
@@ -177,10 +174,14 @@ export default function CardsScreen() {
           </View>
 
           <TouchableOpacity
-            style={{...styles.notificationIcon, marginLeft: 'auto'}}
+            style={{ ...styles.notificationIcon, marginLeft: "auto" }}
             onPress={exportToExcel}
           >
-            <MaterialCommunityIcons name="microsoft-excel" size={24} color="black" />
+            <MaterialCommunityIcons
+              name="microsoft-excel"
+              size={24}
+              color="black"
+            />
           </TouchableOpacity>
 
           <TouchableOpacity

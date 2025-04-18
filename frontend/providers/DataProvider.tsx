@@ -83,14 +83,14 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
   const formatDate = (date: string): string => {
     try {
       const [year, month, day] = date.split("-");
-      return `${day}.${month}.${year}`;        
+      return `${day}.${month}.${year}`;
     } catch (error) {
-      return '***'
+      return "***";
     }
   };
 
   const getCars = async () => {
-    try { 
+    try {
       const response = await axios.get(`${apiUrl}/cars`, {
         headers: headers,
       });
@@ -104,21 +104,20 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
           console.log(error);
         }
 
-
-        item.payments?.forEach((pay: any) => { 
+        item.payments?.forEach((pay: any) => {
           pay.date = formatDate(pay.date);
         });
 
-        try {
-          if (item.numbers) {
-            if (item.numbers.length != 0) {
-              item.latestNumber =
-                item.numbers[item.numbers.length - 1]?.gov_number;
-            }
-          }
-        } catch (error) {
-          console.log(error);
-        }
+        // try {
+        //   if (item.numbers) {
+        //     if (item.numbers.length != 0) {
+        //       item.latestnumber =
+        //         item.numbers[item.numbers.length - 1]?.gov_number;
+        //     }
+        //   }
+        // } catch (error) {
+        //   console.log(error);
+        // }
       });
       data.sort((a: any, b: any) => {
         const dateA = new Date(a.nexpPaymentDate);
@@ -190,17 +189,17 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
       console.error("Error delete data:", error);
       if (error.response?.status == 401) {
         auth.logout();
-      }      
+      }
     }
   };
 
-  const addPayment = async (element: any): Promise<boolean> => { 
+  const addPayment = async (element: any): Promise<boolean> => {
     try {
       setLoadingCars(true);
       const response = await axios.post(`${apiUrl}/payments`, element, {
         headers: headers,
       });
-      await getCars(); 
+      await getCars();
       setLoadingCars(false);
       return true;
     } catch (error: any) {
@@ -213,13 +212,13 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  const deletePayment = async (element: any): Promise<boolean> => { 
+  const deletePayment = async (element: any): Promise<boolean> => {
     try {
       setLoadingCars(true);
       const response = await axios.delete(`${apiUrl}/payments/${element.id}`, {
         headers: headers,
       });
-      await getCars(); 
+      await getCars();
       setLoadingCars(false);
       return true;
     } catch (error: any) {

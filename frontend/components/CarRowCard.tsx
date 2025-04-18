@@ -35,7 +35,7 @@ export interface CarElement {
   customerPhone: string; // телефон покупателя
   customerAddress: string; // адрес покупателя
   customerPassport: string; // паспорт покупателя,
-  latestNumber: string;
+  latestnumber: string;
   nexpPaymentDate?: Date;
   numbers: any[];
   payments: any[];
@@ -48,8 +48,6 @@ export interface CardProps {
   elementDelete: () => void;
 }
 
-
-
 const CarRowCard: React.FC<CardProps> = ({
   element,
   elementEdit,
@@ -57,8 +55,11 @@ const CarRowCard: React.FC<CardProps> = ({
   elementDelete,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [isAddPaymentDialogVisible, setIsPaymentAddDialogVisible] = useState<boolean>(false);
-  const [isDetailsExpanded, setIsDetailsExpanded] = useState<Map<number, boolean>>(new Map());
+  const [isAddPaymentDialogVisible, setIsPaymentAddDialogVisible] =
+    useState<boolean>(false);
+  const [isDetailsExpanded, setIsDetailsExpanded] = useState<
+    Map<number, boolean>
+  >(new Map());
 
   // Function to toggle an item's expansion state
   const toggleDetails = (id: number) => {
@@ -76,6 +77,9 @@ const CarRowCard: React.FC<CardProps> = ({
       return "full";
     }
   }, []);
+  useEffect(() => {
+    console.log(element, "element....................");
+  }, [element]);
 
   const ostatokSumma = useCallback(() => {
     let summa = element.summa_sell;
@@ -83,8 +87,7 @@ const CarRowCard: React.FC<CardProps> = ({
       summa -= payment.sum;
     });
     return summa;
-  }, [element])
- 
+  }, [element]);
 
   return (
     <>
@@ -97,72 +100,119 @@ const CarRowCard: React.FC<CardProps> = ({
           // elementEdit();
         }}
       >
-        <View style={{ ...styles.rowStyle, paddingLeft: 8, paddingTop: 24, paddingBottom: (isDetailsExpanded.get(element.id) ? 0 : 24) }}>
-        
-          <View style={{ width: "10%",  }}>
-            <Text style={{borderWidth: 2, borderColor: 'blue', marginEnd: 'auto', padding: 8, borderRadius: 8, fontWeight: 700}}>
-              {element.latestNumber}
-              </Text>
+        <View
+          style={{
+            ...styles.rowStyle,
+            paddingLeft: 8,
+            paddingTop: 24,
+            paddingBottom: isDetailsExpanded.get(element.id) ? 0 : 24,
+          }}
+        >
+          <View style={{ width: "10%" }}>
+            <Text
+              style={{
+                borderWidth: 2,
+                borderColor: "blue",
+                marginEnd: "auto",
+                padding: 8,
+                borderRadius: 8,
+                fontWeight: 700,
+              }}
+            >
+              {element.latestnumber}
+            </Text>
           </View>
           <View style={{ width: "10%" }}>
-            <Text style={{marginVertical: 'auto'}}>{element.model}</Text>
+            <Text style={{ marginVertical: "auto" }}>{element.model}</Text>
           </View>
           <View style={{ width: "10%" }}>
-            <Text style={{marginVertical: 'auto'}}>{element.year}</Text>
+            <Text style={{ marginVertical: "auto" }}>{element.year}</Text>
           </View>
           <View style={{ width: "10%" }}>
-            <Text style={{marginVertical: 'auto'}}>{element.customerName}</Text>
+            <Text style={{ marginVertical: "auto" }}>
+              {element.customerName}
+            </Text>
           </View>
           <View style={{ width: "10%" }}>
-            <Text style={{marginVertical: 'auto'}}>{element.customerPhone}</Text>
+            <Text style={{ marginVertical: "auto" }}>
+              {element.customerPhone}
+            </Text>
           </View>
           <View style={{ width: "10%" }}>
-            <Text style={{marginVertical: 'auto', color: 'blue', fontWeight: 700}}>{formatNumber(element.summa_sell)}</Text>
+            <Text
+              style={{ marginVertical: "auto", color: "blue", fontWeight: 700 }}
+            >
+              {formatNumber(element.summa_sell)}
+            </Text>
           </View>
           <View style={{ width: "10%" }}>
-            <Text style={{marginVertical: 'auto', color: 'red', fontWeight: 700}}>{formatNumber(ostatokSumma())}</Text>
+            <Text
+              style={{ marginVertical: "auto", color: "red", fontWeight: 700 }}
+            >
+              {formatNumber(ostatokSumma())}
+            </Text>
           </View>
-          <View style={{ width: "10%", marginVertical: 'auto',  }}>
-            <Text style={{}}>{element.buy_terms}</Text> 
+          <View style={{ width: "10%", marginVertical: "auto" }}>
+            <Text style={{}}>{element.buy_terms}</Text>
           </View>
           <View style={{ width: "10%" }}>
-            <Text style={{marginVertical: 'auto'}}>{element.nexpPaymentDate?.toLocaleDateString()}</Text>
-            <Text style={{fontWeight: 900}}>{formatNumber(element.payment)}</Text>
-          </View> 
-          <View style={{ width: "7%",  }}>
-            <Text style={{borderWidth: 2, borderColor: 'blue', marginEnd: 'auto', padding: 8, borderRadius: 8, 
-              fontWeight: 700, backgroundColor: 'blue', color: 'yellow'}}>
+            <Text style={{ marginVertical: "auto" }}>
+              {element.nexpPaymentDate?.toLocaleDateString()}
+            </Text>
+            <Text style={{ fontWeight: 900 }}>
+              {formatNumber(element.payment)}
+            </Text>
+          </View>
+          <View style={{ width: "7%" }}>
+            <Text
+              style={{
+                borderWidth: 2,
+                borderColor: "blue",
+                marginEnd: "auto",
+                padding: 8,
+                borderRadius: 8,
+                fontWeight: 700,
+                backgroundColor: "blue",
+                color: "yellow",
+              }}
+            >
               {element.status}
-              </Text>
+            </Text>
           </View>
-          <View style={{ width: "3%", padding:'auto' }}>
-            <TouchableOpacity
-              style={{ margin: 'auto' }}
-              onPress={elementEdit}>
+          <View style={{ width: "3%", padding: "auto" }}>
+            <TouchableOpacity style={{ margin: "auto" }} onPress={elementEdit}>
               <Feather name="edit" size={24} color="gray" />
             </TouchableOpacity>
           </View>
         </View>
 
         {isDetailsExpanded.get(element.id) && (
-          <CarDetails element={element}
-          elementEdit={() => { } }
-          addPayment={() => { setIsPaymentAddDialogVisible(!isAddPaymentDialogVisible); } }  
-            
-            /> 
-          )}
+          <CarDetails
+            element={element}
+            elementEdit={() => {}}
+            addPayment={() => {
+              setIsPaymentAddDialogVisible(!isAddPaymentDialogVisible);
+            }}
+          />
+        )}
       </Pressable>
 
       <Dialog
         isVisible={isAddPaymentDialogVisible}
-        onClose={() => {setIsPaymentAddDialogVisible(!isAddPaymentDialogVisible)}}
+        onClose={() => {
+          setIsPaymentAddDialogVisible(!isAddPaymentDialogVisible);
+        }}
         dialogWidth={dialogSize}
         scrollable={true}
       >
-        <AddPaymentDialog requestText={`Платеж за ${element.latestNumber} от ${element.customerName}`} 
-          setIsDialogVisible={setIsPaymentAddDialogVisible }
-          car={element} 
-          setter={ (summa) => {console.log("Summa: ", summa)} } />
+        <AddPaymentDialog
+          requestText={`Платеж за ${element.latestnumber} от ${element.customerName}`}
+          setIsDialogVisible={setIsPaymentAddDialogVisible}
+          car={element}
+          setter={(summa) => {
+            console.log("Summa: ", summa);
+          }}
+        />
       </Dialog>
     </>
   );

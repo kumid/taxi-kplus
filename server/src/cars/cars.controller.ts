@@ -18,8 +18,9 @@ import { NumbersService } from 'src/numbers/numbers.service';
 
 @Controller('api/v1/cars')
 export class CarController {
-  constructor(private readonly carService: CarService,
-    private readonly numberService: NumbersService
+  constructor(
+    private readonly carService: CarService,
+    private readonly numberService: NumbersService,
   ) {}
 
   @Post()
@@ -29,8 +30,9 @@ export class CarController {
       console.log('created Car', car);
       await this.numberService.create({
         date: new Date(),
-        gov_number: createCarDto.latestNumber,
-        carId: car.id});
+        gov_number: createCarDto.latestnumber,
+        carId: car.id,
+      });
       return { message: 'Car created successfully' };
     } catch (error) {
       console.error('Error creating car:', error);
@@ -57,16 +59,21 @@ export class CarController {
   async update(@Param('id') id: string, @Body() updateCardDto: UpdateCarDto) {
     try {
       await this.carService.update(+id, updateCardDto);
-      
-      if (updateCardDto.latestNumber) {
+
+      if (updateCardDto.latestnumber) {
         const car = await this.numberService.findLastNumber(+id);
         console.log(car);
-        
-        if (!car || !car.gov_number || car.gov_number !== updateCardDto.latestNumber) {
+
+        if (
+          !car ||
+          !car.gov_number ||
+          car.gov_number !== updateCardDto.latestnumber
+        ) {
           await this.numberService.create({
             date: new Date(),
-            gov_number: updateCardDto.latestNumber,
-            carId: +id});
+            gov_number: updateCardDto.latestnumber,
+            carId: +id,
+          });
         }
       }
 
@@ -80,8 +87,6 @@ export class CarController {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
-
-
   }
 
   @Delete(':id')

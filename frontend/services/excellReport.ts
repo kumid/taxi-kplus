@@ -11,7 +11,7 @@ const ExcellReport = async (data: any[]) => {
   const workbook = new ExcelJS.Workbook();
   const worksheet = workbook.addWorksheet("Sheet1");
 
-  const headers = ["Покупатель", "Машина", "Стоимость", "Остаток"];
+  const headers = ["Покупатель", "Машина", "Стоимость", "Первоначальный взнос", "Остаток"];
   let count = 14;
 
   const rows: any[][] = [];
@@ -31,9 +31,10 @@ const ExcellReport = async (data: any[]) => {
     count = Math.max(tmpCount, count);
     rows.push([
       item.customerName,
-      item.latestNumber,
+      item.latestnumber,
       item.summa_sell,
-      item.summa_sell - summa,
+      formatNumber(item.first_payment),
+      item.summa_sell - summa - item.first_payment,
       ...payments,
     ]);
   });
@@ -54,6 +55,7 @@ const ExcellReport = async (data: any[]) => {
     { width: 15 },
     { width: 15 },
     { width: 15 },
+    { width: 15 },
     ...Array(count).fill({ width: 10 }),
   ];
 
@@ -71,7 +73,7 @@ const ExcellReport = async (data: any[]) => {
   const startRow = 1,
     endRow = 1 + data.length;
   const startCol = 1,
-    endCol = 4 + count;
+    endCol = 5 + count;
 
   for (let row = startRow; row <= endRow; row++) {
     for (let col = startCol; col <= endCol; col++) {
@@ -85,7 +87,7 @@ const ExcellReport = async (data: any[]) => {
     }
   }
   worksheet.getColumn(3).numFmt = "#,##0"; // Applies to column C
-  worksheet.getColumn(4).numFmt = "#,##0"; // Applies to column D 
+  worksheet.getColumn(4).numFmt = "#,##0"; // Applies to column D
 
   // Generate Excel file
   const buffer = await workbook.xlsx.writeBuffer();

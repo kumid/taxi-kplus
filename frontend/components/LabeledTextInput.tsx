@@ -37,7 +37,7 @@ export enum TextInputType {
   customerPhone = "customerPhone", // телефон покупателя
   customerAddress = "customerAddress", // адрес покупателя
   customerPassport = "customerPassport", // паспорт покупателя,
-  latestNumber = "latestNumber",
+  latestnumber = "latestnumber",
 
   summa_payment = "summa_payment", //
   comment_payment = "comment_payment", //
@@ -53,7 +53,7 @@ interface LabeledTextInputProps {
   keyboardType?: KeyboardTypeOptions;
   autoCapitalize?: "none" | "sentences" | "words" | "characters";
   styleUI?: { label?: TextStyle; input?: TextStyle };
-  readOnly?: boolean
+  readOnly?: boolean;
 }
 const LabeledTextInput: React.FC<LabeledTextInputProps> = ({
   label,
@@ -65,7 +65,7 @@ const LabeledTextInput: React.FC<LabeledTextInputProps> = ({
   keyboardType = "default",
   autoCapitalize = "none",
   styleUI,
-  readOnly = false
+  readOnly = false,
 }) => {
   const [placeholderState, setPlaceholderState] = useState<any>(null);
   const [labelState, setLabelState] = useState<string>("");
@@ -155,15 +155,15 @@ const LabeledTextInput: React.FC<LabeledTextInputProps> = ({
         label = "День выплаты";
         break;
       case TextInputType.payment:
-          keyboardType = "numeric";
-          placeholder = "Введите сумму выплаты";
-          label = "Выплата";
-          break;
+        keyboardType = "numeric";
+        placeholder = "Введите сумму выплаты";
+        label = "Выплата";
+        break;
       case TextInputType.first_payment:
-            keyboardType = "numeric";
-            placeholder = "Первоначальная взнос";
-            label = "Первоначальная взнос";
-            break;
+        keyboardType = "numeric";
+        placeholder = "Первоначальная взнос";
+        label = "Первоначальная взнос";
+        break;
       case TextInputType.customerName:
         keyboardType = "default";
         placeholder = "Введите Покупателя";
@@ -184,7 +184,7 @@ const LabeledTextInput: React.FC<LabeledTextInputProps> = ({
         placeholder = "Введите паспорт Покупателя";
         label = "Паспорт Покупателя";
         break; // паспорт покупателя,
-      case TextInputType.latestNumber:
+      case TextInputType.latestnumber:
         keyboardType = "default";
         placeholder = "Введите госномер";
         label = "Госномер";

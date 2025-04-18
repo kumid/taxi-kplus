@@ -38,7 +38,7 @@ const sampleCard: any = {
     customerPhone: "",
     customerAddress: "",
     customerPassport: "",
-    latestNumber: "",
+    latestnumber: "",
   },
 };
 
@@ -82,8 +82,7 @@ export default function ArendaScreen() {
     }
   }, [updateCarsResult]);
 
-  useEffect(() => { 
-
+  useEffect(() => {
     const lst = cachedCars?.filter((card) => card.lang === selectedLang);
     setFilteredCards(lst);
   }, [cachedCars, selectedLang]);
@@ -118,7 +117,7 @@ export default function ArendaScreen() {
     <View
       style={{
         flexDirection: "row",
-        justifyContent: "space-between", 
+        justifyContent: "space-between",
         paddingLeft: 8,
         borderBottomColor: "black",
         paddingBottom: 16,
