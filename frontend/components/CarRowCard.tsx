@@ -13,7 +13,8 @@ import {
 } from "react-native";
 import AddPaymentDialog from "./AddPaymentDialog";
 import CarDetails, { formatNumber } from "./CarDetails";
-import { Feather } from "@expo/vector-icons";
+import { Feather, MaterialIcons } from "@expo/vector-icons";
+import { generateContract } from "@/services/generateContract";
 
 export interface CarElement {
   id: number;
@@ -87,6 +88,10 @@ const CarRowCard: React.FC<CardProps> = ({
       summa -= payment.sum;
     });
     return summa;
+  }, [element]);
+
+  const contractCreate = useCallback(() => {
+    generateContract(element)
   }, [element]);
 
   return (
@@ -182,6 +187,9 @@ const CarRowCard: React.FC<CardProps> = ({
           <View style={{ width: "3%", padding: "auto" }}>
             <TouchableOpacity style={{ margin: "auto" }} onPress={elementEdit}>
               <Feather name="edit" size={24} color="gray" />
+            </TouchableOpacity>
+            <TouchableOpacity style={{ marginHorizontal: "auto",  marginTop: 16}} onPress={contractCreate}>
+              <MaterialIcons name="picture-as-pdf" size={24} color="black" />
             </TouchableOpacity>
           </View>
         </View>
