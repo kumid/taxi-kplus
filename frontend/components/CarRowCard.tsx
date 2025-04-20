@@ -98,7 +98,8 @@ const CarRowCard: React.FC<CardProps> = ({
   }, [element]);
 
   const ostatokSumma = useCallback(() => {
-    let summa = element.summa_sell;
+    let summa = element.summa_sell - element.first_payment;
+
     element.payments.forEach((payment: any) => {
       summa -= payment.sum;
     });
