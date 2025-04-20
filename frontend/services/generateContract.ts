@@ -1,9 +1,14 @@
+import { formatNumber } from "@/components/CarDetails";
 import jsPDF from "jspdf";
 
 export const generateContract = async (payload: any) => {
   let isGenerating = true;
-  let pdfUrl = "";
-  console.log("generateInvoicePdf...............", payload);
+  let pdfUrl = ""; 
+  payload.summa_ostatok = Number(payload.summa_sell) - Number(payload.first_payment);
+  payload.last_payment = payload.summa_ostatok - ((Number(payload.buy_terms) - 1) * Number(payload.payment));
+  
+  console.log("generateInvoicePdf...............", payload); 
+
 
   const payload2 = {
     organization: "Мамадова Гусния Аладдин-Кызы, 10.07.1991 г.р.", 
@@ -20,7 +25,7 @@ export const generateContract = async (payload: any) => {
     summa_sell: "1 620 000",
     first_payment: "150 000",
     summa_ostatok: "1 470 000",
-    last_payment: "105 000",
+    last_payment: "105 000sssss",
     payment: "100 000",
     park_comission: "3.5",
     park_rent: "80 000",
@@ -85,21 +90,23 @@ export const generateContract = async (payload: any) => {
 
   line += 5;
   nameValue("ПОКУПАЮ с правом выкупа на срок ", `${payload.buy_terms} месяцев.`);
-  nameValue("Общая сумма составляет: ", `${payload.summa_sell} рублей.`, 82);
-  nameValue("Первоначальный взнос: ", `${payload.first_payment} рублей.`, 82);
-  nameValue("Остаток суммы: ", `${payload.summa_ostatok} рублей.`, 82);
+  nameValue("Общая сумма составляет: ", `${formatNumber(payload.summa_sell)} рублей.`, 82);
+  nameValue("Первоначальный взнос: ", `${formatNumber(payload.first_payment)} рублей.`, 82);
+  
+  if(payload.summa_ostatok)
+    nameValue("Остаток суммы: ", `${formatNumber(payload.summa_ostatok)} рублей.`, 82);
 
   line += 10;
   doc.setFont("Roboto", "bold");
-  doc.text(`${payload.summa_sell}`, margin, line);
-  left = margin + doc.getTextWidth(`${payload.summa_sell}`);
+  doc.text(`${formatNumber(payload.summa_sell)}`, margin, line);
+  left = margin + doc.getTextWidth(`${formatNumber(payload.summa_sell)}`);
   doc.setFont("Roboto", "normal");
   let textBlock = ` рублей делится на ${payload.buy_terms} месяцев с ежемесячным платежом в `;
   doc.text(textBlock, left, line);
   left += doc.getTextWidth(textBlock);
   doc.setFont("Roboto", "bold");
-  doc.text(`${payload.payment}`, left, line);
-  left += doc.getTextWidth(payload.payment);
+  doc.text(`${formatNumber(payload.payment)}`, left, line);
+  left += doc.getTextWidth(formatNumber(payload.payment));
   doc.setFont("Roboto", "normal");
   textBlock = " рублей.";
   doc.text(textBlock, left, line);
@@ -110,8 +117,8 @@ export const generateContract = async (payload: any) => {
   doc.text(textBlock, margin, line);
   left = margin + doc.getTextWidth(textBlock);
   doc.setFont("Roboto", "bold");
-  doc.text(`${payload.last_payment}`, left, line);
-  left += doc.getTextWidth(payload.last_payment ?? "0");
+  doc.text(`${formatNumber(payload.last_payment)}`, left, line);
+  left += doc.getTextWidth(formatNumber(payload.last_payment) ?? "0");
   doc.setFont("Roboto", "normal");
   doc.text(" рублей.", left, line);
 
@@ -156,8 +163,8 @@ export const generateContract = async (payload: any) => {
   doc.text(textBlock, margin, line);
   left = margin + doc.getTextWidth(textBlock);
   doc.setFont("Roboto", "bold");
-  doc.text(`${payload.park_rent}`, left, line);
-  left += doc.getTextWidth(payload.park_rent);
+  doc.text(`${formatNumber(payload.park_rent)}`, left, line);
+  left += doc.getTextWidth(formatNumber(payload.park_rent));
   doc.setFont("Roboto", "normal");
   doc.text(
     " рублей. По новому налоговому законодательству покупатель",
@@ -170,10 +177,10 @@ export const generateContract = async (payload: any) => {
   doc.text(textBlock, margin, line);
   left = margin + doc.getTextWidth(textBlock);
   doc.setFont("Roboto", "bold");
-  doc.text(`${payload.tax}`, left, line);
+  doc.text(`${formatNumber(payload.tax)}`, left, line);
   left += doc.getTextWidth(payload.tax);
   doc.setFont("Roboto", "normal");
-  doc.text(" рублей налоговый сбор.", left, line);
+  doc.text("  рублей налоговый сбор.", left, line);
 
   line += 10;
 

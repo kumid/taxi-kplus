@@ -46,6 +46,7 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
   const [first_payment, setFirst_payment] = useState<string>("0");
   const [last_payment, setLast_payment] = useState<string>("0");
   const [payment, setPayment] = useState<string>("0");
+  const [paymentCalc, setPaymentCalc] = useState<string>("0");
   const [latestnumber, setLatestNumber] = useState<string>("");
   const [color, setColor] = useState<string>("");
   const [customer_driver, setCustomerDriver] = useState<string>("");
@@ -105,14 +106,15 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
   }, [element]);
 
   useEffect(() => {
-    let summa = 0;
+    let summa = 0, ostatok = 0
+    ostatok = Number(summa_sell);
     if (summa_sell.length != 0 && buy_terms.length != 0 && buy_terms != "0") {
-      summa = Math.round(
+      ostatok -= Number(first_payment)
+      summa = Math.round( 
         (Number(summa_sell) - Number(first_payment)) / Number(buy_terms)
       );
     }
-
-    setPayment(summa.toString());
+    setPaymentCalc(summa.toString());
   }, [summa_sell, buy_terms, first_payment]);
 
   const handleSave = () => {
@@ -250,7 +252,7 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
                 marginLeft: 12,
               }}
             >
-              {formatNumber(payment)}
+              {formatNumber(paymentCalc)}
             </Text>
           </View>
         </View>
