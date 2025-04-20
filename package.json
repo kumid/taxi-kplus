@@ -2,6 +2,7 @@
   "scripts": {
     "dev": "concurrently \"npm run start:dev --prefix server\" \"npx expo start --prefix frontend\"",
     "deploy:server": "cd server && npm install && npx drizzle-kit migrate && npx drizzle-kit push && npm run build && node dist/src/main.js",
+    "deploy:server2": "cd server && npm install && npm run build && node dist/src/main.js",
     "deploy:web": "cd frontend && apt-get update && apt-get install -y && npm install -g expo-cli && npm install && npm start",
     "docker:set": "set DOCKER_HOST=tcp://192.168.0.17:2375",
     "docker:dev": "docker compose up --build",
