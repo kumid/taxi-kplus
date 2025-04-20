@@ -107,17 +107,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
         item.payments?.forEach((pay: any) => {
           pay.date = formatDate(pay.date);
         });
-
-        // try {
-        //   if (item.numbers) {
-        //     if (item.numbers.length != 0) {
-        //       item.latestnumber =
-        //         item.numbers[item.numbers.length - 1]?.gov_number;
-        //     }
-        //   }
-        // } catch (error) {
-        //   console.log(error);
-        // }
+ 
       });
       data.sort((a: any, b: any) => {
         const dateA = new Date(a.nexpPaymentDate);
@@ -132,7 +122,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
       console.error("Error fetching data:", error);
 
       if (error.response?.status == 401) {
-        auth.logout();
+        // auth.logout();
       }
     }
   };

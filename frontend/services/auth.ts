@@ -22,6 +22,7 @@ export const signin = async (apiUrl: string, email: string, password: string) =>
         email: email,
         token: token
     });
+    localStorage.setItem('authToken', token);
     return token;
   } catch (error) {
     throw new Error("Login failed");
@@ -29,14 +30,15 @@ export const signin = async (apiUrl: string, email: string, password: string) =>
 };
 
 export const signout = async () => {
-  // console.log("SignOut...................");  
+  console.log("SignOut...................");  
   await AsyncStore.delete("USER_DATA")
+  localStorage.removeItem('authToken');
 };
 
-export const getToken = async () => {
-//   const credentials =  await SecureStore.get<AppUser>("USER");
-  const credentials =  await AsyncStore.get<AppUser>("USER_DATA");
+export const getToken = async () => { 
+  // const credentials =  await AsyncStore.get<AppUser>("USER_DATA");
+  // console.log("getToken -> ", credentials?.token);
+  // return credentials?.token;
 
-  console.log("getToken -> ", credentials?.token);
-  return credentials?.token;
+  return localStorage.getItem('authToken');
 };
