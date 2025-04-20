@@ -1,0 +1,1 @@
+ALTER TABLE "cars" ADD COLUMN "tax" double precision DEFAULT 2000 NOT NULL;

@@ -50,6 +50,7 @@ export class CarService {
         SELECT 
       cars.id, 
       cars.model, 
+      cars.color,
       cars.ctc, 
       cars.year, 
       cars.organization, 
@@ -59,13 +60,25 @@ export class CarService {
       cars.buy_price, 
       cars.buy_terms, 
       cars.payment_day, 
-      cars."customerName", 
-      cars."customerPhone", 
-      cars."customerAddress", 
-      cars."customerPassport", 
+      cars."customer_name", 
+      cars."customer_phone", 
+      cars."customer_address", 
+      cars."customer_passport", 
       cars.payment,
       cars.first_payment,
-  
+      cars.vin,
+
+      cars.tax,
+      cars.customer_driver,
+      cars.park_comission,
+      cars.park_rent,
+      cars.sign1,
+      cars.sign2,
+      cars.sign3,
+      cars.sign4,
+      cars.sign5,
+      cars.sign4tel,
+      cars.sign5tel,  
       (
           SELECT numbers.gov_number
           FROM numbers

@@ -1,0 +1,1 @@
+ALTER TABLE "cars" ADD COLUMN "vin" text DEFAULT '' NOT NULL;

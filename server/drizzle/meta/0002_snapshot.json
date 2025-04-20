@@ -1,6 +1,6 @@
 {
-  "id": "a918b6c0-504d-4f48-801b-429bd88d7a40",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "7949e814-76ad-40a9-9abb-e6af9498fe89",
+  "prevId": "effe6434-78e5-4a0a-8199-0403cdaa6267",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -30,6 +30,13 @@
         },
         "ctc": {
           "name": "ctc",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "''"
+        },
+        "vin": {
+          "name": "vin",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -153,6 +160,13 @@
           "primaryKey": false,
           "notNull": true,
           "default": 80000
+        },
+        "tax": {
+          "name": "tax",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 2000
         },
         "sign1": {
           "name": "sign1",

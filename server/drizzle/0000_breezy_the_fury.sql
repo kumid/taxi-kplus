@@ -1,6 +1,7 @@
 CREATE TABLE "cars" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"model" text DEFAULT '' NOT NULL,
+	"color" text DEFAULT '' NOT NULL,
 	"ctc" text DEFAULT '' NOT NULL,
 	"year" integer DEFAULT 2025 NOT NULL,
 	"organization" text DEFAULT '' NOT NULL,
@@ -12,10 +13,20 @@ CREATE TABLE "cars" (
 	"first_payment" integer DEFAULT 0 NOT NULL,
 	"payment_day" integer DEFAULT 1 NOT NULL,
 	"payment" integer DEFAULT 0 NOT NULL,
-	"customerName" text DEFAULT '' NOT NULL,
-	"customerPhone" text DEFAULT '' NOT NULL,
-	"customerAddress" text DEFAULT '' NOT NULL,
-	"customerPassport" text DEFAULT '' NOT NULL
+	"customer_name" text DEFAULT '' NOT NULL,
+	"customer_phone" text DEFAULT '' NOT NULL,
+	"customer_address" text DEFAULT '' NOT NULL,
+	"customer_passport" text DEFAULT '' NOT NULL,
+	"customer_driver" text DEFAULT '' NOT NULL,
+	"park_comission" double precision DEFAULT 3.5 NOT NULL,
+	"park_rent" double precision DEFAULT 80000 NOT NULL,
+	"sign1" text DEFAULT 'Мамадова Г.А.' NOT NULL,
+	"sign2" text DEFAULT 'Даминов М.С.' NOT NULL,
+	"sign3" text DEFAULT 'Эркинжанов С.Г.' NOT NULL,
+	"sign4" text DEFAULT 'Юсупов Бахтиёр Иномидинович' NOT NULL,
+	"sign5" text DEFAULT 'Тажибаев Жахангир Абдихалилович' NOT NULL,
+	"sign4tel" text DEFAULT '+79687653333' NOT NULL,
+	"sign5tel" text DEFAULT '+79258692383' NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "numbers" (

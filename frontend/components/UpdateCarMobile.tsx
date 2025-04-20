@@ -68,10 +68,10 @@ const UpdateCarCardMobile: React.FC<CardProps> = ({
   const [buy_price, setBuy_price] = useState<string>("0");
   const [buy_terms, setBuy_terms] = useState<string>("0");
   const [payment_day, setPayment_day] = useState<string>("0");
-  const [customerName, setCustomerName] = useState<string>("");
-  const [customerPhone, setCustomerPhone] = useState<string>("");
-  const [customerAddress, setCustomerAddress] = useState<string>("");
-  const [customerPassport, setCustomerPassport] = useState<string>("");
+  const [customer_name, setCustomerName] = useState<string>("");
+  const [customer_phone, setCustomerPhone] = useState<string>("");
+  const [customer_address, setCustomerAddress] = useState<string>("");
+  const [customer_passport, setCustomerPassport] = useState<string>("");
   const [latestnumber, setLatestNumber] = useState<string>("0");
 
   React.useEffect(() => {
@@ -86,10 +86,10 @@ const UpdateCarCardMobile: React.FC<CardProps> = ({
     setBuy_price(String(element.buy_price));
     setBuy_terms(String(element.buy_terms));
     setPayment_day(String(element.payment_day));
-    setCustomerName(element.customerName);
-    setCustomerPhone(element.customerPhone);
-    setCustomerAddress(element.customerAddress);
-    setCustomerPassport(element.customerPassport);
+    setCustomerName(element.customer_name);
+    setCustomerPhone(element.customer_phone);
+    setCustomerAddress(element.customer_address);
+    setCustomerPassport(element.customer_passport);
     setLatestNumber(element.latestnumber);
 
     if (element.id && element.id !== 0) setTitle("Редактировать машину");
@@ -109,10 +109,10 @@ const UpdateCarCardMobile: React.FC<CardProps> = ({
       buy_price: Number(buy_price),
       buy_terms: Number(buy_terms),
       payment_day: Number(payment_day),
-      customerName: customerName,
-      customerPhone: customerPhone,
-      customerAddress: customerAddress,
-      customerPassport: customerPassport,
+      customer_name: customer_name,
+      customer_phone: customer_phone,
+      customer_address: customer_address,
+      customer_passport: customer_passport,
       latestnumber: latestnumber,
     };
 
@@ -180,24 +180,24 @@ const UpdateCarCardMobile: React.FC<CardProps> = ({
         />
 
         <LabeledTextInput
-          value={customerName}
+          value={customer_name}
           onChangeText={setCustomerName}
-          inputType={TextInputType.customerName}
+          inputType={TextInputType.customer_name}
         />
         <LabeledTextInput
-          value={customerPhone}
+          value={customer_phone}
           onChangeText={setCustomerPhone}
-          inputType={TextInputType.customerPhone}
+          inputType={TextInputType.customer_phone}
         />
         <LabeledTextInput
-          value={customerAddress}
+          value={customer_address}
           onChangeText={setCustomerAddress}
-          inputType={TextInputType.customerAddress}
+          inputType={TextInputType.customer_address}
         />
         <LabeledTextInput
-          value={customerPassport}
+          value={customer_passport}
           onChangeText={setCustomerPassport}
-          inputType={TextInputType.customerPassport}
+          inputType={TextInputType.customer_passport}
         />
 
         <View style={{ ...styles.rowStyle, marginStart: "auto" }}>

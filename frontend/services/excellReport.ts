@@ -11,7 +11,13 @@ const ExcellReport = async (data: any[]) => {
   const workbook = new ExcelJS.Workbook();
   const worksheet = workbook.addWorksheet("Sheet1");
 
-  const headers = ["Покупатель", "Машина", "Стоимость", "Первоначальный взнос", "Остаток"];
+  const headers = [
+    "Покупатель",
+    "Машина",
+    "Стоимость",
+    "Первоначальный взнос",
+    "Остаток",
+  ];
   let count = 14;
 
   const rows: any[][] = [];
@@ -30,7 +36,7 @@ const ExcellReport = async (data: any[]) => {
 
     count = Math.max(tmpCount, count);
     rows.push([
-      item.customerName,
+      item.customer_name,
       item.latestnumber,
       item.summa_sell,
       formatNumber(item.first_payment),

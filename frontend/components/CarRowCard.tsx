@@ -20,6 +20,7 @@ export interface CarElement {
   id: number;
   model: string;
   ctc: string;
+  vin: string,
   year: number;
   organization: string;
   summa_buy: number; // bought
@@ -32,12 +33,26 @@ export interface CarElement {
   first_payment: number;
   payment: number;
 
-  customerName: string; // имя покупателя
-  customerPhone: string; // телефон покупателя
-  customerAddress: string; // адрес покупателя
-  customerPassport: string; // паспорт покупателя,
+  customer_name: string; // имя покупателя
+  customer_phone: string; // телефон покупателя
+  customer_address: string; // адрес покупателя
+  customer_passport: string; // паспорт покупателя,
   latestnumber: string;
   nexpPaymentDate?: Date;
+
+  color: string;
+  customer_driver: string;
+  park_comission: number;
+  park_rent: number;
+  tax: number;
+  sign1: string;
+  sign2: string;
+  sign3: string;
+  sign4: string;
+  sign5: string;
+  sign4tel: string;
+  sign5tel: string;
+
   numbers: any[];
   payments: any[];
 }
@@ -91,7 +106,7 @@ const CarRowCard: React.FC<CardProps> = ({
   }, [element]);
 
   const contractCreate = useCallback(() => {
-    generateContract(element)
+    generateContract(element);
   }, [element]);
 
   return (
@@ -135,12 +150,12 @@ const CarRowCard: React.FC<CardProps> = ({
           </View>
           <View style={{ width: "10%" }}>
             <Text style={{ marginVertical: "auto" }}>
-              {element.customerName}
+              {element.customer_name}
             </Text>
           </View>
           <View style={{ width: "10%" }}>
             <Text style={{ marginVertical: "auto" }}>
-              {element.customerPhone}
+              {element.customer_phone}
             </Text>
           </View>
           <View style={{ width: "10%" }}>
@@ -188,7 +203,10 @@ const CarRowCard: React.FC<CardProps> = ({
             <TouchableOpacity style={{ margin: "auto" }} onPress={elementEdit}>
               <Feather name="edit" size={24} color="gray" />
             </TouchableOpacity>
-            <TouchableOpacity style={{ marginHorizontal: "auto",  marginTop: 16}} onPress={contractCreate}>
+            <TouchableOpacity
+              style={{ marginHorizontal: "auto", marginTop: 16 }}
+              onPress={contractCreate}
+            >
               <MaterialIcons name="picture-as-pdf" size={24} color="black" />
             </TouchableOpacity>
           </View>
@@ -214,7 +232,7 @@ const CarRowCard: React.FC<CardProps> = ({
         scrollable={true}
       >
         <AddPaymentDialog
-          requestText={`Платеж за ${element.latestnumber} от ${element.customerName}`}
+          requestText={`Платеж за ${element.latestnumber} от ${element.customer_name}`}
           setIsDialogVisible={setIsPaymentAddDialogVisible}
           car={element}
           setter={(summa) => {

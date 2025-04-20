@@ -18,10 +18,10 @@ export interface CarElement {
   buy_terms: number; // terms
   payment_day: number;
 
-  customerName: string; // имя покупателя
-  customerPhone: string; // телефон покупателя
-  customerAddress: string; // адрес покупателя
-  customerPassport: string; // паспорт покупателя,
+  customer_name: string; // имя покупателя
+  customer_phone: string; // телефон покупателя
+  customer_address: string; // адрес покупателя
+  customer_passport: string; // паспорт покупателя,
   latestnumber: string;
   numbers: any[];
   payments: any[];
@@ -81,13 +81,13 @@ const CarDetails: React.FC<CardProps> = ({
           <Text style={{ fontWeight: 900, marginBottom: 10 }}>
             Адрес Покупателя
           </Text>
-          <Text style={{}}>{element.customerAddress}</Text>
+          <Text style={{}}>{element.customer_address}</Text>
         </View>
         <View style={{ width: "10%", marginTop: 20 }}>
           <Text style={{ fontWeight: 900, marginBottom: 10 }}>
             Паспорт Покупателя
           </Text>
-          <Text style={{}}>{element.customerPassport}</Text>
+          <Text style={{}}>{element.customer_passport}</Text>
         </View>
 
         <FlatList

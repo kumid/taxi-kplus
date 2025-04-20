@@ -34,10 +34,10 @@ const sampleCard: any = {
     buy_terms: 0,
     payment_day: 14,
 
-    customerName: "",
-    customerPhone: "",
-    customerAddress: "",
-    customerPassport: "",
+    customer_name: "",
+    customer_phone: "",
+    customer_address: "",
+    customer_passport: "",
     latestnumber: "",
   },
 };
