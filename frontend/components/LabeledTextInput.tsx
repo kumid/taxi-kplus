@@ -231,6 +231,7 @@ const LabeledTextInput: React.FC<LabeledTextInputProps> = ({
         placeholder = "Комментарий";
         label = "Комментарий";
         keyboardType = "default";
+        break;
       case TextInputType.color:
         placeholder = "Цвет";
         label = "Цвет";

@@ -118,7 +118,7 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
   }, [summa_sell, buy_terms, first_payment]);
 
   const handleSave = () => {
-    const organization2save = organization.length != 0 ? organization : defaultOrganization 
+    const organization2save = organization && organization.length != 0 ? organization : defaultOrganization 
     const data: CarElement = {
       id: id,
       model: model,
