@@ -199,7 +199,7 @@ export default function CardsScreen() {
             style={{ ...styles.notificationIcon, marginStart: 40 }}
             onPress={() => auth.logout()}
           >
-            <FontAwesome name="sign-in" size={24} color="black" />
+            <Text>Выход</Text>
           </TouchableOpacity>
         </View>
 
