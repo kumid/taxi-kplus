@@ -68,6 +68,10 @@ export class CarService {
       cars.first_payment,
       cars.vin,
 
+      cars.is_installment,
+      cars.installment_term,
+      cars.installment,
+
       cars.tax,
       cars.customer_driver,
       cars.park_comission,

@@ -1,4 +1,5 @@
 import {
+  boolean,
   doublePrecision,
   index,
   integer,
@@ -42,4 +43,7 @@ export const cars = pgTable('cars', {
   sign5: text('sign5').default('Тажибаев Жахангир Абдихалилович').notNull(),
   sign4tel: text('sign4tel').default('+79687653333').notNull(),
   sign5tel: text('sign5tel').default('+79258692383').notNull(),
+  is_installment: boolean('is_installment').default(false).notNull(),
+  installment_term: integer('installment_term').default(0).notNull(), 
+  installment: integer('installment').default(0).notNull(), 
 });

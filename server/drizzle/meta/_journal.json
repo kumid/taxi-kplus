@@ -22,6 +22,13 @@
       "when": 1745147447164,
       "tag": "0002_bent_power_pack",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1746380862746,
+      "tag": "0003_giant_freak",
+      "breakpoints": true
     }
   ]
 }
