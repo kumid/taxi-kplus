@@ -18,10 +18,12 @@ import {
   StyleSheet,
 } from "react-native";
 import CarRowCard from "@/components/CarRowCard";
-import { AuthContext } from "@/providers/AuthContext";
+import { AuthContext, useAuth } from "@/providers/AuthContext";
 import { router } from "expo-router";
 import MaterialCommunityIcons from "@expo/vector-icons/build/MaterialCommunityIcons";
 import ExcellReport from "@/services/excellReport";
+import { FontAwesome } from "@expo/vector-icons";
+import { signout } from "@/services/auth";
 
 const sampleCard: any = {
   element: {
@@ -49,6 +51,8 @@ const sampleCard: any = {
 export default function CardsScreen() {
   const { cachedCars, loadingCars, updateCars, updateCarsResult, deleteCar } =
     useDataContext();
+  const auth = useAuth();
+
   const { width } = Dimensions.get("window"); // Get the screen width
   const columnCount = Platform.OS == "web" ? 1 : 1; // Number of columns per row
   const cardWidth =
@@ -185,10 +189,17 @@ export default function CardsScreen() {
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={styles.notificationIcon}
+            style={{ ...styles.notificationIcon, marginStart: 20 }}
             onPress={toggleAddDialogModal}
           >
             <AntDesign name="pluscircle" size={24} color="black" />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={{ ...styles.notificationIcon, marginStart: 40 }}
+            onPress={() => auth.logout()}
+          >
+            <FontAwesome name="sign-in" size={24} color="black" />
           </TouchableOpacity>
         </View>
 
