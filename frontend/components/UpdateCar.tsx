@@ -354,10 +354,18 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
                 setOrganization(itemValue);
               }}
             > 
-              <Picker.Item
-                label={defaultOrganization}
-                value={defaultOrganization}
-              />
+            <Picker.Item
+              label={defaultOrganization}
+              value={defaultOrganization}
+            />
+            <Picker.Item
+              label={"Абдиев Илхом Мухторович, 08.12.1975 г.р."}
+              value={"Абдиев Илхом Мухторович, 08.12.1975 г.р."}
+            />
+            <Picker.Item
+              label={"Абдуганиев Анвар Гафуржанович, 04.04.1983 г.р."}
+              value={"Абдуганиев Анвар Гафуржанович, 04.04.1983 г.р."}
+            />
             </Picker>
           </View>
 
