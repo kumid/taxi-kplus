@@ -49,6 +49,9 @@ export enum TextInputType {
   color = "color",
   sign = "sign",
   tel = "tel",
+
+  installment_term = "installment_term",
+  installment = "installment",
 }
 
 interface LabeledTextInputProps {
@@ -62,6 +65,7 @@ interface LabeledTextInputProps {
   autoCapitalize?: "none" | "sentences" | "words" | "characters";
   styleUI?: { label?: TextStyle; input?: TextStyle };
   readOnly?: boolean;
+  isLabelVisible?: boolean
 }
 const LabeledTextInput: React.FC<LabeledTextInputProps> = ({
   label,
@@ -74,6 +78,7 @@ const LabeledTextInput: React.FC<LabeledTextInputProps> = ({
   autoCapitalize = "none",
   styleUI,
   readOnly = false,
+  isLabelVisible
 }) => {
   const [placeholderState, setPlaceholderState] = useState<any>(null);
   const [labelState, setLabelState] = useState<string>("");
@@ -212,6 +217,27 @@ const LabeledTextInput: React.FC<LabeledTextInputProps> = ({
         placeholder = "Введите сумму платежа";
         label = "Сумма платежа";
         break; // bought
+
+
+      case TextInputType.summa_payment:
+        keyboardType = "numeric";
+        placeholder = "Введите сумму платежа";
+        label = "Сумма платежа";
+        break; // bought
+
+        case TextInputType.installment_term:
+          keyboardType = "numeric";
+          placeholder = "Дни";
+          label = "Дни";
+          break; // bought
+        case TextInputType.installment:
+          keyboardType = "numeric";
+          placeholder = "Платеж";
+          label = "Платеж";
+          break; 
+          
+        
+
       case TextInputType.tax:
         keyboardType = "numeric";
         placeholder = "Налог";
@@ -272,7 +298,7 @@ const LabeledTextInput: React.FC<LabeledTextInputProps> = ({
             ...styleUI?.label,
           }}
         >
-          {value && value.length > 0 && labelState.length > 0
+          {isLabelVisible || (value && value.length > 0 && labelState.length > 0)
             ? labelState
             : "..."}
         </Text>

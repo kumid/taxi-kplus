@@ -53,6 +53,10 @@ export interface CarElement {
   sign4tel: string;
   sign5tel: string;
 
+  is_installment: boolean,
+  installment_term: number,
+  installment: number,
+
   numbers: any[];
   payments: any[];
 }
@@ -98,7 +102,7 @@ const CarRowCard: React.FC<CardProps> = ({
   }, [element]);
 
   const ostatokSumma = useCallback(() => {
-    let summa = element.summa_sell - element.first_payment;
+    let summa = element.summa_sell - (element.is_installment ? 0 : element.first_payment);
 
     element.payments.forEach((payment: any) => {
       summa -= payment.sum;

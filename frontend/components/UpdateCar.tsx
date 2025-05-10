@@ -61,13 +61,17 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
   const [sign5, setSign5] = useState<string>("Тажибаев Жахангир Абдихалилович");
   const [sign5tel, setSign5tel] = useState<string>("+79258692383");
 
+  const [is_installment, setIs_installment] = useState<boolean>(false);
+  const [installment_term, setInstallment_term] = useState<string>("60");
+  const [installment, setInstallment] = useState<string>("0");
+
   const defaultOrganization = "Мамадова Гусния Аладдин-Кызы, 10.07.1991 г.р.";
 
   React.useEffect(() => {
     setId(element.id);
     setModel(element.model);
     setCtc(element.ctc);
-    setVin(element.vin)
+    setVin(element.vin);
     setYear(element.year ? element.year.toString() : "");
     setOrganization(element.organization);
     setSumma_buy(element.summa_buy ? element.summa_buy.toString() : "");
@@ -101,24 +105,44 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
     setSign4tel(element.sign4tel);
     setSign5tel(element.sign5tel);
 
+    setIs_installment(element.is_installment);
+    setInstallment_term(element.installment_term ? element.installment_term.toString() : "0");
+    setInstallment(element.installment ? element.installment.toString() : "0");
+
     if (element.id && element.id !== 0) setTitle("Редактировать машину");
     else setTitle("Новая машина");
   }, [element]);
 
   useEffect(() => {
-    let summa = 0, ostatok = 0
+    let summa = 0,
+      ostatok = 0;
     ostatok = Number(summa_sell);
+    
+    
     if (summa_sell.length != 0 && buy_terms.length != 0 && buy_terms != "0") {
-      ostatok -= Number(first_payment)
-      summa = Math.round( 
+
+      if(is_installment) {
+        const installmentSum = Number(installment_term) * Number(installment)
+        if(first_payment != installmentSum.toString()) {
+          setFirst_payment(installmentSum.toString())
+          return;
+        }
+      }
+      ostatok -= Number(first_payment);
+      summa = Math.round(
         (Number(summa_sell) - Number(first_payment)) / Number(buy_terms)
       );
     }
+
+
     setPaymentCalc(summa.toString());
-  }, [summa_sell, buy_terms, first_payment]);
+  }, [summa_sell, buy_terms, first_payment, is_installment, installment_term, installment]);
 
   const handleSave = () => {
-    const organization2save = organization && organization.length != 0 ? organization : defaultOrganization 
+    const organization2save =
+      organization && organization.length != 0
+        ? organization
+        : defaultOrganization;
     const data: CarElement = {
       id: id,
       model: model,
@@ -155,6 +179,10 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
 
       numbers: [],
       payments: [],
+
+      is_installment: is_installment,
+      installment_term: Number(installment_term),
+      installment: Number(installment),
     };
 
     updateElement(data);
@@ -193,21 +221,12 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
             onChangeText={setColor}
             inputType={TextInputType.color}
           />
+          <LabeledTextInput
+            value={vin}
+            onChangeText={setVin}
+            inputType={TextInputType.vin}
+          />
         </View>
-        
-
-        {/* <View style={{ ...styles.rowStyle, marginStart: 10, marginBottom: 16 }}>
-          <LabeledTextInput
-            value={summa_buy}
-            onChangeText={(value) => handleIntegerChange(setSumma_buy, value)}
-            inputType={TextInputType.summa_buy}
-          />
-          <LabeledTextInput
-            value={buy_price}
-            onChangeText={(value) => handleIntegerChange(setBuy_price, value)}
-            inputType={TextInputType.buy_price}
-          />
-        </View> */}
 
         <View style={{ ...styles.rowStyle, marginStart: 10, marginBottom: 16 }}>
           <LabeledTextInput
@@ -215,24 +234,61 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
             onChangeText={(value) => handleIntegerChange(setSumma_sell, value)}
             inputType={TextInputType.summa_sell}
           />
-          <LabeledTextInput
-            value={first_payment}
-            onChangeText={(value) =>
-              handleIntegerChange(setFirst_payment, value)
-            }
-            inputType={TextInputType.first_payment}
-          />
+
+          <View
+            style={{
+              ...styles.rowStyle,
+              marginStart: 10,
+              width: "15.5%",
+              alignItems: "center",
+              alignContent: "space-evenly",
+            }}
+          >
+            <Checkbox
+              onValueChange={setIs_installment}
+              value={is_installment}
+            />
+            <Text style={{ marginStart: 0 }}>Рассрочка перв. взноса</Text>
+          </View>
+
+          {!is_installment && <View style={{ width: "15.5%" }}></View>}
+
+          {!is_installment && (
+            <LabeledTextInput
+              value={first_payment}
+              onChangeText={(value) =>
+                handleIntegerChange(setFirst_payment, value)
+              }
+              inputType={TextInputType.first_payment}
+            />
+          )}
+
+          {is_installment && (
+            <LabeledTextInput
+              value={installment_term}
+              onChangeText={(value) =>
+                handleIntegerChange(setInstallment_term, value)
+              }
+              inputType={TextInputType.installment_term}
+            />
+          )}
+          {is_installment && (
+            <LabeledTextInput
+              value={installment}
+              onChangeText={(value) =>
+                handleIntegerChange(setInstallment, value)
+              }
+              inputType={TextInputType.installment}
+              isLabelVisible={true}
+            />
+          )}
           <LabeledTextInput
             value={buy_terms}
             onChangeText={(value) => handleIntegerChange(setBuy_terms, value)}
             inputType={TextInputType.buy_terms}
+            isLabelVisible={true}
           />
-          <LabeledTextInput
-            value={payment_day}
-            onChangeText={(value) => handleIntegerChange(setPayment_day, value)}
-            inputType={TextInputType.payment_day}
-          />
-          <View style={{ width: "20%" }}>
+          <View style={{ width: "16%" }}>
             <Text
               style={{
                 fontSize: 14,
@@ -275,13 +331,12 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
             onChangeText={(value) => handleIntegerChange(setTax, value)}
             inputType={TextInputType.tax}
           />
-
+          <View style={{ width: "16%" }}></View>
           <LabeledTextInput
-            value={vin}
-            onChangeText={setVin}
-            inputType={TextInputType.vin}
+            value={payment_day}
+            onChangeText={(value) => handleIntegerChange(setPayment_day, value)}
+            inputType={TextInputType.payment_day}
           />
-
           <LabeledTextInput
             value={payment}
             onChangeText={setPayment}
@@ -334,7 +389,14 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
           }}
         />
 
-        <View style={{ ...styles.rowStyle, marginStart: 10, marginBottom: 16, marginEnd: 0 }}>
+        <View
+          style={{
+            ...styles.rowStyle,
+            marginStart: 10,
+            marginBottom: 16,
+            marginEnd: 0,
+          }}
+        >
           <View style={{ width: 470, marginStart: 10, marginEnd: 0 }}>
             <Text
               style={{
@@ -353,19 +415,19 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
                 console.log("onValueChange", organization);
                 setOrganization(itemValue);
               }}
-            > 
-            <Picker.Item
-              label={defaultOrganization}
-              value={defaultOrganization}
-            />
-            <Picker.Item
-              label={"Абдиев Илхом Мухторович, 08.12.1975 г.р."}
-              value={"Абдиев Илхом Мухторович, 08.12.1975 г.р."}
-            />
-            <Picker.Item
-              label={"Абдуганиев Анвар Гафуржанович, 04.04.1983 г.р."}
-              value={"Абдуганиев Анвар Гафуржанович, 04.04.1983 г.р."}
-            />
+            >
+              <Picker.Item
+                label={defaultOrganization}
+                value={defaultOrganization}
+              />
+              <Picker.Item
+                label={"Абдиев Илхом Мухторович, 08.12.1975 г.р."}
+                value={"Абдиев Илхом Мухторович, 08.12.1975 г.р."}
+              />
+              <Picker.Item
+                label={"Абдуганиев Анвар Гафуржанович, 04.04.1983 г.р."}
+                value={"Абдуганиев Анвар Гафуржанович, 04.04.1983 г.р."}
+              />
             </Picker>
           </View>
 

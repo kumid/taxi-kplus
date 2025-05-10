@@ -91,7 +91,10 @@ export const generateContract = async (payload: any) => {
   line += 5;
   nameValue("ПОКУПАЮ с правом выкупа на срок ", `${payload.buy_terms} месяцев.`);
   nameValue("Общая сумма составляет: ", `${formatNumber(payload.summa_sell)} рублей.`, 82);
-  nameValue("Первоначальный взнос: ", `${formatNumber(payload.first_payment)} рублей.`, 82);
+  if(payload.is_installment) {
+    nameValue("Первоначальный взнос: ", `НЕТ, делится на ${payload.installment_term} дней, по ${payload.installment} рублей.`, 82);
+  } else
+    nameValue("Первоначальный взнос: ", `${formatNumber(payload.first_payment)} рублей.`, 82);
   
   if(payload.summa_ostatok)
     nameValue("Остаток суммы: ", `${formatNumber(payload.summa_ostatok)} рублей.`, 82);
