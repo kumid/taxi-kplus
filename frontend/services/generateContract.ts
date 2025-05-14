@@ -4,8 +4,21 @@ import jsPDF from "jspdf";
 export const generateContract = async (payload: any) => {
   let isGenerating = true;
   let pdfUrl = ""; 
-  payload.summa_ostatok = Number(payload.summa_sell) - Number(payload.first_payment);
-  payload.last_payment = payload.summa_ostatok - ((Number(payload.buy_terms) - 1) * Number(payload.payment));
+
+  let months = 0;
+  if(payload.is_installment) {
+    const days = Number(payload.installment_term);
+    months = days / 30;
+    const installment_sum = days * Number(payload.installment);
+    payload.summa_ostatok = Number(payload.summa_sell) - installment_sum;
+    payload.last_payment = payload.summa_ostatok - ((Number(payload.buy_terms) - months - 1) * Number(payload.payment));
+    payload.first_payment = 0;
+  } else {
+    payload.summa_ostatok = Number(payload.summa_sell) - Number(payload.first_payment);
+  }
+    
+
+
   
   console.log("generateInvoicePdf...............", payload); 
 
@@ -91,20 +104,20 @@ export const generateContract = async (payload: any) => {
   line += 5;
   nameValue("ПОКУПАЮ с правом выкупа на срок ", `${payload.buy_terms} месяцев.`);
   nameValue("Общая сумма составляет: ", `${formatNumber(payload.summa_sell)} рублей.`, 82);
+    
   if(payload.is_installment) {
     nameValue("Первоначальный взнос: ", `НЕТ, делится на ${payload.installment_term} дней, по ${payload.installment} рублей.`, 82);
   } else
     nameValue("Первоначальный взнос: ", `${formatNumber(payload.first_payment)} рублей.`, 82);
-  
   if(payload.summa_ostatok)
     nameValue("Остаток суммы: ", `${formatNumber(payload.summa_ostatok)} рублей.`, 82);
 
   line += 10;
   doc.setFont("Roboto", "bold");
-  doc.text(`${formatNumber(payload.summa_sell)}`, margin, line);
-  left = margin + doc.getTextWidth(`${formatNumber(payload.summa_sell)}`);
+  doc.text(`${formatNumber(payload.summa_ostatok)}`, margin, line);
+  left = margin + doc.getTextWidth(`${formatNumber(payload.summa_ostatok)}`);
   doc.setFont("Roboto", "normal");
-  let textBlock = ` рублей делится на ${payload.buy_terms} месяцев с ежемесячным платежом в `;
+  let textBlock = ` рублей делится на ${payload.buy_terms - months} месяцев с ежемесячным платежом в `;
   doc.text(textBlock, left, line);
   left += doc.getTextWidth(textBlock);
   doc.setFont("Roboto", "bold");

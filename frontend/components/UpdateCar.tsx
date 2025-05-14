@@ -106,7 +106,9 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
     setSign5tel(element.sign5tel);
 
     setIs_installment(element.is_installment);
-    setInstallment_term(element.installment_term ? element.installment_term.toString() : "0");
+    setInstallment_term(
+      element.installment_term ? element.installment_term.toString() : "0"
+    );
     setInstallment(element.installment ? element.installment.toString() : "0");
 
     if (element.id && element.id !== 0) setTitle("Редактировать машину");
@@ -117,26 +119,32 @@ const UpdateCarCard: React.FC<CardProps> = ({ element, updateElement }) => {
     let summa = 0,
       ostatok = 0;
     ostatok = Number(summa_sell);
-    
-    
-    if (summa_sell.length != 0 && buy_terms.length != 0 && buy_terms != "0") {
 
-      if(is_installment) {
-        const installmentSum = Number(installment_term) * Number(installment)
-        if(first_payment != installmentSum.toString()) {
-          setFirst_payment(installmentSum.toString())
-          return;
-        }
+    if (summa_sell.length != 0 && buy_terms.length != 0 && buy_terms != "0") {
+      let months = 0;
+      if (is_installment) {
+        const days = Number(installment_term);
+        months = days / 30;
+        const installment_sum = days * Number(installment);
+        summa = Math.round((Number(summa_sell) -installment_sum) / (Number(buy_terms) - months));
+        console.log(months, "months..........", summa);
+      } else {
+        ostatok -= Number(first_payment);
+        summa = Math.round(
+          (Number(summa_sell) - Number(first_payment)) / Number(buy_terms)
+        );
       }
-      ostatok -= Number(first_payment);
-      summa = Math.round(
-        (Number(summa_sell) - Number(first_payment)) / Number(buy_terms)
-      );
     }
 
-
     setPaymentCalc(summa.toString());
-  }, [summa_sell, buy_terms, first_payment, is_installment, installment_term, installment]);
+  }, [
+    summa_sell,
+    buy_terms,
+    first_payment,
+    is_installment,
+    installment_term,
+    installment,
+  ]);
 
   const handleSave = () => {
     const organization2save =
